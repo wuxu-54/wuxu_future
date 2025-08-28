@@ -1,0 +1,50 @@
+<!--
+    流式布局：百分比布局，不拘泥于固定像素。
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=1">
+    <title>流式布局</title>
+</head>
+
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+
+        section{
+            width: 100%;
+            display:flex;
+            max-width: 900px;
+            min-width: 300px;
+        }
+
+        section div{
+            width: 20%;
+            height: 100px;
+           
+        }
+
+        section div:nth-child(1){
+            background-color: aqua;
+        }
+
+
+        section div:nth-child(2){
+            background-color: orange;
+        }
+
+    </style>
+<body>
+
+    <section>
+        <div>1</div>
+        <div>2</div>
+    </section>
+   
+    
+</body>
+</html>

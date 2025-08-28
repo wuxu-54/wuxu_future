@@ -1,0 +1,50 @@
+<!--
+    1.开启了flex就会把元素变为块级元素
+    2.开启伸缩容器后，仅子元素自动变为伸缩项目，且全变为块状化
+
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1.容器与项目(item)</title>
+</head>
+
+<style>
+    .outer{
+        width: 600px;
+        height: 600px;
+        background-color: gray;
+        /* 将该容器变为了伸缩容器（开启flex布局） */
+        /* display: flex; */
+        display:inline-flex;
+    }
+
+    .inner{
+        width: 200px;
+        height: 200px;
+        border:1px solid black;
+        background-color: aqua;
+        /* 设置盒子boder类型 */
+        box-sizing:  vvv;
+    }
+</style>
+<body>
+
+<div class="outer">
+    <div class="inner">1</div>
+    <div class="inner">2</div>
+    <div class="inner">3</div>
+
+</div>
+
+<div class="outer">
+    <div class="inner">1</div>
+    <div class="inner">2</div>
+    <span class="inner">3</span>
+
+</div>
+    
+</body>
+</html>

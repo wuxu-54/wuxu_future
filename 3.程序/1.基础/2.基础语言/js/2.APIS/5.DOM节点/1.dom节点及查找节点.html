@@ -1,0 +1,45 @@
+<!-- 
+    DOM 树中每一个内容都叫节点
+
+    节点类型：
+    1.元素节点：所有的标签，html是根节点
+    2.属性节点：所有的属性，如 href
+    3.文本节点：所有的文本 如文字
+
+    查找节点
+    1.父节点  查找父节点使用的属性：p.parentNode
+    2.兄弟节点   查找兄弟节点使用的属性：上一个 p.previousElementSibling，下一个节点 p.nextElementSibling
+    3.子节点  查找子节点使用的属性：p.children 得到的是伪数组
+ -->
+
+ <!DOCTYPE html>
+ <html lang="zh-CN">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dom节点</title>
+ </head>
+ <div class="parent">
+    <ul>
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+    </ul>
+    
+    <p>2</p>
+ </div>
+ <body>
+    <script>
+       let p = document.querySelector('p')
+       p.parentNode//父节点
+     const div = document.querySelector('.parent')
+    
+     console.log(div.children)//子节点
+
+     let li = document.querySelector('ul li:nth-child(2)')
+     li.style.color = 'red'
+     console.log(li.nextElementSibling)//下一个节点
+     console.log(li.previousElementSibling)//上一个节点
+    </script>
+ </body>
+ </html>

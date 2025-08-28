@@ -1,0 +1,47 @@
+<!-- 
+    行高 line-height
+
+    * 注意，这个行高不是指文字每行的高度，而是指 两行文字基线之间的间距（行间距）
+
+    * (line-height 减去 font-size) 平分为 上间距和下间距
+
+    * 行间距 = 上-行的下间距+下一行的上间距
+
+    * 真正的行高度 =  上间距 + 下间距 +（font-size）
+
+    * 行高注意事项
+    1.行高大 文字垂直间距大，行高小，文字垂直间距小，如果行高过小，内容会层叠到一起
+    2.行高最小为0 不能比0小，否则无效
+    3.因为样式可以继承，所以元素可以继承父元素的行高，这样指定像素的行高，可能出现问题，一般使用倍数。
+ -->
+
+ <!DOCTYPE html>
+ <html lang="zh-CN">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>常用文本属性-行高</title>
+ </head>
+
+    <style>
+        div{
+            font-size: 40px;
+            background-color: skyblue;
+
+            /* 行高写法1,像素px 直接指定行高大小 */
+            /* line-height:40px; */
+
+
+            /* 行高写法2,normal 浏览器根据字体大小，自动设定一个合适的高度。*/
+            /* line-height:normal; */
+
+            /* 行高写法3,数值 字体大小的倍数高 ；line-height:1.5就是行高=字体大小*1.5*/
+            /* line-height:1.5; */
+
+            line-height:16px;
+        }
+    </style>
+ <body>
+    <div>qeqsfasfsqeqsfasfsdfasfasdfdasfadsfaqeqsfasfsdfasfasdfdasfadsfaqeqsfasfsdfasfasdfdasfadsfaqeqsfasfsdfasfasdfdasfadsfaqeqsfasfsdfasfasdfdasfadsfaqeqsfasfsdfasfasdfdasfadsfaqeqsfasfsdfasfasdfdasfadsfaqeqsfasfsdfasfasdfdasfadsfaqeqsfasfsdfasfasdfdasfadsfaqeqsfasfsdfasfasdfdasfadsfaqeqsfasfsdfasfasdfdasfadsfaqeqsfasfsdfasfasdfdasfadsfaqeqsfasfsdfasfasdfdasfadsfaqeqsfasfsdfasfasdfdasfadsfadfasfasdfdasfadsfa</div>
+ </body>
+ </html>

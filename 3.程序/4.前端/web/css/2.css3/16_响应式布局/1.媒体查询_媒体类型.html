@@ -1,0 +1,54 @@
+<!-- 
+    响应式：不同设备不同呈现，也就类似android的适配
+
+    可以通过媒体查询获取设备宽高
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>媒体查询-媒体类型</title>
+</head>
+
+    <style>
+
+        h1{
+            width: 200px;
+            height: 100px;
+            background-image: linear-gradient(20deg,red,yellow,green);
+            margin: 0 auto;
+            text-align: center;
+            line-height: 100px;
+            color: white;
+            text-shadow: 0 0 10px black;
+        }
+
+        /*只有在打印机或打印预览才应用的样式*/
+        @media print{
+            h1{
+                /* background-color: transparent;  这个不生效，无法替换background-image */
+                background: transparent;
+            }
+
+        }
+
+        /*只有在屏幕上才应用的样式*/
+        @media screen {
+            h1{
+                font-family: "翩翩体-简";
+            }
+        }
+
+
+         /*一直应用的样式*/
+        @media all{
+            
+        }
+        
+    </style>
+<body>
+    <h1>新年快乐</h1>
+</body>
+</html>

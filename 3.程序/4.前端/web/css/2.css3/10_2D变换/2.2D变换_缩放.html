@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2d-缩放</title>
+</head>
+   <style>
+    .outer{
+        width: 200px;
+        height: 200px;
+        border: 1px solid black;
+        margin: 10px auto;
+        position: relative;
+    }
+    .inner{
+        width: 200px;
+        height: 200px;
+        background-color: aqua;
+
+        /*负数会镜像*/
+        /* transform: scale(-1,1); */
+        transform: scaleX(1.5) scaleY(1.3); 
+    }
+
+   </style>
+<body>
+    <div class="outer">
+        <div class="inner">你好啊</div>
+    </div>
+
+</body>
+</html>

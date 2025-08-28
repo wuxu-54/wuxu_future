@@ -1,0 +1,34 @@
+<!-- 
+    有了行高，我们可以使用行高设定文本的垂直对齐，但此不是个好方法比较麻烦。后面可以使用【定位】更好的对齐。
+
+    行高，通过计算距离，可以设定文本的竖直方向位置，达到对齐效果
+
+    单行对齐：
+    顶部：默认就是
+    中间：line-height = height；原因:行高章节已经说了，文本上下间距= (lineheight - 字体高度)  / 2, 然后把上下间距设定到字体上下位置。所以会有居中效果
+    底部：line-height = height * 2 - 字体高-字体超出的部分距离，这个完全是算出来的，相当于把文本上下间距变大，是文本设定到了垂直的底部。  了解就行，根本不用
+
+    多行对齐：
+    按单行对齐的方式，计算行高，达到居中、底部对齐等效果 
+
+    注意~，本章节只是了解，以后不这么设置垂直对齐，麻烦不好用。单行中间对齐还可以偶尔用一下。
+ -->
+ <!DOCTYPE html>
+ <html lang="zh-CN">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>常用文本属性-数值对齐</title>
+ </head>
+
+    <style>
+        div{
+            font-size: 40px;
+            background-color: skyblue;
+            line-height:16px;
+        }
+    </style>
+ <body>
+<div>asfasdfdasfadsfa</div>
+ </body>
+ </html>

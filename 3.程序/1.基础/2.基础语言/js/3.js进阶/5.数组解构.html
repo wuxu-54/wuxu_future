@@ -1,0 +1,33 @@
+<!-- 
+    数组解构
+    将数组数据批量赋值给变量的简便语法
+
+    定义 ： 
+        const arr = [1,2,3]
+        const [a,b,c] = arr
+        console.log(a)//直接使用
+
+ -->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数组解构</title>
+</head>
+
+<body>
+    <script>
+       const arr = [1,2,3]
+        //解构,将arr数据解构，依次赋值给 a，b，c，如果size不匹配 多余的就不算了
+       const [a,b,c,d,e=0] = arr//给e默认值，可以避免undefined
+       console.log(a)//直接使用
+       console.log(d)//undefined
+
+       const [i,j] = [1,[1,2,3]]//支持多维数组解构
+    </script>
+</body>
+
+</html>

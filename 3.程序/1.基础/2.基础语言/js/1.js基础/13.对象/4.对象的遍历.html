@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>遍历对象</title>
+</head>
+<body>
+
+    <script>
+
+        let obj = {
+            name:"111",
+            age:123,
+            address:"123"
+        }
+
+        //遍历用 for in ，这个方法不推荐遍历数组，因为其下标是string类型
+        for(let key in obj){
+            console.log(key)
+            //key是个字符串 obj.k相当于 obj.'name' 是个错误语法，所以需要用方式2获取对象属性值
+            console.log(obj[key])
+        }
+
+    </script>
+    
+</body>
+</html>

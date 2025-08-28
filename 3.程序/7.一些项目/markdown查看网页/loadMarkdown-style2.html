@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>终极版 Markdown 阅读器</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/showdown@2.1.0/dist/showdown.min.js"></script>
+    <style>
+        :root {
+            --primary: #2A2F4C;
+            --secondary: #4E67EB;
+            --accent: #FF6B6B;
+            --bg: #F8F9FC;
+        }
+
+        /* 全局重置 */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: var(--bg);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            font-family: 'Source Sans 3', system-ui, sans-serif;
+            line-height: 1.6;
+            color: var(--primary);
+        }
+
+        #markdown-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+            padding: 2.5rem;
+        }
+
+        /* 排版系统 */
+        h1, h2, h3 {
+            color: var(--primary);
+            margin: 2rem 0 1.2rem;
+            font-weight: 600;
+        }
+
+        h1 { font-size: 2.2rem; }
+        h2 { font-size: 1.8rem; }
+        h3 { font-size: 1.4rem; }
+
+        p {
+            margin: 1rem 0;
+            word-wrap: break-word;
+        }
+
+        ul, ol {
+            margin: 1rem 0;
+            padding-left: 2rem;
+        }
+
+        li {
+            margin: 0.5rem 0;
+            padding-left: 0.5rem;
+        }
+
+        blockquote {
+            border-left: 4px solid var(--secondary);
+            margin: 1.5rem 0;
+            padding: 1rem 1.5rem;
+            background: rgba(78,103,235,0.03);
+            border-radius: 8px;
+        }
+
+        pre {
+            background: #f8f9ff;
+            border: 1px solid #e3e8ff;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+        }
+
+        code {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9em;
+        }
+
+        /* Mermaid 增强 */
+        .mermaid {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: white;
+            border: 1px solid #e3e8ff;
+            border-radius: 12px;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            #markdown-container {
+                padding: 1.5rem;
+                border-radius: 12px;
+            }
+            h1 { font-size: 1.8rem; }
+            pre { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div id="markdown-container"></div>
+
+    <script>
+        // 配置 Mermaid
+        mermaid.initialize({
+            startOnLoad: false,
+            securityLevel: 'loose',
+            theme: 'neutral',
+            flowchart: { 
+                useMaxWidth: false,
+                htmlLabels: true
+            }
+        });
+
+        // 创建自定义 Markdown 解析器
+        class CustomParser {
+            constructor() {
+                this.converter = new showdown.Converter({
+                    tables: true,
+                    tasklists: true,
+                    strikethrough: true,
+                    emoji: true,
+                    simpleLineBreaks: true,
+                    requireSpaceBeforeHeadingText: true,
+                    extensions: [this.mermaidExtension()]
+                });
+            }
+
+            mermaidExtension() {
+                return {
+                    type: 'lang',
+                    filter: text => text.replace(
+                        /```mermaid([\s\S]*?)```/g,
+                        (_, code) => `<div class="mermaid">${code}</div>`
+                    )
+                };
+            }
+
+            async render(mdContent) {
+                // 统一换行符
+                const normalized = mdContent.replace(/\r\n/g, '\n');
+                // 转换 Markdown
+                const html = this.converter.makeHtml(normalized);
+                // 插入 DOM
+                document.getElementById('markdown-container').innerHTML = html;
+                // 渲染 Mermaid
+                await this.renderMermaid();
+            }
+
+            async renderMermaid() {
+                const diagrams = document.querySelectorAll('.mermaid');
+                for (const diagram of diagrams) {
+                    try {
+                        const code = diagram.textContent;
+                        const svg = await mermaid.render('mermaid-svg', code);
+                        diagram.innerHTML = svg.svg;
+                    } catch (error) {
+                        diagram.innerHTML = `<div class="error">图表渲染失败: ${error.message}</div>`;
+                    }
+                }
+            }
+        }
+
+        // 主执行流程
+        (async () => {
+            try {
+                const parser = new CustomParser();
+                const response = await fetch('/3.程序/3.后端/docker/2.基础知识/6.3.2.容器-编排工具-dockerSwarm介绍.md');
+                const mdContent = await response.text();
+                await parser.render(mdContent);
+            } catch (error) {
+                document.getElementById('markdown-container').innerHTML = `
+                    <div class="error">
+                        ⚠️ 加载失败: ${error.message}
+                    </div>
+                `;
+                console.error(error);
+            }
+        })();
+    </script>
+</body>
+</html>

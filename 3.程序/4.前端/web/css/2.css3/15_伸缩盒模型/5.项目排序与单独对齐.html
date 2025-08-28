@@ -1,0 +1,64 @@
+<!-- 
+    1.排序order: 越小越靠前
+    2.单独对齐：align-self 在侧轴方向的位置对齐，默认与父容器设置的对齐方式相同
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>项目排序与单独对齐</title>
+</head>
+
+<style>
+    .outer{
+        width: 1000px;
+        height: 800px;
+        border: 1px solid black;
+        box-sizing: border-box;
+
+        display: flex;
+    }
+    .inner{ 
+        width: 200px;
+        height: 200px;
+        border: 1px solid black;
+        box-sizing: border-box;
+        background-color: aquamarine;
+
+        flex: 1 1 0;
+      
+    }
+    /* .inner1{
+        order: 1;
+    }
+    .inner2{
+        order: -1;
+    }
+    .inner3{
+        order: 2;
+    } */
+
+    /* .inner1{
+        order: 1;
+    } */
+    .inner2{
+        /*在侧轴方向的位置对齐，默认与父容器设置的对齐方式相同*/
+        align-self: flex-end;
+    }
+    /* .inner3{
+        order: 2;
+    } */
+</style>
+
+<body>
+
+    <div class="outer">
+        <div class="inner inner1">1</div>
+        <div class="inner inner2">2</div>
+        <div class="inner inner3">3</div>
+    </div>
+    
+</body>
+</html>

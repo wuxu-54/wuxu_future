@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <title>el与data两种写法</title>
+</head>
+<body>
+    <div class="root"></div>
+    <script>
+    // <!-- el绑定的两种写法 -->
+
+    const v = new Vue({
+        // el:"#root",//写法1  此时vue与element绑定
+    })
+    v.$mount('#root') //写法2 
+
+    // <!-- data声明的两种写法 -->
+    new Vue({
+        // data:{ //写法1 对象方式
+
+        // }
+
+        data(){ //写法2 函数式
+            return {
+                name:'' 
+            }
+        }
+    })
+
+    </script>
+
+</body>
+</html>

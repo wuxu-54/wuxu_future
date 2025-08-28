@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>过渡-复合属性</title>
+</head>
+
+<!-- 过渡属性：transition-property 只有 值是[数]的 属性才可以过渡 -->
+<style>
+    .outer{
+        margin: 0 auto;
+        font-size: 0;
+        width: 1300px;
+        height: 100px;
+        border: 1px solid black;
+      
+    }
+
+    .outer:hover .inner{
+        width: 1300px;
+    }
+    .inner{
+        width: 100px;
+        height: 100px;
+        background-color: greenyellow;
+
+          
+        /* 
+        transition-property: all;
+        transition-timing-function: linear;
+        transition-duration: 3s; 
+
+        transition：
+        这是CSS中用于设置过渡效果的属性，它可以应用在多种属性上，比如宽度、高度、背景色、不透明度等，以创建平滑的动画效果。
+        all：这个关键字指定了过渡效果应该应用到元素的所有属性上。如果不指定all，可以指定具体的CSS属性，比如background-color或margin等。
+        3s：这个值指定了过渡效果的持续时间，这里是0.2秒。
+        linear：这个关键字定义了过渡效果的速率，linear表示过渡效果的速度在整个动画过程中是恒定的。
+			    除了linear，还有其他选项，如ease、ease-in、ease-out和ease-in-out，它们分别表示不同的速度变化曲线。
+        1s：延迟时间，过渡效果将在1秒之后开始。
+	    */
+
+        transition: linear all 3s 1s;
+    }
+</style>
+
+<body>
+    <div class="outer">
+        <div class="inner"></div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!-- 
+    进度状态 双标签
+    1.meter 
+        *max 最大值
+        *min 最小值
+        *low 低值 >=min
+        *high 高值 <=max
+        *optimum 最佳值，这个值位于哪个区间，那么就会显示绿色，其他区间属于警告区间，显示黄色
+    注意:
+        类似手机电量，有个区间的说法
+        min-low（通常是危险，显示红色）   low-high（通常是警告，显示黄色）   high-max（通常是正常，显示绿色） 
+
+    2.progress 显示进度，没有过多状态的判断
+        *max 最大值
+        *value 当前值
+ -->
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>状态标签</title>
+ </head>
+ <body>
+    <span>手机电量</span>
+    <meter max="100" min="20" value="25" low="30" high="80" optimum="50"></meter>
+    <br>
+    <progress max="100" value="5"></progress>
+ </body>
+ </html>

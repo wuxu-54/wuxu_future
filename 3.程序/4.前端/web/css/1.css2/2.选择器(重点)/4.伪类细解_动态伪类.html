@@ -1,0 +1,101 @@
+<!-- 
+    伪类选择器表示dom中某个状态（比如：鼠标触摸、所在位置等等的特殊状态）的元素
+    
+    伪类展示有优先级，谁后写展示谁
+
+    *.动态伪类
+      例如：a:hover  处于某种动作状态下
+    *.结构伪类
+    *.否定伪类
+    *.UI伪类
+    *.目标伪类
+    *.语言伪类
+   
+ -->
+
+ <!DOCTYPE html>
+ <html lang="zh-CN">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>伪类细解_动态伪类</title>
+
+
+
+  <style>
+
+      a{
+         width: 50px;
+         height: 50px;
+      }
+
+      /* 选中但没访问过的a元素，a特有伪类 */
+      a:link{
+         color: orange;
+      }
+
+      /* 访问过的a元素 a特有伪类 */
+      a:visited{
+         color: gray;
+      } 
+
+      /* 这里 :hover 就是动态伪类，鼠标悬浮产生的样式 */
+      a:hover{
+         color: green;
+      } 
+
+      /* 激活状态（激活状态：鼠标长按）的a元素 */
+      a:active{
+         color: blue;
+      }
+
+      /* 选中时 */
+      input:focus{
+         color: orange;
+         background-color: aquamarine;
+      }
+    </style>
+
+    <!-- 结构伪类 -->
+    <style>
+
+      a{
+         width: 50px;
+         height: 50px;
+      }
+
+      /* 选中但没访问过的a元素，a特有伪类 */
+      a:link{
+         color: orange;
+      }
+
+      /* 访问过的a元素 a特有伪类 */
+      a:visited{
+         color: gray;
+      } 
+
+      /* 这里 :hover 就是动态伪类，鼠标悬浮产生的样式 */
+      a:hover{
+         color: green;
+      } 
+
+      /* 激活状态（激活状态：鼠标长按）的a元素 */
+      a:active{
+         color: blue;
+      }
+
+      /* 选中时 */
+      input:focus{
+         color: orange;
+         background-color: aquamarine;
+      }
+    </style>
+ </head>
+ <body>
+
+   <a href="https://www.baidu.com" class="linkBaidu">动态伪类</a>
+
+   <input type="text">
+    
+ </body>
+ </html>

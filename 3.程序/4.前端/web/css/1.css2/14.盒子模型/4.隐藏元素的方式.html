@@ -1,0 +1,40 @@
+<!-- 
+    隐藏元素三种方式
+    1.visibility  默认show，设置hidden隐藏，隐藏后元素看不见但占有原来位置（元素一直都在）
+    2.display  none 可以隐藏元素，这里隐藏就是元素完全从节点中删除，没有大小宽高。
+    3.opcity 透明度，设置0可以达到隐藏效果，但其实一直都存在，和visibility一样。
+ -->
+
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>元素隐藏</title>
+
+    <style>
+        div{
+            width: 100px;
+            height: 100px;
+           
+        }
+        .p1{
+            visibility: hidden;
+            background-color: green;
+        }
+        .p2{
+            display: none;
+            background-color: yellow;
+        }
+        .p3{
+            opacity: 0.2;
+            background-color: red;
+        }
+    </style>
+ </head>
+ <body>
+    <div class="p1"></div>
+    <div class="p2"></div>
+    <div class="p3"></div>
+ </body>
+ </html>

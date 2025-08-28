@@ -1,0 +1,29 @@
+<!-- 
+    全局作用域：函数外
+    全局变量：全局作用域下声明的变量，一旦创建一直占用内存，除非置空
+
+    局部作用域：函数内、{}块内
+    局部变量：局部作用域下声明的变量，其内存随函数结束而释放，函数的形参也是局部变量
+
+    局部作用域可以访问全局作用域的变量，但无法访问其他作用域内的变量
+ -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+        let num = 1;//全局变量
+
+        function test(){
+            let name = "11" //局部变量
+        }
+    </script>
+</body>
+</html>

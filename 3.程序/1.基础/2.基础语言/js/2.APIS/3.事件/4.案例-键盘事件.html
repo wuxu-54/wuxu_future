@@ -1,0 +1,48 @@
+
+<!-- 
+    案例：
+    发布评论，有字数限制
+ -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>键盘事件案例</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+   
+</style>
+<body>
+    <!-- <input type="text"> -->
+     <textarea placeholder="发布一条友善评论" cols="30" rows="10" id="tx"></textarea>
+     <span style="opacity: 0;">0/200</span>
+    <script>
+    // let input =  document.querySelector('input')
+    //  input.addEventListener('keydown',function(){
+    //     console.log('键盘按下')
+    //  })
+
+    //  input.addEventListener('keyup',function(){
+    //     console.log('键盘抬起')
+    //  })
+    let span = document.querySelector('span')
+
+    let text = document.querySelector('#tx')
+    text.addEventListener('focus',function(){
+        span.style.opacity = 1
+    })
+    text.addEventListener('blur',function(){
+        span.style.opacity = 0
+    })
+    text.addEventListener('keydown',function(){
+        // 获取文本长度
+        span.innerText=`${text.value.length}/200`
+    })
+    </script>
+</body>
+</html>

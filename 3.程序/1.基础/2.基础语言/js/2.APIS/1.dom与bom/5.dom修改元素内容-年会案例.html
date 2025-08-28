@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>获取元素内容-年会随机抽奖案例</title>
+
+    <style>
+        .wrapper{
+            width: 300;
+            margin: 0 auto;
+            background-color: beige;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <strong>年会抽奖</strong>
+        <h1>一等奖：<span id="one"></span></h1>
+        <h3>二等奖：<span id="two"></span></h3>
+        <h5>三等奖：<span id="three"></span></h5>
+    </div>
+
+    <script>
+        /**
+         * 年会随机抽奖，['a','f','d','h']
+         * 1.随机获取个名字
+         * 2.写入对应奖项span中
+         */
+        
+          //获取元素
+        let spanElements=  document.querySelectorAll('span')
+
+        const arr = ['a','f','d','h']
+       
+        let times = 3
+        while(times-- != 0){
+            //随机获取下边
+            let index =Math.floor(Math.random()*arr.length)
+            //抽取名字
+           let name = arr.splice(index,1)
+            //向元素写内容
+           spanElements[times].innerText = name
+
+           console.log('curr times'+times+',抽到的名字：'+name+',剩余：'+arr)
+        }
+
+    </script>
+</body>
+</html>

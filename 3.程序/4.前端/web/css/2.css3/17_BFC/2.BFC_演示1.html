@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>演示1</title>
+
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            /* display: flex;将outer变为伸缩项目 */
+        }
+        .outer{
+            width: 400px;
+            background-color: gray;
+            /* float: left; 浮动 */
+            /* position: absolute; 绝对定位 */
+            /* position:fixed; 固定定位（位置固定 不随滚动条滚动）*/
+            /* display: inline-block; 行内块元素 */
+            /* display: table;表格 */
+            /* overflow: hidden; */
+           /* column-count:1; 多列容器 */
+           /* display: flow-root; 生成一个块级上下文，所在元素变为块元素*/
+        }
+        .inner{
+            width: 100px;
+            height: 100px;
+            /* margin: 10px 0; */
+            /* float: left; */
+
+        }  
+        .inner1{
+            background-color: aquamarine;
+        }
+        .inner2{
+            background-color: green;
+        }
+        .inner3{
+            background-color: orchid;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="outer">
+        <div class="inner inner1">1</div>
+        <div class="inner inner2">2</div>
+        <div class="inner inner3">3</div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!-- 
+    
+    1.压缩，flex-shrink 压缩比例。 如果父容器空间不够，子项目会按整体主轴宽或高的比例压缩.收缩是有极限的-》子内容的大小
+
+    参考：https://www.bilibili.com/video/BV1p84y1P7Z5?p=193&vd_source=3509947f569e04aa5c144447e22d0ceb
+
+    
+    flex-grow: 默认值为 0。
+                0 意味着弹性项目不会放大以占据更多的空间，除非显式地设置了一个非零值。
+               值 1 表示项目将增长以填满可用空间。如果有多个项目，它们将按照它们的 flex-grow 值成比例增长。
+
+    flex-shrink: 默认值为 1。这意味着当弹性容器的空间不足以容纳所有弹性项目时，弹性项目将缩小以适应容器。
+
+    flex-basis: 默认值为 auto。这意味着弹性项目的初始大小是基于其内容的，或者如果它有一个特定的宽度或高度，则是基于那个宽度或高度。如果没有内容，它将根据其字体和盒子模型计算。
+
+    简单来说：
+    flex-basis:设置弹性项目初始大小
+    flex-grow:放大，按比例放大，直至占据父容器的空间
+    flex-shrink:缩放，按比例缩小。当父容器空间不足时，弹性项目进行缩小。
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>伸缩项目-缩</title>
+</head>
+
+<style>
+    .outer{
+        width: 1000px;
+        height: 800px;
+        border: 1px solid black;
+        box-sizing: border-box;
+
+        display: flex;
+
+        flex-wrap: wrap;
+        flex-direction: row;
+        justify-content: flex-start;
+
+        /*侧轴对齐方式*/
+        align-content: start;
+
+    }
+    .inner{ 
+        width: 200px;
+        height: 200px;
+        border: 1px solid black;
+        box-sizing: border-box;
+        background-color: aquamarine;
+        /* 
+        flex-grow: 1;
+        flex-shrink: 1;
+        flex-basic:100px;
+        */
+
+        /* 简写，拉伸,压缩,基准长度100px。代表：grow 1 shrink 1 basic 100px */
+        /* flex: 1 1 100px; */
+
+
+        /* 简写，拉伸压缩，代表：grow 1 shrink 1 basic 0 */
+        /* flex: 1; */
+
+         /*简写，不拉伸不压缩，代表：grow 0 shrink 0 basic 0*/
+        /* flex:none; */
+
+          /*简写，不拉伸，压缩，代表：grow 0 shrink 1 basic 0*/
+        /* flex:0 auto; */
+    }
+    .inner2{
+        width: 300px;
+    }
+</style>
+
+<body>
+
+    <div class="outer">
+        <div class="inner">1</div>
+        <div class="inner inner2">2</div>
+        <div class="inner">3</div>
+    </div>
+    
+</body>
+</html>

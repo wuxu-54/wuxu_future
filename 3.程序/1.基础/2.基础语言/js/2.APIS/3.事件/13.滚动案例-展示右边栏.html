@@ -1,0 +1,50 @@
+<!-- 
+    页面滚动 大于300px 显示右侧边栏
+ -->
+
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>滚动案例-右侧边栏</title>
+
+    <style>
+        div{
+            height: 300px;
+        }
+        .floatRight{
+            position:fixed;
+            right: 10px;
+            top: 100px;
+            background-color: brown;
+            float: right;
+            visibility: hidden;
+        }
+    </style>
+ </head>
+ <body>
+    <div class="floatRight">这个是浮动</div>
+    <div class="d1" style="background-color: aqua;"></div>
+    <div class="d2" style="background-color: red;"></div>
+    <div class="d3" style="background-color: yellow;"></div>
+    <div class="d4" style="background-color: green;"></div>
+    <div class="d5" style="background-color: rgb(0, 122, 128);"></div>
+    <div class="d6" style="background-color: rgb(0, 13, 128);"></div>
+    <div class="d7" style="background-color: rgb(128, 0, 45);"></div>
+
+
+
+    <script>
+       let floatRight =  document.querySelector('.floatRight')
+        window.addEventListener('scroll',function(){
+           let scrollTop = document.documentElement.scrollTop
+           if(scrollTop>300){
+            floatRight.style.visibility="visible"
+           }else{
+            floatRight.style.visibility="hidden"
+           }
+        })
+    </script>
+ </body>
+ </html>

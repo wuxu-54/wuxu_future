@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>过渡-基本使用</title>
+</head>
+
+<!-- 过渡属性：transition-property 只有 值是[数]的 属性才可以过渡 -->
+<style>
+    .box1{
+        width: 200px;
+        height: 200px;
+        float: left;
+        background-color: beige;
+        /*设置哪个属性过渡*/
+        transition-property:width,height,background-color;
+        /*设置过渡时间*/
+        transition-duration:1s;
+    }
+    .box1:hover{
+        height: 400px;
+        width: 300px; 
+        background-color: green;
+    }
+    .box2{
+        width: 200px;
+        height: 200px;
+        margin-right: 100px;
+        float: right;
+        background-color: red;
+        /*让可以过渡的属性过渡*/
+        transition-property:all;
+        /*设置过渡时间*/
+        transition-duration:1s;
+        opacity: 0.5;
+    }
+    .box2:hover{
+        height: 400px;
+        width: 300px; 
+        background-color: green;
+        box-shadow: 0 0 20px black;
+        transform: rotateZ(-20deg);
+        opacity: 1;
+    }
+</style>
+
+<body>
+    <div class="box1"></div>
+
+    <div class="box2"></div>
+</body>
+</html>

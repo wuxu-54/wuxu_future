@@ -1,0 +1,70 @@
+<!-- 
+    css3新增盒子属性：
+    1.box-sizing 设置盒模型的两种类型
+        *content-box  width和height 设置的是盒子内容区的大小 （默认）
+        *border-box  width和height 设置的是盒子总大小，包括边距
+
+    2.resize  - 控制是否允许用户调节元素大小。
+        *none 不允许控制
+        *both 可控制宽高
+        *horizontal 可控制宽
+        *vertical 可控制高
+
+    3.box-shadow 盒子阴影
+    语法：box-shadow:h-shadow v-shadow blur spread color inset;
+                   [水平偏移] [垂直偏移] [模糊半径] [扩展半径] [颜色] [投影方式];
+        *none 没有阴影
+        *h-shadow 水平偏移位置阴影，必写，可以为负值
+        *v-shadow 垂直偏移位置阴影，必写，可以为负值
+        *blur 模糊距离，越大模糊半径越大，模糊效果越明显
+        *spread 阴影距离边框的值，即阴影宽，设定模糊效果时可以跟blur属性配合使用
+        *color 阴影颜色
+        *inset 外部阴影改为内部阴影
+
+    注意：同一个元素box-shadow可以一次设置多个，用逗号分隔：
+        box-shadow:h-shadow v-shadow blur spread color inset,
+                   h-shadow v-shadow blur spread color inset;
+                   
+    4.opacity 不透明度
+    设置整个元素的透明度，0-1 之间的小数，0完全透明，1完全不透明
+
+    
+ -->
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新增盒子属性</title>
+    <style>
+       
+        .box{
+            width: 200px;
+            height: 200px;
+            background-color: aquamarine;
+            overflow: hidden;
+        }
+        .box1{
+
+            width: 190px;
+            height: 190px;
+            background-color: orange;
+            border: 5px solid red;
+            overflow: hidden;
+            /* 默认content-box 宽高是内容的大小，所以border另算，加一起会覆盖box */
+            box-sizing: content-box;
+            /* 允许用户调节元素大小，右下角出现角标提示 */
+            resize: both;
+            /* 阴影 box-shadow:h-shadow v-shadow blur spread color inset*/
+            box-shadow: 0 0 10px 20px  blue inset;
+
+            opacity:0.5;
+        }
+    </style>
+ </head>
+ <body>
+    <div class="box">
+        <div class="box1"></div>
+    </div>
+ </body>
+ </html>

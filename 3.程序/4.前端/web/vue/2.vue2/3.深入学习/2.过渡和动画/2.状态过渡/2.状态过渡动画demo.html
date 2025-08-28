@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.4/gsap.min.js"></script>
+        <title>状态过渡动画demo</title>
+    </head>
+
+   
+    <body>
+        <!-- 设定ui -->
+        <div id="input-content">
+            <!--
+                 step 是个数字输入步长
+                 type 输入类型为Number
+                 v-model.number 数据类型强制转换为Number
+             -->
+            <input v-model.number="inputNum" type="number" step="20">
+            <p>{{finalNum}}</p>
+        </div>
+    <script>
+        new Vue({
+            el:'#input-content',
+            data:{
+                inputNum:0,
+                listenerNum:0
+                
+
+                },
+            computed:{
+                finalNum : function(){
+                    //监听数值变化，将小数去掉
+                    //toFixed() 方法将数字转换为字符串。将字符串四舍五入为指定的小数位数，0就是无小数。
+                    return this.listenerNum.toFixed(0);
+                }
+            },
+    
+            watch:{
+                inputNum:function(newValue){
+                    //gsap 设定数值变化
+                    gsap.to(this.$data, { duration: 0.5, listenerNum: newValue });
+                }
+            }
+        })
+
+    </script>
+    </body>
+   
+</html>

@@ -1,0 +1,6 @@
+.vscode
+.build
+.local
+./python/随机姓名/out.txt
+*.DS_Store
+.DS_Store

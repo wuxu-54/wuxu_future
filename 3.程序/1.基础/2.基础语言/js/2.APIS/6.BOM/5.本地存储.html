@@ -1,0 +1,46 @@
+<!-- 
+    本地存储两类
+    sessionStorage、localStorage
+
+    * localStorage
+    1.将数据永久存储在本地（设备中）除非收到删除，页面关闭也会存在
+    2.可以多个窗口共享（同一浏览器）
+    3.以键值对方式存储
+
+    * sessionStroage
+    1.生命周期是关闭窗口
+    2.在同一窗口下数据共享
+    3.以键值对方式存储
+    4.用法与localStorage相同
+
+    注意~
+    1.数据都会转换为字符串类型存储。
+    2.本地存储最大有约5M空间
+ -->
+
+ <!DOCTYPE html>
+ <html lang="zh-CN">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>本地存储</title>
+ </head>
+ <body>
+    <script>
+        localStorage.setItem("a","1")
+        localStorage.getItem("a")
+        localStorage.removeItem("a")
+        localStorage.length
+
+        const person = {
+            age:12,
+            name:"123",
+        }
+
+        // 复杂数据类型不能直接存储，识别不了，得转换为json字符串
+        // 字符串转换
+        localStorage.setItem('obj',JSON.stringify(person))
+        const obj = JSON.parse(localStorage.getItem('obj')) 
+    </script>
+ </body>
+ </html>

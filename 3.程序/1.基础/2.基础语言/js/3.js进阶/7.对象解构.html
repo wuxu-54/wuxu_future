@@ -1,0 +1,40 @@
+<!-- 
+    对象解构
+    将对象属性批量赋值给变量的简便语法
+
+    定义 ： 
+        const arr = {name:1,sex:2,age:3}
+        const {name,sex,age:c} = arr  //对象属性名可以使用新名 定义： 旧名:新名
+        console.log(name)//直接使用
+ -->
+ 
+ <!DOCTYPE html>
+ <html lang="zh-CN">
+ 
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>对象解构</title>
+ </head>
+ 
+ <body>
+     <script>
+        const arr = {namet:1,sex:2,age:3}
+        const {namet,sex,age:c} = arr  //对象属性名可以使用新名c:age
+        console.log(c)//直接使用
+
+        //解构可以多级、嵌套使用，如 数组包含对象，对象包含对象 的解构
+        const n = [{name:1,age:2},{name1:1,age1:{a1:2}}] 
+        const [{name,age},{name1,age1:{a1}}] = n//这里age1:{a1} 不是重命名，而是 age1对象 继续解构
+        console.log(a1)
+
+        //解构体做形参
+        function fun({namet:name ,sex ,age}){
+            console.log(name)//直接使用
+        }
+
+        fun(arr)
+     </script>
+ </body>
+ 
+ </html>

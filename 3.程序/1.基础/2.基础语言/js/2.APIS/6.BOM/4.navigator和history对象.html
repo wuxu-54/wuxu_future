@@ -1,0 +1,27 @@
+<!-- 
+    * navigator对象，记录了浏览器自身的相关信息，比如检测当前设备的类型、判断浏览器内核类型
+
+    * history对象，记录浏览器打开的网页页面地址
+ -->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>navigator</title>
+</head>
+<body>
+    <script>
+        var isAndroid = navigator.userAgent.indexOf('Android') > -1 || navigator.userAgent.indexOf('Adr') > -1; // 安卓（android）为true
+        var isiOS = !!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) //苹果ios为true
+
+
+        function test(){
+            history.back//后退，上一个
+            history.forward//前进，后一个
+            history.go(1);//1 前进1个页面，-1 后退1个页面
+        }
+    </script>
+</body>
+</html>

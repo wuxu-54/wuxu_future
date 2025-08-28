@@ -1,0 +1,37 @@
+<!-- 
+    目标伪类：选中锚点指向的元素
+    :target{} ，当超链接a 锚点指向一个目标元素时，此元素被选中产生对应css的样式变化
+ -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>伪类细解_目标伪类</title>
+
+    <style>
+        div{
+            background-color: gray;
+            height: 300px;
+            margin-bottom: 10px;
+        }
+        div:target{
+            background-color: green;
+        }
+    </style>
+</head>
+<body>
+    <a href="#A">A</a>
+    <a href="#B">B</a>
+    <a href="#C">C</a>
+    <a href="#D">D</a>
+    <a href="#E">E</a>
+
+    <div id="A">1</div>
+    <div id="B">2</div>
+    <div id="C">3</div>
+    <div id="D">4</div>
+    <div id="E">5</div>
+    
+</body>
+</html>

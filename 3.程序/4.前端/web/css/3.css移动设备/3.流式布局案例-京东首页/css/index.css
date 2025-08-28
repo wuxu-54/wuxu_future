@@ -1,0 +1,78 @@
+body{
+  width: 100%;   
+  max-width: 640px;
+  min-width: 320px;
+  margin: 0 auto;
+  font-family: -apple-system,Helvetica,sans-serif;
+  color: white;
+}
+
+.app{
+    height: 45px;
+}
+.app ul{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    clear: both;
+}
+.app ul li{
+    float: left;
+    height: 45px;
+    background-color: #333333;
+    text-align: center;
+    line-height: 45px;
+}
+
+.app ul li:nth-child(1){
+    width: 8%;
+}
+
+.app ul li:nth-child(1) img{
+    width: 10px;
+    vertical-align: middle;
+}
+.app ul li:nth-child(2){
+    width: 10%;
+}
+.app ul li:nth-child(2) img{
+    width: 100%;
+    vertical-align: middle;
+}
+.app ul li:nth-child(3){
+    width: 57%;
+}
+.app ul li:nth-child(4){
+    width: 25%;
+    background-color: red;
+}
+
+.search {
+    position: relative;
+    box-sizing: content-box;
+    font-size: 0;
+}
+.search>.search_btn{
+    top:5px;
+    left: 5px;
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background-color: aquamarine;
+}
+.search>.search_input{
+    height: 50px;
+    background-color: blue;
+    margin: 8px 55px 0px 55px;
+    border-radius: 25px;
+    position: relative;
+}
+
+.search>.search_login{
+    right:5px;
+    top: 5px;
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background-color: red;
+}

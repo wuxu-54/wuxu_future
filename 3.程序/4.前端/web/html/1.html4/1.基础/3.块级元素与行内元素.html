@@ -1,0 +1,40 @@
+
+<!-- 
+    块级元素 单独占一行
+
+    行内元素 不单独占一行 ，也就是宽度是自身宽
+
+    使用规则
+    1. 行内元素不可以写块级元素，块级元素子内容可以写任何元素
+
+    特殊规则
+    1. h1-h6不能互相嵌套
+    2. p标签 段落,是块元素。不能写块元素（p是包裹文本，块元素直接占一行，不符合设计要求）
+    3. a标签是行内元素，但可以嵌套出自身外的任何其他类型元素，包括块级元素。
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>块级元素与行内元素</title>
+</head>
+<body>
+    <!-- 块级元素 -->
+    <marquee>123</marquee>
+    <marquee>123</marquee>
+    <h1>1</h1>
+    <h1>1</h1>
+    <p>2</p>
+    <p>2</p>
+    <div>3</div>
+    <div>3</div>
+
+    <!-- 行内元素 -->
+    <input type="text">
+    <input type="text">
+    <span>11</span>
+    <span>11</span>
+</body>
+</html>

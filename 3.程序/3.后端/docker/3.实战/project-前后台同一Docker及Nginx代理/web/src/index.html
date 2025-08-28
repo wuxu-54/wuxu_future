@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dockerized App</title>
+</head>
+<body>
+  <h1>Accessing Node.js API</h1>
+  <button onclick="fetchData()">Fetch Data</button>
+  <div id="result"></div>
+
+  <script>
+    async function fetchData() {
+      try {
+        // 访问 Node.js 服务接口（注意路径需与后端匹配）
+        const response = await fetch('/api/data'); // Docker 内通过服务名访问
+        const data = await response.json();
+        document.getElementById('result').textContent = data.message;
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+  </script>
+</body>
+</html>

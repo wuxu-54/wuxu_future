@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>触摸事件</title>
+</head>
+
+<body>
+    <div style="background-color: aquamarine;width: 100px;
+    height: 100px;"></div>
+    <!-- 带触屏的设备触发 -->
+    <script>
+        const div = document.querySelector('div')
+        div.addEventListener('touchstart',function(){
+            console.log('触摸了')
+        })
+        div.addEventListener('touchend',function(){
+            console.log('离开了')
+        })
+        div.addEventListener('touchmove',function(){
+            console.log('触摸滑动')
+        })
+    </script>
+
+</body>
+</html>

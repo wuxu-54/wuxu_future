@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>背景相关属性</title>
+    <style>
+        div{
+            width: 400px;
+            height: 400px;
+
+            /* 背景颜色 */
+            background-color: yellow;
+            /* 背景图片 */
+            background-image: url("../7.常用文本属性/img.png");
+            /* 背景图片重复方式 */
+            background-repeat: no-repeat;
+            /* 背景图片位置 写法1：关键词*/
+            background-position:  right top;
+
+            /* 背景图片位置 写法2：像素，这个有顺序了，先水平再垂直*/
+            background-position:  20px 100px; 
+
+            /* 背景图片设置 
+                100% :  只有一个100%时，默认背景图片x轴拉伸占满容器x轴，y轴默认叠铺方式
+                cover:  会用图片原来的尺寸放大所缩小到占满容器，cover可能会使背景图片一部分被遮住显示不全
+                contain:  与cover相反，会将图片等比例完全展示出来，因此可能会使背景图片重复排布
+                auto:  默认图片大小
+            */
+            background-size: 20px 100px;
+
+            /* 复合属性，综上用法 */
+            /* background: yellow  url("../7.常用文本属性/img.png") no-repeat 200px 100px; */
+
+
+            /* 
+                url(../assets/images/logo.png): 这部分指定了要使用的背景图像的位置。它指向了相对路径../assets/images/logo.png的图像文件。
+
+                no-repeat: 这个关键词表示背景图像不应当被重复。默认情况下，背景图像会水平和垂直地平铺以覆盖整个元素区域，但这里指定了不重复。
+
+                center: 这个关键词将背景图像在元素中水平居中对齐。
+
+                18px: 这是背景图像在元素中垂直方向的位置。它将图像从元素的顶部向下偏移18像素。
+
+                / contain: 这是背景大小的设置。contain关键字表示背景图像将被缩放至最大尺寸，同时保持其宽高比，且完全可见。这意味着图像可能不会填满整个元素，但会完整显示。
+            */
+            background: url(../assets/images/logo.png) no-repeat center 18px / contain;
+
+
+        }
+    </style>
+</head>
+<body>
+    <div>haa</div>
+</body>
+</html>

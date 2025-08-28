@@ -1,0 +1,31 @@
+<!-- 
+    语言伪类：根据定义的语言类型，进行选择,元素的属性是 lang="语言类型"
+    :lang(语言类型){}  
+
+    注意：如果整个html 指定了语言类型，那么没有特殊指定的元素，默认使用html指定的语言类型
+ -->
+ <!DOCTYPE html>
+ <html lang="zh-CN">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>语言伪类</title>
+
+<style>
+    div:lang(en){
+        background-color: aquamarine;
+    }
+    div:lang(zh-CN){
+        background-color: green;
+    }
+</style>
+ </head>
+ <body>
+
+    <div lang="en">这是英文语言</div>
+
+
+    <div>这是中文语言</div>
+
+ </body>
+ </html>

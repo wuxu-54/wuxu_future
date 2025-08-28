@@ -1,0 +1,170 @@
+app_main (当前进程是app_process)
+    main() 入口 linux调用
+      onboot boot preinit init 4大流程
+init.rc 配置文件，通过配置文件执行后续
+Runtime fork出zygote进程，进入Java
+ZygoteInit
+    forkSystemServer
+        handleSystemServerProcess
+            ZygoteInit.zygoteInit  
+                最终调用调SystemServer.main函数
+    runSelectLoop()  ？待理解，琢磨透这块是咋回事
+
+
+
+## Launcher程序启动应用
+
+>process：Launcher
+startActivity()
+
+>process：SystemServer
+ATMS:startActivityAsUser()
+ActivityStartController.obtainStarter(); ，从ActivityStarter.DefaultFactory()，创建ActivityStart对象 
+
+补充知识：
+1.创建ActivityStarter传入的数据都是从 ATMS中取的。比如 ActivityTaskSupervisor supervisor 形参
+2.ActivityStartInterceptor：顾名思义，拦截器，在真正启动Activity时会回调其内部的callback，通过此回调函数进行拦截
+
+ActivityStarter:execute() 真正的启动
+    -mRequest.resolveActivity(ActivityTaskSupervisor)  解析intent、获取userInfo，这里会判断是否debug运行，进行配置
+
+补充知识：
+1.request.caller ：IApplicationThread（Launcher进程的ApplicationThread）
+
+ActivityStarter:executeRequest()
+```java
+    //这一步判断的是 ：IApplicationThread，如果为空表示启动失败。 
+    if (caller != null) {
+            callerApp = mService.getProcessController(caller);
+            if (callerApp != null) {
+                callingPid = callerApp.getPid();
+                callingUid = callerApp.mInfo.uid;
+            } else {
+                Slog.w(TAG, "Unable to find app for caller " + caller + " (pid=" + callingPid
+                        + ") when starting: " + intent.toString());
+                err = START_PERMISSION_DENIED;
+            }
+        }
+
+```
+ final ActivityRecord r = new ActivityRecord.Builder(mService)
+                .setCaller(callerApp)
+                .setLaunchedFromPid(callingPid)
+                .setLaunchedFromUid(callingUid)
+                .setLaunchedFromPackage(callingPackage)
+                .setLaunchedFromFeature(callingFeatureId)
+                .setIntent(intent)
+                .setResolvedType(resolvedType)
+                .setActivityInfo(aInfo)
+                .setConfiguration(mService.getGlobalConfiguration())
+                .setResultTo(resultRecord)
+                .setResultWho(resultWho)
+                .setRequestCode(requestCode)
+                .setComponentSpecified(request.componentSpecified)
+                .setRootVoiceInteraction(voiceSession != null)
+                .setActivityOptions(checkedOptions)
+                .setSourceRecord(sourceRecord)
+                .build();
+
+ActivityStarter:startActivityUnchecked();
+
+ActivityStarter:startActivityInner();
+    mTargetRootTask.startActivityLocked()
+
+        //创建task
+        ActivityStarter:getOrCreateRootTask()
+        RootWindowContainer:getOrCreateRootTask()
+        TaskDisplayArea:getOrCreateRootTask()
+
+        mRootWindowContainer.resumeFocusedTasksTopActivities()
+    
+
+补充知识：
+
+1.mTargetRootTask，通常用于以下几种情况：
+    启动新Activity时的任务管理：当一个新的Activity需要启动时，AMS会根据Intent的属性、启动模式以及其他因素来决定这个Activity应该属于哪个任务栈。mTargetRootTask会指向这个被选定的任务栈的根任务。
+    任务切换：在多任务环境中，用户可能需要在不同的任务之间进行切换。mTargetRootTask会帮助AMS跟踪当前用户应该看到的是哪个任务栈。
+    任务的创建和复用：在某些情况下，系统可能需要为即将启动的Activity创建一个新的任务栈，或者复用一个已经存在的任务栈。mTargetRootTask在这个过程中会指向目标任务栈，以便于进行相应的操作。
+    任务的回收和销毁：当一个任务不再需要时，AMS会负责回收这个任务。mTargetRootTask可以协助AMS确定哪个任务应该被回收。
+2.ActivityStack 在 Android 12 中，ActivityStack 类已经不再使用，相关的功能和概念已经被整合到了 Task 类中。
+3.Task原来是个独立的，Android12以后做了明确的定义。Task父类是TaskFragment,承接了ActivityStack的功能。
+4.TaskFragment继承自WindowContainer<WindowContainer> 
+
+
+
+Task.resumeTopActivityUncheckedLocked()
+Task.resumeTopActivityInnerLocked()
+     topFragment.resumeTopActivity(prev, options, deferPause);
+
+TaskFragment:resumeTopActivity()
+    //pausing跟传入方法的参数有关，起点是ActivityStater的mTransientLaunch( mTransientLaunch 由 mOptions.getTransientLaunch() 赋值)
+    //这里是前一个Activity pause成功了，新Activity走到这里，并进行Application的判断
+     if (pausing) {
+            //如果已经关联了process
+            if (next.attachedToProcess()) {
+
+                //设置process信息
+                next.app.updateProcessInfo(false /* updateServiceConnectionActivities */,
+                        true /* activityChange */, false /* updateOomAdj */,
+                        false /* addPendingTopUid */);
+            } else if (!next.isProcessRunning()) {
+                final boolean isTop = this == taskDisplayArea.getFocusedRootTask();
+                //提前异步启动process； mAtmService是 ActivityTaskManagerService
+                mAtmService.startProcessAsync(next, false /* knownToBeDead */, isTop,
+                        isTop ? HostingRecord.HOSTING_TYPE_NEXT_TOP_ACTIVITY
+                                : HostingRecord.HOSTING_TYPE_NEXT_ACTIVITY);
+            }
+            return true;
+    }
+
+    if (next.attachedToProcess()){//表示这个Activity已经有所在进程了
+
+    }else{
+        //启动
+        mTaskSupervisor.startSpecificActivity(next, true, true);
+    }
+
+补充知识：
+    1.TaskFragment:resumeTopActivity 中涉及了Activity的pause处理
+    2.目标Activity从stopActivity列表中移除，假如存在时
+    3.mAtmService.startProcessAsync 最终调用到ActivityManagerInternal(抽象类型，真正的是AMS)的startProcess方法
+
+
+分析流程：mAtmService.startProcessAsync
+
+ActivityManagerService.startProcess()
+    startProcessLocked()
+        mProcessList.startProcessLocked()
+
+ProcessList.startProcessLocked() // 真正的启动
+
+补充知识：
+1.ProcessList 是进程管理类
+
+分析流程： mTaskSupervisor.startSpecificActivity()
+     if (wpc != null && wpc.hasThread()) {
+        realStartActivityLocked()
+        return;
+     }
+
+     mService.startProcessAsync()//哈哈，最终还是要走这里的
+ 
+
+ActivityManagerInternal抽象类
+ActivityManagerService.LocalService extends ActivityManagerInternal
+
+ActivityManagerService.LocalService:startProcessLocked()
+
+
+ProcessList.startProcessLocked()
+ProcessList.handleProcessStart()
+ProcessList.startProcess()
+
+Process.start()
+    if(hostingRecord.usesWebviewZygote()){
+        startWebView()
+    }else if(hostingRecord.usesAppZygote()){
+        new AppZygote().getProcess().start()
+    }else{
+        new ZygoteProcess().start()
+    }

@@ -1,0 +1,31 @@
+<!-- 
+    列表标签 双标签
+    1.datalist - 搜索框的关键字提示
+    2.details - 展示问题和答案，或对专有名词进行解释
+    3.summary - 写在details内，用于指定问题或专有名词
+ -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>列表标签</title>
+</head>
+<body>
+   <!-- 绑定下面 datalist -->
+    <input type="text" list="mydata">
+     
+    <datalist id="mydata">
+        <option>123</option>
+        <option>123</option>
+        <option>123</option>
+    </datalist>
+
+    <details>
+        <summary>这是个问题？</summary>
+        <p>是的</p>
+        <p>是的</p>
+        <p>是的</p>
+    </details>
+</body>
+</html>

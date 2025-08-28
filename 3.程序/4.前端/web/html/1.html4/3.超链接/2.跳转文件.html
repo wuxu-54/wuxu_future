@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>超链接-打开文件</title>
+</head>
+
+<body>
+    <!-- 浏览器可以打开文件 -->
+    <a href="./image.png">超链接打开图片</a>
+
+    <!-- 浏览器打不开的文件，如zip，会引起下载 -->
+    <a href="./zipT.zip">超链接zip</a>
+
+    <!-- 浏览器强制触发下载，使用download属性值可空 -->
+    <a href="./image.png" download="图片下载">图片强制下载</a>
+    <a href="./image.png" download>图片【默认名字】强制下载</a>
+
+
+    <a href="./image2.png" id="img4"></a>
+</body>
+
+</html>

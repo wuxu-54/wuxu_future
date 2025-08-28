@@ -1,0 +1,47 @@
+<!-- 
+    overflow
+    1.visible 超出内容部分显示，默认值
+    2.hidden 超出内容部分隐藏
+    3.scroll 一直显示滚动条
+    4.auto  超出内容时显示滚动条
+    5.inherit	规定应该从父元素继承 overflow 属性的值。
+
+    overflow-x 水平方向，同overflow，当前是实验性不建议使用
+    overflow-y 竖直方向，同overflow，当前是实验性不建议使用
+
+    注意：overflow-x,overflow-y  visible值必须同时设置才生效，其他属性值可以随意搭配
+ -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>内容溢出</title>
+
+    <style>
+        .p{
+            width: 200px;
+            height: 200px;
+            background-color: yellow;
+            /* overflow: scroll; */
+            overflow-y: scroll;
+            overflow-x: auto;
+        }
+        .c{
+            width: 400px;
+            height: 200px;
+            background-color: green;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="p">
+        书香家庭
+        <div  class="c">家庭是人类社会中最基本的组成单元，而书香家庭则是这个单元中最温馨、最充满文化气息的一种。所谓书香家庭，是指一个家庭中有着浓厚的文化氛围，成员们都有着良好的阅读习惯，且善于通过阅读来提升自身素质，同时也能在阅读中享受生活，体验人生的美好。</div>
+        在书香家庭中，书籍成为了家庭成员之间沟通交流的桥梁。家长会引导孩子们热爱阅读，培养他们的阅读兴趣和习惯。而家长们自身也是热爱阅读的人，他们会用自己的阅读行为来影响孩子们。在书香家庭中，孩子们不仅能够得到丰富的知识，还能够体验到阅读的乐趣，从而激发他们的求知欲和探索精神。
+    </div>
+</body>
+
+</html>

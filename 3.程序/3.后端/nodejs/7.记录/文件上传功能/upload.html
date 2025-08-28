@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Excel文件上传</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .drop-area {
+      border: 2px dashed #ccc;
+      border-radius: 8px;
+      padding: 30px;
+      text-align: center;
+      margin-bottom: 20px;
+      cursor: pointer;
+    }
+    
+    .drop-area.highlight {
+      border-color: #007BFF;
+      background-color: #f0f7ff;
+    }
+    
+    .file-list {
+      margin-top: 20px;
+    }
+    
+    .file-item {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .file-name {
+      flex: 1;
+      margin-left: 10px;
+    }
+    
+    .file-size {
+      color: #666;
+      font-size: 0.9em;
+      margin-right: 10px;
+    }
+    
+    .progress-bar {
+      height: 10px;
+      background-color: #ddd;
+      border-radius: 5px;
+      overflow: hidden;
+      margin-top: 5px;
+    }
+    
+    .progress {
+      height: 100%;
+      background-color: #007BFF;
+      width: 0%;
+      transition: width 0.3s;
+    }
+    
+    button {
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1em;
+    }
+    
+    button:hover {
+      background-color: #0056b3;
+    }
+    
+    .error {
+      color: red;
+      margin-top: 10px;
+    }
+    
+    .success {
+      color: green;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h3>Excel文件上传(限一个)</h3>
+  
+  <div class="drop-area" id="dropArea">
+    <p>拖放Excel文件到这里，或点击选择文件</p>
+    <input type="file" id="fileInput" multiple accept=".xlsx,.xls" style="display: none;">
+    <button id="browseBtn">选择Excel文件</button>
+  </div>
+  
+  <div class="error" id="errorMessage"></div>
+  <div class="success" id="successMessage"></div>
+  
+  <div class="file-list" id="fileList"></div>
+  
+  <button id="uploadBtn" disabled>上传文件</button>
+  
+  <script>
+    const dropArea = document.getElementById('dropArea');
+    const fileInput = document.getElementById('fileInput');
+    const browseBtn = document.getElementById('browseBtn');
+    const uploadBtn = document.getElementById('uploadBtn');
+    const fileList = document.getElementById('fileList');
+    const errorMessage = document.getElementById('errorMessage');
+    const successMessage = document.getElementById('successMessage');
+    
+    let selectedFiles = [];
+    
+    // 处理拖放事件
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      dropArea.addEventListener(eventName, preventDefaults, false);
+    });
+    
+    function preventDefaults(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dropArea.addEventListener(eventName, highlight, false);
+    });
+    
+    ['dragleave', 'drop'].forEach(eventName => {
+      dropArea.addEventListener(eventName, unhighlight, false);
+    });
+    
+    function highlight() {
+      dropArea.classList.add('highlight');
+    }
+    
+    function unhighlight() {
+      dropArea.classList.remove('highlight');
+    }
+    
+    // 处理拖放文件
+    dropArea.addEventListener('drop', handleDrop, false);
+    
+    function handleDrop(e) {
+      const dt = e.dataTransfer;
+      const files = Array.from(dt.files);
+      
+      handleFiles(files);
+    }
+    
+    // 处理文件选择
+    browseBtn.addEventListener('click', () => {
+      fileInput.click();
+    });
+    
+    fileInput.addEventListener('change', () => {
+      const files = Array.from(fileInput.files);
+      handleFiles(files);
+    });
+    
+    // 处理选中的文件
+    function handleFiles(files) {
+      if(selectedFiles.length>0){
+         errorMessage.textContent = '只能上传一个Excel文件，请删除已选文件后再上传';
+        setTimeout(() => {
+          errorMessage.textContent = '';
+        }, 5000);
+        return;
+      }
+      // 过滤出Excel文件
+      const excelFiles = files.filter(file => {
+        const ext = file.name.split('.').pop().toLowerCase();
+        return ext === 'xlsx' || ext === 'xls';
+      });
+      
+      // 检查是否有非Excel文件
+      const nonExcelFiles = files.filter(file => {
+        const ext = file.name.split('.').pop().toLowerCase();
+        return ext !== 'xlsx' && ext !== 'xls';
+      });
+      
+      if (nonExcelFiles.length > 0) {
+        errorMessage.textContent = `忽略了 ${nonExcelFiles.length} 个非Excel文件，请只上传.xlsx或.xls格式的文件`;
+        setTimeout(() => {
+          errorMessage.textContent = '';
+        }, 5000);
+      }
+      
+      if (excelFiles.length > 0) {
+        selectedFiles = [...selectedFiles, ...excelFiles];
+        renderFileList();
+        uploadBtn.disabled = false;
+      }
+    }
+    
+    // 渲染文件列表
+    function renderFileList() {
+      fileList.innerHTML = '';
+      
+      selectedFiles.forEach((file, index) => {
+        const fileSize = (file.size / (1024 * 1024)).toFixed(2);
+        const fileItem = document.createElement('div');
+        fileItem.className = 'file-item';
+        
+        fileItem.innerHTML = `
+          <i class="fas fa-file-excel"></i>
+          <div class="file-name">
+            ${file.name}
+            <div class="progress-bar">
+              <div class="progress" id="progress-${index}"></div>
+            </div>
+          </div>
+          <div class="file-size">${fileSize} MB</div>
+          <button class="remove-btn" data-index="${index}">删除</button>
+        `;
+        
+        fileList.appendChild(fileItem);
+      });
+      
+      // 添加删除按钮事件
+      document.querySelectorAll('.remove-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const index = parseInt(e.target.dataset.index);
+          selectedFiles.splice(index, 1);
+          renderFileList();
+          
+          if (selectedFiles.length === 0) {
+            uploadBtn.disabled = true;
+          }
+        });
+      });
+    }
+    
+    // 上传文件
+    uploadBtn.addEventListener('click', uploadFiles);
+    
+    function uploadFiles() {
+      if (selectedFiles.length === 0) return;
+      
+      const formData = new FormData();
+      
+      selectedFiles.forEach(file => {
+        console.log(`准备上传文件: ${file.name}`);
+        formData.append('files', file);
+      });
+     
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', 'http://localhost:3000/upload', true);
+
+      // 监听上传进度
+      xhr.upload.addEventListener('progress', (e) => {
+        if (e.lengthComputable) {
+          const percentComplete = (e.loaded / e.total) * 100;
+          // 这里简化处理，假设所有文件平均分配进度
+          selectedFiles.forEach((_, index) => {
+            document.getElementById(`progress-${index}`).style.width = `${percentComplete}%`;
+          });
+        }
+      });
+      
+      // 上传完成
+      xhr.onload = () => {
+        if (xhr.status === 200) {
+          successMessage.textContent = '文件上传成功';
+          selectedFiles = [];
+          renderFileList();
+          uploadBtn.disabled = true;
+          
+          setTimeout(() => {
+            successMessage.textContent = '';
+          }, 5000);
+        } else {
+          try {
+            const response = JSON.parse(xhr.responseText);
+            errorMessage.textContent = response.error || '上传失败';
+          } catch (e) {
+            errorMessage.textContent = '上传失败，服务器返回错误';
+          }
+          
+          setTimeout(() => {
+            errorMessage.textContent = '';
+          }, 5000);
+        }
+      };
+      
+      // 上传错误
+      xhr.onerror = () => {
+        errorMessage.textContent = '网络错误，请重试';
+        
+        setTimeout(() => {
+          errorMessage.textContent = '';
+        }, 5000);
+      };
+      
+      // 开始上传
+      xhr.send(formData);
+    }
+  </script>
+</body>
+</html>    

@@ -1,0 +1,48 @@
+<!-- 
+    监听页面、元素滚动的事件
+
+    scroll，元素/window 可以监听此事件，当触发时执行相应逻辑
+    语法：window.addEventListener('scroll',fun(){})
+
+
+    * 滚动位置（可读写）
+    元素dom.scrollTop 子元素上沿距父元素上沿滚动的距离
+    元素dom.scrollLeft 子元素左沿距父元素距左沿滚动的距离
+
+    页面的滚动位置怎么获取?
+    本质也还是元素dom，只不过页面是最外层元素：document.documentElement
+
+    可写：设置数组后，会滚动到对应位置。
+ -->
+
+ <!DOCTYPE html>
+ <html lang="zh-CN">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>滚动事件</title>
+
+
+ </head>
+ <body>
+    <div style="height: 1000px;width: 3000px;background-color: yellow;"></div>
+    <div class="p" style="overflow: scroll;height: 100px;width: 300px;background-color: gray;">
+        <div class="c" style="height: 500px;width: 500px;"></div>
+    </div>
+
+    <script>
+        const divC = document.querySelector('.p')
+        divC.addEventListener('scroll',function(){
+            // console.log("滚动了")
+            // console.log(divC.scrollTop)//距上沿，滚动的距离
+            // console.log(divC.scrollLeft)//距左沿，滚动的距离
+            console.log(document.documentElement.scrollLeft)//页面滚动的距离
+        })
+
+        //页面滚动监听
+        window.addEventListener('scroll',function(){
+            console.log(document.documentElement.scrollLeft)//页面滚动的距离
+        })
+    </script>
+ </body>
+ </html>

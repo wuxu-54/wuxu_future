@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2d-多重变换</title>
+</head>
+   <style>
+    .outer{
+        width: 200px;
+        height: 200px;
+        border: 1px solid black;
+        margin: 100px auto;
+        position: relative;
+    }
+    .inner{
+        width: 200px;
+        height: 200px;
+        background-color: aqua;
+        /*下面两种呈现效果不同，因为缩放是以自身中心点为基准，缩放后，原点坐标不变，后进行平移，仍按原点坐标偏移*/
+        /* transform: translate(100px,100px) scale(0.5); */
+        /* transform: scale(0.5) translate(100px,100px) ; */
+
+         /*下面两种呈现效果不同，旋转前会确定 旋转中心点，以后就不会变了。旋转会修改原点坐标轴，导致平移与预期不同*/
+        transform:rotateZ(20deg)   translate(100px ,100px);
+        transform: translate(100px ,100px) rotateZ(20deg)  ;
+    }
+
+   </style>
+<body>
+    <div class="outer">
+        <div class="inner"></div>
+    </div>
+</body>
+</html>

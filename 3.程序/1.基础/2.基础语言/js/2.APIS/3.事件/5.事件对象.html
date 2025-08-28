@@ -1,0 +1,27 @@
+
+<!-- 
+    事件对象：事件可以是个对象，addEventListener中函数第一个参数默认就是此事件的对象
+
+    事件对象是对某个事件的描述，比如鼠标点击，事件对象记录点击的位置等信息
+
+    常用数据：
+    type、offsetX/offsetY(距离当前元素左上角x，y)、clientX/clientY（距离窗口左上角x，y）、key(判断事件的标记)
+ -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>事件对象</title>
+</head>
+<body>
+    <button>点击</button>
+
+    <script>
+        let btn=document.querySelector('button')
+        btn.addEventListener('click',function(e){//这里e 形参，就是点击事件的对象
+            console.log(e)
+        })
+    </script>
+</body>
+</html>

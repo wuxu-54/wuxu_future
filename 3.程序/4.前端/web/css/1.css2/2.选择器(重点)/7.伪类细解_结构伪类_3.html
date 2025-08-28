@@ -1,0 +1,64 @@
+<!-- 
+    结构伪类 3 
+
+    span:only-child{} span所在父级元素只有其一个元素
+    span:only-of-type{} span所在父级元素只有其一个同类型元素
+    :root html 根元素  
+    div:empty{} 没有任何内容的元素，有空格也不行
+ -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>伪类细解_结构伪类_2</title>
+    <style>
+        /*只有自己一个元素 - 看结构1*/
+        /* span:only-child{
+        color: red;
+       } */
+
+        /*只有自己一个类型的元素 - 看结构1*/
+        span:only-of-type {
+            color: red;
+        }
+
+        /*选中的是html 根元素*/
+        :root {
+            background-color: gray;
+        }
+
+        /*空元素 - 结构2*/
+        div:empty {
+            width: 200px;
+            height: 200px;
+            background-color: aqua;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 结构1 -->
+    <div> <span>span1</span></div>
+    <div>
+        <span>span2</span>
+        <p>1</p>
+        <p>2</p>
+        <p>3</p>
+        <p>4</p>
+        <p>5</p>
+        <p>6</p>
+        <p>7</p>
+        <p>8</p>
+        <p>9</p>
+        <p>10</p>
+    </div>
+
+    <!-- 结构2 -->
+    <div></div>
+
+</body>
+
+</html>

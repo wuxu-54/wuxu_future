@@ -1,0 +1,34 @@
+<!-- 
+    列表（ul）相关属性
+    list-style-type  列表符号
+    list-style-position 列表符号位置
+    list-style-image：url('') 自定义符号
+    list-style 复合属性，综合上面
+ -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>列表属性</title>
+
+    <style>
+        ul{
+            list-style-type: decimal;
+            /* inside 是内部，放在条目li里 ，outside 放在条目li外面*/
+            list-style-position: outside;
+        }
+
+        li{
+            background-color: yellow;
+        }
+    </style>
+</head>
+<body>
+    <ul>
+        <li>1111</li>
+        <li>2222</li>
+        <li>3333</li>
+    </ul>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!-- 
+    好多语言都推出了类似的语法：lambda表达式，是个匿名函数
+    
+    js箭头函数，也是lambda表达式，简化了函数定义的语法。
+
+    箭头函数表达式的语法比传统的函数表达式更简洁，但在语义上有一些差异，在用法上也有一些限制：
+
+    1.箭头函数没有独立的 this、arguments 和 super 绑定 (en-US)，并且不可被用作方法。
+    2.箭头函数不能用作构造函数。
+    3.使用 new 调用它们会引发 TypeError。它们也无法访问 new.target 关键字。
+    4.箭头函数不能在其主体中使用 yield，也不能作为生成器函数创建。
+
+
+    语法
+    () => expression
+
+    param => expression
+
+    (param) => expression
+
+    (param1, paramN) => expression
+
+    () => {
+    statements
+    }
+
+    param => {
+    statements
+    }
+
+    (param1, paramN) => {
+    statements
+    }
+
+    调用
+    将箭头函数赋值给变量，此时就有了函数名，调用变量（函数名）
+ -->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>箭头函数</title>
+</head>
+
+<body>
+    <script>
+        const fun = () => { console.log("箭头函数") } // ()=>{} 相当于定义一个空参函数
+        const fun1 = () => console.log("箭头函数" + a)// 简单方法体， {} 可省略
+        fun()
+
+        const fun2 = (x, y) => { console.log("带参箭头函数 ,x=" + x + ",y=" + y) }
+        fun2(1, 2)
+
+
+        const fun3 = x => console.log("单参箭头函数可以省略括号" + x)
+        fun3()
+    </script>
+</body>
+
+</html>

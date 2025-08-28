@@ -1,0 +1,79 @@
+<!-- 
+    对象
+    创建：
+    1.new Object()
+    2.const o = {a:1,function fun(){}}
+    3.构造函数创建
+        注意，开发时
+        1.命名大写字母开头
+        2.由new 操作符执行
+        3.无构造参数，声明时可省略()
+        4.构造函数不需要返回值
+        
+    js中的this指向调用函数的对象
+
+        构造函数里的成员：
+        1.实例成员：实例对象上的属性和方法
+        2.静态成员：只能通过构造函数访问，静态方法this指向构造函数本身
+ -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>对象</title>
+</head>
+<body>
+    <script>
+        //创建对象，方式1
+        const obj = new Object()
+        obj.name = "1"
+        console.log(obj)
+
+        //创建对象，方式2
+        const obj2 = new Object({name :"2"})
+        console.log(obj2)
+
+        //创建对象，方式3 自定义构造函数创建
+        function Obj(name){//这就是构造函数，可以快速创建多个类似对象。
+            this.name = name//this 是指正在构造中的对象，这句意思是向Obj对象添加一个name属性
+        }
+        const obj3 = new Obj("1")
+        console.log(obj3)
+        const obj4 = new Obj(2)//必须new，否则无法声明对象
+        console.log(obj4)
+
+        function Person() {
+            const self = this; // self 仍然是全局对象，而不是预期的新创建的实例对象。
+            this.firstName = 'John';
+        }
+
+        Person(); // 没有使用 new 关键字，this指全局对象也就是Person而不是一个实例对象。也就是没有new 等同于静态，并没有实例
+        console.log(self.firstName); // 在浏览器中输出: 'John'
+
+
+        function O(){}
+        const o = new O;//可省略（）
+
+
+        //实例成员，对象指向的成员
+        obj4.name = "2";//实例属性
+        obj4.fun = ()=>{}//实例方法
+
+        //静态成员
+        Obj.name = "333";//静态方法
+        Obj.fun = ()=>{}//静态函数，箭头函数没有this
+
+        Obj.fun()//调用
+        console.log(Obj.name)
+
+        //对象拷贝
+        let o1  = {name:1,age:2}
+        Object.assign(o2,o1);//浅拷贝
+        Object.assign(o1,{tt:3})//向o1追加数据
+
+        
+    </script>
+</body>
+</html>

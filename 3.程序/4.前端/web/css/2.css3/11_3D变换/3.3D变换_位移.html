@@ -1,0 +1,42 @@
+<!-- 
+     transform: translate3d(tx, ty, tz);
+        tx：元素沿 X 轴的移动距离，可以使用像素、em、rem 等单位，也可以是无单位的数值，表示移动 1/视口宽度。
+        ty：元素沿 Y 轴的移动距离，可以使用像素、em、rem 等单位，也可以是无单位的数值，表示移动 1/视口高度。
+        tz：元素沿 Z 轴的移动距离，通常使用像素作为单位，正值会将元素移向用户，负值则会移远。
+ -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3d-位移</title>
+</head>
+   <style>
+    .outer{
+        width: 200px;
+        height: 200px;
+        border: 1px solid black;
+        margin: 100px auto;
+        position: relative;
+        transform-style: preserve-3d;
+        perspective: 500px;
+        perspective-origin: 20px 20px;
+    
+    }
+    .inner{
+        width: 200px;
+        height: 200px;
+        background-color: rgba(0, 191, 255, 0.726);
+        /* transform: translateZ(50px); */
+
+        /*3d 必须把3个数都写上*/
+        transform: translate3d(0px,0px,50px);
+    }
+
+   </style>
+<body>
+    <div class="outer">
+        <div class="inner"></div>
+    </div>
+</body>
+</html>

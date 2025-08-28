@@ -1,0 +1,42 @@
+<!-- 
+    数组常用方法
+    join-拼接
+    find-查找元素，没有返回undefined
+    every-检测所有元素是否符合条件，全符合返回true
+    some-检测元素是否满足条件，如果有满足的，返回true
+    concat 合并数组，生成新数组
+    sort-排序
+    splice-删除或替换元素
+    reverse -反转
+    findIndex-查找元素的索引
+    reduce - 数组循环，累计
+    map-转换为新数组
+    filter-过滤出符合条件的元素，形成新数组
+    fill-替换元素
+
+    更多可以查询文档
+ -->
+
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>对象</title>
+ </head>
+ <body>
+     <script>
+         const arr = [1,4,5]
+         
+         //一般用于累计算数
+         arr.reduce(function(pre,curr){//pre是上一次函数计算得到的值，默认 = 初始值； curr 当前值
+            return pre+curr
+         },14)//14 是初始值
+
+
+         console.log(arr.find(4))
+
+
+     </script>
+ </body>
+ </html>

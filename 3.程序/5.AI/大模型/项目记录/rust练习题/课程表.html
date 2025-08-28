@@ -1,0 +1,3940 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rust练习册</title>
+    <style>
+        :root {
+            --primary-color: #2b7de9;
+            --secondary-color: #64b5f6;
+            --background-color: #f5f5f5;
+            --text-color: #333;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: var(--background-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 0;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .chapter {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .chapter-title {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .exercise-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .exercise {
+            background: #fff;
+            padding: 15px;
+            border-left: 4px solid var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .question {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .answer {
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            margin: 10px 0;
+            display:none;
+        }
+
+        .code-block {
+            background-color: #2d2d2d;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+
+        .code-block pre {
+            margin: 0;
+            white-space: pre-wrap;
+        }
+
+        .code-block code {
+            color: #e6e6e6;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            line-height: 1.5;
+        }
+
+        .toggle-answer {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .toggle-answer:hover {
+            background: var(--primary-color);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header {
+                padding: 20px 0;
+            }
+
+            .chapter {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Rust编程练习册</h1>
+            <p>从基础到高级的完整练习题集</p>
+        </div>
+
+        <div class="chapter">
+            <h2 class="chapter-title">第1章：Rust基础</h2>
+            
+            <div class="exercise-section">
+                <h3 class="section-title">基础概念题</h3>
+                
+                <div class="exercise">
+                    <div class="question">1. 解释Rust中变量默认不可变的设计理念，以及如何声明可变变量？</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        Rust中变量默认不可变是为了提供更好的安全性和并发支持。这种设计：
+                        1. 减少bug：防止意外修改变量
+                        2. 代码更清晰：明确标识可变性
+                        3. 并发更安全：不可变数据可以安全地在线程间共享
+                        
+                        声明可变变量需要使用mut关键字：
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        let mut x = 5;
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise">
+                    <div class="question">2. Rust中的原始数据类型有哪些？并说明它们的大小。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        Rust的主要原始类型：
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        1. 整数类型：
+                           - i8, i16, i32, i64, i128（有符号）
+                           - u8, u16, u32, u64, u128（无符号）
+                        2. 浮点类型：
+                           - f32（32位）
+                           - f64（64位）
+                        3. 布尔型：
+                           - bool（1字节）
+                        4. 字符类型：
+                           - char（4字节，Unicode标量值）
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-section">
+                <h3 class="section-title">代码编写题</h3>
+                
+                <div class="exercise">
+                    <div class="question">1. 编写一个函数，接收一个整数n，返回1到n的所有偶数的和。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        fn sum_even_numbers(n: i32) -> i32 {
+                            (1..=n).filter(|x| x % 2 == 0).sum()
+                        }
+
+                        // 测试
+                        fn main() {
+                            let result = sum_even_numbers(10);  // 2 + 4 + 6 + 8 + 10 = 30
+                            println!("结果：{}", result);
+                        }
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise">
+                    <div class="question">2. 实现一个温度转换函数，可以在摄氏度和华氏度之间转换。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        fn celsius_to_fahrenheit(celsius: f64) -> f64 {
+                            (celsius * 9.0/5.0) + 32.0
+                        }
+
+                        fn fahrenheit_to_celsius(fahrenheit: f64) -> f64 {
+                            (fahrenheit - 32.0) * 5.0/9.0
+                        }
+
+                        fn main() {
+                            let celsius = 25.0;
+                            let fahrenheit = celsius_to_fahrenheit(celsius);
+                            println!("{}°C = {}°F", celsius, fahrenheit);
+                            
+                            let celsius_again = fahrenheit_to_celsius(fahrenheit);
+                            println!("{}°F = {}°C", fahrenheit, celsius_again);
+                        }
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-section">
+                <h3 class="section-title">实战应用题</h3>
+                
+                <div class="exercise">
+                    <div class="question">1. 实现一个简单的命令行计算器，支持基本的四则运算。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        use std::io;
+
+                        fn main() {
+                            println!("简单计算器");
+                            println!("请输入表达式（例如：2 + 3）：");
+
+                            let mut input = String::new();
+                            io::stdin().read_line(&mut input).expect("读取失败");
+
+                            let parts: Vec<&str> = input.trim().split_whitespace().collect();
+                            
+                            if parts.len() != 3 {
+                                println!("格式错误！请使用格式：数字 运算符 数字");
+                                return;
+                            }
+
+                            let a: f64 = match parts[0].parse() {
+                                Ok(num) => num,
+                                Err(_) => {
+                                    println!("第一个数字无效！");
+                                    return;
+                                }
+                            };
+
+                            let operator = parts[1];
+
+                            let b: f64 = match parts[2].parse() {
+                                Ok(num) => num,
+                                Err(_) => {
+                                    println!("第二个数字无效！");
+                                    return;
+                                }
+                            };
+
+                            let result = match operator {
+                                "+" => a + b,
+                                "-" => a - b,
+                                "*" => a * b,
+                                "/" => {
+                                    if b == 0.0 {
+                                        println!("除数不能为零！");
+                                        return;
+                                    }
+                                    a / b
+                                }
+                                _ => {
+                                    println!("不支持的运算符！");
+                                    return;
+                                }
+                            };
+
+                            println!("结果：{} {} {} = {}", a, operator, b, result);
+                        }
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise">
+                    <div class="question">2. 开发一个简单的文件统计程序，统计指定文本文件的行数、单词数和字符数。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        use std::fs::File;
+                        use std::io::{self, BufRead, BufReader};
+
+                        fn count_file_stats(filename: &str) -> io::Result<(usize, usize, usize)> {
+                            let file = File::open(filename)?;
+                            let reader = BufReader::new(file);
+                            
+                            let mut lines = 0;
+                            let mut words = 0;
+                            let mut chars = 0;
+                            
+                            for line in reader.lines() {
+                                let line = line?;
+                                lines += 1;
+                                words += line.split_whitespace().count();
+                                chars += line.chars().count();
+                            }
+                            
+                            Ok((lines, words, chars))
+                        }
+
+                        fn main() {
+                            let filename = "test.txt";
+                            match count_file_stats(filename) {
+                                Ok((lines, words, chars)) => {
+                                    println!("文件统计结果：");
+                                    println!("行数：{}", lines);
+                                    println!("单词数：{}", words);
+                                    println!("字符数：{}", chars);
+                                }
+                                Err(e) => println!("错误：{}", e),
+                            }
+                        }
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chapter">
+            <h2 class="chapter-title">第2章：所有权系统</h2>
+            
+            <div class="exercise-section">
+                <h3 class="section-title">基础概念题</h3>
+                
+                <div class="exercise">
+                    <div class="question">1. 解释Rust所有权系统的三个核心规则。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        Rust所有权的三个核心规则：
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        1. Rust中每个值都有一个变量作为它的所有者
+                        2. 一个值同时只能有一个所有者
+                        3. 当所有者离开作用域时，这个值将被丢弃
+
+                        这些规则在编译时强制执行，保证了内存安全，无需垃圾回收。
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise">
+                    <div class="question">2. 引用的借用规则是什么？可变引用和不可变引用有什么区别？</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        借用规则：
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        1. 在任意给定时间，要么只能有一个可变引用，要么只能有多个不可变引用
+                        2. 引用必须总是有效的（不能存在悬垂引用）
+
+                        区别：
+                        - 不可变引用（&T）：可以同时存在多个，只能读取数据
+                        - 可变引用（&mut T）：同一时间只能存在一个，可以修改数据
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-section">
+                <h3 class="section-title">代码编写题</h3>
+                
+                <div class="exercise">
+                    <div class="question">1. 编写一个函数，接受一个字符串的引用，返回该字符串中的第一个单词。如果字符串为空或只包含空格，返回空字符串。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        fn first_word(s: &str) -> &str {
+                            let bytes = s.as_bytes();
+                            
+                            for (i, &item) in bytes.iter().enumerate() {
+                                if item == b' ' {
+                                    return &s[0..i];
+                                }
+                            }
+                            
+                            s
+                        }
+
+                        fn main() {
+                            let s = String::from("Hello world");
+                            let word = first_word(&s);
+                            println!("第一个单词是：{}", word);  // 输出：Hello
+                        }
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise">
+                    <div class="question">2. 实现一个函数，交换两个整数的值，使用可变引用作为参数。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        fn swap(a: &mut i32, b: &mut i32) {
+                            let temp = *a;
+                            *a = *b;
+                            *b = temp;
+                        }
+
+                        fn main() {
+                            let mut x = 5;
+                            let mut y = 10;
+                            println!("交换前：x = {}, y = {}", x, y);
+                            
+                            swap(&mut x, &mut y);
+                            println!("交换后：x = {}, y = {}", x, y);
+                        }
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-section">
+                <h3 class="section-title">实战应用题</h3>
+                
+                <div class="exercise">
+                    <div class="question">1. 实现一个简单的文本编辑器数据结构，支持添加行、删除行和显示内容，要求正确处理所有权。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        struct TextEditor {
+                            lines: Vec<String>,
+                        }
+
+                        impl TextEditor {
+                            fn new() -> TextEditor {
+                                TextEditor {
+                                    lines: Vec::new(),
+                                }
+                            }
+
+                            fn add_line(&mut self, line: String) {
+                                self.lines.push(line);
+                            }
+
+                            fn delete_line(&mut self, index: usize) -> bool {
+                                if index < self.lines.len() {
+                                    self.lines.remove(index);
+                                    true
+                                } else {
+                                    false
+                                }
+                            }
+
+                            fn display(&self) {
+                                for (i, line) in self.lines.iter().enumerate() {
+                                    println!("{}: {}", i + 1, line);
+                                }
+                            }
+                        }
+
+                        fn main() {
+                            let mut editor = TextEditor::new();
+                            
+                            editor.add_line(String::from("第一行"));
+                            editor.add_line(String::from("第二行"));
+                            editor.add_line(String::from("第三行"));
+                            
+                            println!("原始内容：");
+                            editor.display();
+                            
+                            editor.delete_line(1);
+                            
+                            println!("\n删除第二行后：");
+                            editor.display();
+                        }
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise">
+                    <div class="question">2. 设计一个共享数据结构，实现一个简单的图书借阅系统，要求正确处理多个借阅者的所有权问题。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        use std::collections::HashMap;
+
+                        struct Book {
+                            title: String,
+                            author: String,
+                            available: bool,
+                        }
+
+                        struct Library {
+                            books: HashMap<String, Book>,
+                            borrowers: HashMap<String, Vec<String>>, // 用户 -> 借阅的书
+                        }
+
+                        impl Library {
+                            fn new() -> Library {
+                                Library {
+                                    books: HashMap::new(),
+                                    borrowers: HashMap::new(),
+                                }
+                            }
+
+                            fn add_book(&mut self, isbn: String, title: String, author: String) {
+                                self.books.insert(isbn, Book {
+                                    title,
+                                    author,
+                                    available: true,
+                                });
+                            }
+
+                            fn borrow_book(&mut self, user: &str, isbn: &str) -> Result<(), &str> {
+                                if let Some(book) = self.books.get_mut(isbn) {
+                                    if book.available {
+                                        book.available = false;
+                                        self.borrowers
+                                            .entry(user.to_string())
+                                            .or_insert(Vec::new())
+                                            .push(isbn.to_string());
+                                        Ok(())
+                                    } else {
+                                        Err("书籍已被借出")
+                                    }
+                                } else {
+                                    Err("找不到该书籍")
+                                }
+                            }
+
+                            fn return_book(&mut self, user: &str, isbn: &str) -> Result<(), &str> {
+                                if let Some(book) = self.books.get_mut(isbn) {
+                                    if let Some(user_books) = self.borrowers.get_mut(user) {
+                                        if let Some(pos) = user_books.iter().position(|x| x == isbn) {
+                                            user_books.remove(pos);
+                                            book.available = true;
+                                            Ok(())
+                                        } else {
+                                            Err("该用户未借阅此书")
+                                        }
+                                    } else {
+                                        Err("找不到该用户")
+                                    }
+                                } else {
+                                    Err("找不到该书籍")
+                                }
+                            }
+                        }
+
+                        fn main() {
+                            let mut library = Library::new();
+                            
+                            // 添加书籍
+                            library.add_book(
+                                "123".to_string(),
+                                "Rust编程".to_string(),
+                                "作者A".to_string()
+                            );
+                            
+                            // 借书
+                            match library.borrow_book("用户1", "123") {
+                                Ok(()) => println!("借书成功！"),
+                                Err(e) => println!("借书失败：{}", e),
+                            }
+                            
+                            // 尝试重复借同一本书
+                            match library.borrow_book("用户2", "123") {
+                                Ok(()) => println!("借书成功！"),
+                                Err(e) => println!("借书失败：{}", e),
+                            }
+                            
+                            // 还书
+                            match library.return_book("用户1", "123") {
+                                Ok(()) => println!("还书成功！"),
+                                Err(e) => println!("还书失败：{}", e),
+                            }
+                        }
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chapter">
+            <h2 class="chapter-title">第3章：结构化数据</h2>
+            
+            <div class="exercise-section">
+                <h3 class="section-title">基础概念题</h3>
+                
+                <div class="exercise">
+                    <div class="question">1. 结构体的三种类型是什么？请分别解释它们的使用场景。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        Rust中的三种结构体类型：
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        1. 具名结构体：
+                           - 最常用的结构体形式
+                           - 有明确命名的字段
+                           - 适用于需要多个相关属性的数据结构
+                           struct Person {
+                               name: String,
+                               age: u32,
+                           }
+
+                        2. 元组结构体：
+                           - 字段没有名字，只有类型
+                           - 适用于需要给元组添加语义的场景
+                           struct Point(i32, i32);
+
+                        3. 单元结构体：
+                           - 没有任何字段
+                           - 适用于需要在类型上实现trait，但不需要存储数据的场景
+                           struct Unit;
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise">
+                    <div class="question">2. 解释枚举和模式匹配在Rust中的重要性，以及它们如何协同工作。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        枚举和模式匹配的重要性：
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        1. 枚举（Enum）：
+                           - 允许定义一个类型可能的所有值
+                           - 可以包含数据，使其非常灵活
+                           - 特别适合表示多种可能的状态或类型
+
+                        2. 模式匹配：
+                           - 通过match表达式处理枚举的所有可能情况
+                           - 编译器确保处理所有情况，提高代码安全性
+                           - 提供优雅的方式处理不同的数据变体
+
+                        协同工作示例：
+                        enum Message {
+                            Quit,
+                            Move { x: i32, y: i32 },
+                            Write(String),
+                            ChangeColor(i32, i32, i32),
+                        }
+
+                        fn handle_message(msg: Message) {
+                            match msg {
+                                Message::Quit => println!("退出"),
+                                Message::Move { x, y } => println!("移动到 ({}, {})", x, y),
+                                Message::Write(text) => println!("文本消息: {}", text),
+                                Message::ChangeColor(r, g, b) => println!("改变颜色为: RGB({},{},{})", r, g, b),
+                            }
+                        }
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-section">
+                <h3 class="section-title">代码编写题</h3>
+                
+                <div class="exercise">
+                    <div class="question">1. 实现一个Rectangle结构体，包含宽度和高度，并实现计算面积、周长和是否可以包含另一个矩形的方法。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        #[derive(Debug)]
+                        struct Rectangle {
+                            width: u32,
+                            height: u32,
+                        }
+
+                        impl Rectangle {
+                            fn new(width: u32, height: u32) -> Rectangle {
+                                Rectangle { width, height }
+                            }
+
+                            fn area(&self) -> u32 {
+                                self.width * self.height
+                            }
+
+                            fn perimeter(&self) -> u32 {
+                                2 * (self.width + self.height)
+                            }
+
+                            fn can_hold(&self, other: &Rectangle) -> bool {
+                                self.width > other.width && self.height > other.height
+                            }
+                        }
+
+                        fn main() {
+                            let rect1 = Rectangle::new(30, 50);
+                            let rect2 = Rectangle::new(10, 20);
+                            
+                            println!("矩形1的面积：{}", rect1.area());
+                            println!("矩形1的周长：{}", rect1.perimeter());
+                            println!("矩形1能否包含矩形2：{}", rect1.can_hold(&rect2));
+                        }
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise">
+                    <div class="question">2. 使用枚举实现一个简单的计算器，支持加减乘除四种运算。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        #[derive(Debug)]
+                        enum Operation {
+                            Add(f64, f64),
+                            Subtract(f64, f64),
+                            Multiply(f64, f64),
+                            Divide(f64, f64),
+                        }
+
+                        impl Operation {
+                            fn calculate(&self) -> Result<f64, &str> {
+                                match self {
+                                    Operation::Add(a, b) => Ok(a + b),
+                                    Operation::Subtract(a, b) => Ok(a - b),
+                                    Operation::Multiply(a, b) => Ok(a * b),
+                                    Operation::Divide(a, b) => {
+                                        if *b != 0.0 {
+                                            Ok(a / b)
+                                        } else {
+                                            Err("除数不能为零")
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        fn main() {
+                            let operations = vec![
+                                Operation::Add(5.0, 3.0),
+                                Operation::Subtract(10.0, 5.0),
+                                Operation::Multiply(4.0, 2.0),
+                                Operation::Divide(15.0, 3.0),
+                                Operation::Divide(5.0, 0.0),
+                            ];
+
+                            for op in operations {
+                                match op.calculate() {
+                                    Ok(result) => println!("{:?} = {}", op, result),
+                                    Err(e) => println!("{:?} 错误: {}", op, e),
+                                }
+                            }
+                        }
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-section">
+                <h3 class="section-title">实战应用题</h3>
+                
+                <div class="exercise">
+                    <div class="question">1. 设计一个任务管理系统，使用结构体和枚举来表示任务的不同状态和优先级。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        use std::collections::HashMap;
+
+                        #[derive(Debug)]
+                        enum Priority {
+                            Low,
+                            Medium,
+                            High,
+                        }
+
+                        #[derive(Debug)]
+                        enum Status {
+                            Todo,
+                            InProgress { progress: u8 },
+                            Done,
+                            Cancelled { reason: String },
+                        }
+
+                        #[derive(Debug)]
+                        struct Task {
+                            id: u32,
+                            title: String,
+                            description: String,
+                            priority: Priority,
+                            status: Status,
+                        }
+
+                        struct TaskManager {
+                            tasks: HashMap<u32, Task>,
+                            next_id: u32,
+                        }
+
+                        impl TaskManager {
+                            fn new() -> TaskManager {
+                                TaskManager {
+                                    tasks: HashMap::new(),
+                                    next_id: 1,
+                                }
+                            }
+
+                            fn add_task(&mut self, title: String, description: String, priority: Priority) -> u32 {
+                                let id = self.next_id;
+                                self.tasks.insert(id, Task {
+                                    id,
+                                    title,
+                                    description,
+                                    priority,
+                                    status: Status::Todo,
+                                });
+                                self.next_id += 1;
+                                id
+                            }
+
+                            fn update_status(&mut self, id: u32, status: Status) -> Result<(), String> {
+                                if let Some(task) = self.tasks.get_mut(&id) {
+                                    task.status = status;
+                                    Ok(())
+                                } else {
+                                    Err("任务不存在".to_string())
+                                }
+                            }
+
+                            fn list_tasks(&self) {
+                                for task in self.tasks.values() {
+                                    println!("任务 #{}: {:?}", task.id, task);
+                                }
+                            }
+                        }
+
+                        fn main() {
+                            let mut manager = TaskManager::new();
+                            
+                            // 添加任务
+                            let task1_id = manager.add_task(
+                                "完成报告".to_string(),
+                                "编写项目总结报告".to_string(),
+                                Priority::High
+                            );
+                            
+                            let task2_id = manager.add_task(
+                                "代码审查".to_string(),
+                                "审查新功能的代码".to_string(),
+                                Priority::Medium
+                            );
+                            
+                            // 更新任务状态
+                            manager.update_status(task1_id, Status::InProgress { progress: 50 })
+                                .expect("更新失败");
+                                
+                            manager.update_status(task2_id, Status::Done)
+                                .expect("更新失败");
+                            
+                            // 显示所有任务
+                            manager.list_tasks();
+                        }
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise">
+                    <div class="question">2. 实现一个简单的状态机，使用枚举来表示不同状态，并处理状态之间的转换。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        #[derive(Debug)]
+                        enum State {
+                            Start,
+                            Processing { step: u32 },
+                            WaitingForInput,
+                            Error(String),
+                            Done,
+                        }
+
+                        enum Event {
+                            Begin,
+                            Process,
+                            Input(String),
+                            Cancel,
+                            Finish,
+                        }
+
+                        struct StateMachine {
+                            state: State,
+                            data: Vec<String>,
+                        }
+
+                        impl StateMachine {
+                            fn new() -> StateMachine {
+                                StateMachine {
+                                    state: State::Start,
+                                    data: Vec::new(),
+                                }
+                            }
+
+                            fn transition(&mut self, event: Event) {
+                                use State::*;
+                                use Event::*;
+
+                                self.state = match (&self.state, event) {
+                                    (Start, Begin) => Processing { step: 1 },
+                                    (Processing { step }, Process) if *step < 3 => 
+                                        Processing { step: step + 1 },
+                                    (Processing { step: 3 }, Process) => WaitingForInput,
+                                    (WaitingForInput, Input(data)) => {
+                                        self.data.push(data);
+                                        Done
+                                    },
+                                    (_, Cancel) => Error("操作已取消".to_string()),
+                                    (Processing { .. }, Finish) => Done,
+                                    (current, event) => {
+                                        println!("无效的状态转换：{:?} -> {:?}", current, event);
+                                        current.clone()
+                                    }
+                                };
+
+                                println!("当前状态：{:?}", self.state);
+                            }
+                        }
+
+                        fn main() {
+                            let mut machine = StateMachine::new();
+                            
+                            // 模拟状态转换
+                            machine.transition(Event::Begin);
+                            machine.transition(Event::Process);  // step 1 -> 2
+                            machine.transition(Event::Process);  // step 2 -> 3
+                            machine.transition(Event::Process);  // step 3 -> WaitingForInput
+                            machine.transition(Event::Input("用户输入数据".to_string()));
+                            
+                            // 尝试无效转换
+                            machine.transition(Event::Process);  // 在Done状态下无效
+                        }
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chapter">
+            <h2 class="chapter-title">第4章：包、模块与依赖管理</h2>
+            
+            <div class="exercise-section">
+                <h3 class="section-title">基础概念题</h3>
+                
+                <div class="exercise">
+                    <div class="question">1. 解释Rust中包(crate)、模块(module)和包管理器(Cargo)的关系。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        Rust的代码组织结构：
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        1. 包(Crate)：
+                           - Rust的编译单元，包含模块树
+                           - 分为二进制包和库包
+                           - 一个包可以包含多个二进制包和至多一个库包
+
+                        2. 模块(Module)：
+                           - 控制代码的组织、作用域和私有性
+                           - 可以嵌套
+                           - 使用mod关键字定义
+
+                        3. Cargo：
+                           - Rust的官方包管理器
+                           - 管理依赖、编译项目
+                           - 处理包的下载、编译和更新
+                           - 提供项目模板和构建配置
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise">
+                    <div class="question">2. Rust中的可见性规则是什么？解释pub关键字的作用和使用场景。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        Rust的可见性规则：
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        1. 默认规则：
+                           - 所有项默认私有
+                           - 子模块可以使用父模块的内容
+                           - 父模块不能使用子模块的私有内容
+
+                        2. pub关键字：
+                           - 将项标记为公开可见
+                           - 可应用于模块、函数、结构体等
+                           - 结构体字段需要单独标记pub
+
+                        3. 可见性级别：
+                           - pub: 完全公开
+                           - pub(crate): 仅在当前包内可见
+                           - pub(super): 仅在父模块可见
+                           - pub(in path): 仅在指定路径可见
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-section">
+                <h3 class="section-title">代码编写题</h3>
+                
+                <div class="exercise">
+                    <div class="question">1. 创建一个模块化的数学库，包含基础运算和高级运算两个子模块。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        // lib.rs
+                        pub mod math {
+                            pub mod basic {
+                                pub fn add(a: f64, b: f64) -> f64 {
+                                    a + b
+                                }
+
+                                pub fn subtract(a: f64, b: f64) -> f64 {
+                                    a - b
+                                }
+
+                                pub fn multiply(a: f64, b: f64) -> f64 {
+                                    a * b
+                                }
+
+                                pub fn divide(a: f64, b: f64) -> Result<f64, &'static str> {
+                                    if b != 0.0 {
+                                        Ok(a / b)
+                                    } else {
+                                        Err("除数不能为零")
+                                    }
+                                }
+                            }
+
+                            pub mod advanced {
+                                pub fn power(base: f64, exponent: i32) -> f64 {
+                                    base.powi(exponent)
+                                }
+
+                                pub fn square_root(x: f64) -> Result<f64, &'static str> {
+                                    if x >= 0.0 {
+                                        Ok(x.sqrt())
+                                    } else {
+                                        Err("不能对负数求平方根")
+                                    }
+                                }
+
+                                pub fn factorial(n: u32) -> u64 {
+                                    if n == 0 {
+                                        1
+                                    } else {
+                                        (1..=n).product()
+                                    }
+                                }
+                            }
+                        }
+
+                        // main.rs
+                        use math_lib::math::{basic, advanced};
+
+                        fn main() {
+                            // 基础运算
+                            println!("10 + 5 = {}", basic::add(10.0, 5.0));
+                            println!("10 - 5 = {}", basic::subtract(10.0, 5.0));
+                            
+                            // 高级运算
+                            println!("2^3 = {}", advanced::power(2.0, 3));
+                            println!("√16 = {}", advanced::square_root(16.0).unwrap());
+                            println!("5! = {}", advanced::factorial(5));
+                        }
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise">
+                    <div class="question">2. 实现一个配置模块，支持读取和修改程序配置，注意使用适当的可见性控制。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        // config.rs
+                        use std::collections::HashMap;
+
+                        pub struct Config {
+                            settings: HashMap<String, Value>,
+                        }
+
+                        #[derive(Clone, Debug)]
+                        pub enum Value {
+                            String(String),
+                            Integer(i64),
+                            Float(f64),
+                            Boolean(bool),
+                        }
+
+                        impl Config {
+                            pub fn new() -> Self {
+                                Config {
+                                    settings: HashMap::new(),
+                                }
+                            }
+
+                            pub fn set(&mut self, key: &str, value: Value) {
+                                self.settings.insert(key.to_string(), value);
+                            }
+
+                            pub fn get(&self, key: &str) -> Option<&Value> {
+                                self.settings.get(key)
+                            }
+
+                            pub fn remove(&mut self, key: &str) -> Option<Value> {
+                                self.settings.remove(key)
+                            }
+
+                            pub fn clear(&mut self) {
+                                self.settings.clear();
+                            }
+                        }
+
+                        // main.rs
+                        mod config;
+                        use config::{Config, Value};
+
+                        fn main() {
+                            let mut cfg = Config::new();
+                            
+                            // 设置配置
+                            cfg.set("app_name", Value::String("MyApp".to_string()));
+                            cfg.set("version", Value::Float(1.0));
+                            cfg.set("debug", Value::Boolean(true));
+                            cfg.set("max_connections", Value::Integer(100));
+                            
+                            // 读取配置
+                            if let Some(Value::String(name)) = cfg.get("app_name") {
+                                println!("应用名称: {}", name);
+                            }
+                            
+                            if let Some(Value::Boolean(debug)) = cfg.get("debug") {
+                                println!("调试模式: {}", debug);
+                            }
+                            
+                            // 移除配置
+                            cfg.remove("debug");
+                            
+                            // 清空配置
+                            cfg.clear();
+                        }
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-section">
+                <h3 class="section-title">实战应用题</h3>
+                
+                <div class="exercise">
+                    <div class="question">1. 创建一个日志系统库，支持不同级别的日志记录，并使用特征和模块系统来支持多个日志后端。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        // lib.rs
+                        pub mod logger {
+                            use std::fmt;
+                            use chrono::Local;
+
+                            #[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
+                            pub enum Level {
+                                Debug,
+                                Info,
+                                Warning,
+                                Error,
+                            }
+
+                            pub trait LogBackend {
+                                fn log(&self, level: Level, message: &str);
+                            }
+
+                            pub struct Logger {
+                                backend: Box<dyn LogBackend>,
+                                min_level: Level,
+                            }
+
+                            pub struct ConsoleBackend;
+                            pub struct FileBackend {
+                                path: String,
+                            }
+
+                            impl Logger {
+                                pub fn new(backend: Box<dyn LogBackend>, min_level: Level) -> Self {
+                                    Logger { backend, min_level }
+                                }
+
+                                pub fn log(&self, level: Level, message: &str) {
+                                    if level >= self.min_level {
+                                        self.backend.log(level, message);
+                                    }
+                                }
+
+                                pub fn debug(&self, message: &str) {
+                                    self.log(Level::Debug, message);
+                                }
+
+                                pub fn info(&self, message: &str) {
+                                    self.log(Level::Info, message);
+                                }
+
+                                pub fn warning(&self, message: &str) {
+                                    self.log(Level::Warning, message);
+                                }
+
+                                pub fn error(&self, message: &str) {
+                                    self.log(Level::Error, message);
+                                }
+                            }
+
+                            impl LogBackend for ConsoleBackend {
+                                fn log(&self, level: Level, message: &str) {
+                                    let now = Local::now();
+                                    println!("[{}] {} - {}", now.format("%Y-%m-%d %H:%M:%S"), level, message);
+                                }
+                            }
+
+                            impl LogBackend for FileBackend {
+                                fn log(&self, level: Level, message: &str) {
+                                    use std::fs::OpenOptions;
+                                    use std::io::Write;
+                                    
+                                    let now = Local::now();
+                                    let log_entry = format!("[{}] {} - {}\n", 
+                                        now.format("%Y-%m-%d %H:%M:%S"), level, message);
+                                    
+                                    if let Ok(mut file) = OpenOptions::new()
+                                        .create(true)
+                                        .append(true)
+                                        .open(&self.path) 
+                                    {
+                                        let _ = file.write_all(log_entry.as_bytes());
+                                    }
+                                }
+                            }
+
+                            impl fmt::Display for Level {
+                                fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+                                    match self {
+                                        Level::Debug => write!(f, "DEBUG"),
+                                        Level::Info => write!(f, "INFO"),
+                                        Level::Warning => write!(f, "WARN"),
+                                        Level::Error => write!(f, "ERROR"),
+                                    }
+                                }
+                            }
+
+                            impl FileBackend {
+                                pub fn new(path: String) -> Self {
+                                    FileBackend { path }
+                                }
+                            }
+                        }
+
+                        // main.rs
+                        use log_lib::logger::{Logger, Level, ConsoleBackend, FileBackend, LogBackend};
+
+                        fn main() {
+                            // 创建控制台日志记录器
+                            let console_logger = Logger::new(
+                                Box::new(ConsoleBackend),
+                                Level::Debug
+                            );
+
+                            // 创建文件日志记录器
+                            let file_logger = Logger::new(
+                                Box::new(FileBackend::new("app.log".to_string())),
+                                Level::Info
+                            );
+
+                            // 使用日志记录器
+                            console_logger.debug("这是一条调试信息");
+                            console_logger.info("应用程序已启动");
+                            console_logger.warning("发现潜在问题");
+                            console_logger.error("发生错误！");
+
+                            file_logger.info("这条信息将被写入文件");
+                            file_logger.error("错误信息已记录到文件");
+                        }
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise">
+                    <div class="question">2. 实现一个插件系统，允许动态加载和使用不同的功能模块。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        // lib.rs
+                        pub mod plugin {
+                            use std::collections::HashMap;
+                            use std::any::Any;
+
+                            pub trait Plugin: Send + Sync {
+                                fn name(&self) -> &str;
+                                fn execute(&self) -> Result<String, String>;
+                                fn as_any(&self) -> &dyn Any;
+                            }
+
+                            pub struct PluginManager {
+                                plugins: HashMap<String, Box<dyn Plugin>>,
+                            }
+
+                            impl PluginManager {
+                                pub fn new() -> Self {
+                                    PluginManager {
+                                        plugins: HashMap::new(),
+                                    }
+                                }
+
+                                pub fn register(&mut self, plugin: Box<dyn Plugin>) {
+                                    let name = plugin.name().to_string();
+                                    self.plugins.insert(name, plugin);
+                                }
+
+                                pub fn unregister(&mut self, name: &str) -> Option<Box<dyn Plugin>> {
+                                    self.plugins.remove(name)
+                                }
+
+                                pub fn execute(&self, name: &str) -> Result<String, String> {
+                                    match self.plugins.get(name) {
+                                        Some(plugin) => plugin.execute(),
+                                        None => Err(format!("插件 '{}' 未找到", name)),
+                                    }
+                                }
+
+                                pub fn list_plugins(&self) -> Vec<&str> {
+                                    self.plugins.keys().map(|s| s.as_str()).collect()
+                                }
+                            }
+                        }
+
+                        // plugins/math_plugin.rs
+                        use crate::plugin::Plugin;
+                        use std::any::Any;
+
+                        pub struct MathPlugin;
+
+                        impl Plugin for MathPlugin {
+                            fn name(&self) -> &str {
+                                "math"
+                            }
+
+                            fn execute(&self) -> Result<String, String> {
+                                Ok("2 + 2 = 4".to_string())
+                            }
+
+                            fn as_any(&self) -> &dyn Any {
+                                self
+                            }
+                        }
+
+                        // plugins/greeting_plugin.rs
+                        pub struct GreetingPlugin {
+                            greeting: String,
+                        }
+
+                        impl GreetingPlugin {
+                            pub fn new(greeting: String) -> Self {
+                                GreetingPlugin { greeting }
+                            }
+                        }
+
+                        impl Plugin for GreetingPlugin {
+                            fn name(&self) -> &str {
+                                "greeting"
+                            }
+
+                            fn execute(&self) -> Result<String, String> {
+                                Ok(self.greeting.clone())
+                            }
+
+                            fn as_any(&self) -> &dyn Any {
+                                self
+                            }
+                        }
+
+                        // main.rs
+                        use plugin_lib::plugin::{Plugin, PluginManager};
+                        mod plugins;
+                        use plugins::{MathPlugin, GreetingPlugin};
+
+                        fn main() {
+                            let mut manager = PluginManager::new();
+
+                            // 注册插件
+                            manager.register(Box::new(MathPlugin));
+                            manager.register(Box::new(GreetingPlugin::new(
+                                "你好，世界！".to_string()
+                            )));
+
+                            // 列出所有插件
+                            println!("已加载的插件：");
+                            for plugin_name in manager.list_plugins() {
+                                println!("- {}", plugin_name);
+                            }
+
+                            // 执行插件
+                            match manager.execute("math") {
+                                Ok(result) => println!("数学插件结果: {}", result),
+                                Err(e) => println!("错误: {}", e),
+                            }
+
+                            match manager.execute("greeting") {
+                                Ok(result) => println!("问候插件结果: {}", result),
+                                Err(e) => println!("错误: {}", e),
+                            }
+
+                            // 卸载插件
+                            manager.unregister("math");
+                            println!("\n卸载后的插件列表：");
+                            for plugin_name in manager.list_plugins() {
+                                println!("- {}", plugin_name);
+                            }
+                        }
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chapter">
+            <h2 class="chapter-title">第5章：集合与错误处理</h2>
+            
+            <div class="exercise-section">
+                <h3 class="section-title">基础概念题</h3>
+                
+                <div class="exercise">
+                    <div class="question">1. 比较Vec<T>、String和&str的区别和使用场景。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        主要区别：
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        1. Vec<T>：
+                           - 可增长的数组类型
+                           - 在堆上分配内存
+                           - 可存储任意类型T
+                           - 适用于需要动态增长的同类型数据集合
+
+                        2. String：
+                           - UTF-8编码的可增长字符串
+                           - 在堆上分配内存
+                           - 可修改
+                           - 适用于需要修改的文本数据
+
+                        3. &str：
+                           - 字符串切片
+                           - 不可修改的UTF-8字节序列的引用
+                           - 可以指向堆或栈上的数据
+                           - 适用于只读字符串引用场景
+
+                        使用场景：
+                        - Vec<T>：动态数组、列表操作
+                        - String：需要修改的文本处理
+                        - &str：函数参数、字符串视图
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise">
+                    <div class="question">2. 解释Rust中的错误处理机制，包括Result、Option和panic!的使用场景。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        Rust错误处理机制：
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        1. Result<T, E>：
+                           - 用于可恢复的错误
+                           - 包含Ok(T)和Err(E)两种状态
+                           - 强制开发者处理错误情况
+                           - 适用场景：IO操作、解析等可能失败的操作
+
+                        2. Option<T>：
+                           - 处理可能为空的值
+                           - 包含Some(T)和None两种状态
+                           - 避免空指针问题
+                           - 适用场景：可选值、查找操作
+
+                        3. panic!：
+                           - 用于不可恢复的错误
+                           - 导致程序终止
+                           - 适用于程序无法继续执行的情况
+                           - 使用场景：断言、不可能发生的情况
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-section">
+                <h3 class="section-title">代码编写题</h3>
+                
+                <div class="exercise">
+                    <div class="question">1. 实现一个函数，接收一个字符串向量，将其中的每个字符串转换为大写，并移除空字符串。使用迭代器和错误处理。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        fn process_strings(strings: Vec<String>) -> Vec<String> {
+                            strings
+                                .into_iter()
+                                .filter(|s| !s.trim().is_empty())
+                                .map(|s| s.to_uppercase())
+                                .collect()
+                        }
+
+                        fn main() {
+                            let strings = vec![
+                                String::from("hello"),
+                                String::from(""),
+                                String::from("world"),
+                                String::from("  "),
+                                String::from("rust"),
+                            ];
+
+                            let processed = process_strings(strings);
+                            println!("处理后的字符串：{:?}", processed);
+                            // 输出：["HELLO", "WORLD", "RUST"]
+                        }
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise">
+                    <div class="question">2. 实现一个简单的电话簿程序，使用HashMap存储联系人信息，包含添加、删除、查找功能，并处理可能的错误情况。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        use std::collections::HashMap;
+
+                        #[derive(Debug)]
+                        struct Contact {
+                            name: String,
+                            phone: String,
+                            email: Option<String>,
+                        }
+
+                        struct PhoneBook {
+                            contacts: HashMap<String, Contact>,
+                        }
+
+                        impl PhoneBook {
+                            fn new() -> PhoneBook {
+                                PhoneBook {
+                                    contacts: HashMap::new(),
+                                }
+                            }
+
+                            fn add_contact(&mut self, name: String, phone: String, email: Option<String>) 
+                                -> Result<(), String> 
+                            {
+                                if name.trim().is_empty() {
+                                    return Err("名字不能为空".to_string());
+                                }
+                                if phone.trim().is_empty() {
+                                    return Err("电话号码不能为空".to_string());
+                                }
+
+                                let contact = Contact {
+                                    name: name.clone(),
+                                    phone,
+                                    email,
+                                };
+
+                                self.contacts.insert(name, contact);
+                                Ok(())
+                            }
+
+                            fn remove_contact(&mut self, name: &str) -> Result<(), String> {
+                                self.contacts
+                                    .remove(name)
+                                    .map(|_| ())
+                                    .ok_or_else(|| format!("找不到联系人：{}", name))
+                            }
+
+                            fn find_contact(&self, name: &str) -> Option<&Contact> {
+                                self.contacts.get(name)
+                            }
+
+                            fn list_contacts(&self) {
+                                for contact in self.contacts.values() {
+                                    println!("{:?}", contact);
+                                }
+                            }
+                        }
+
+                        fn main() {
+                            let mut phone_book = PhoneBook::new();
+
+                            // 添加联系人
+                            match phone_book.add_contact(
+                                "张三".to_string(),
+                                "123456789".to_string(),
+                                Some("zhangsan@example.com".to_string())
+                            ) {
+                                Ok(()) => println!("添加成功"),
+                                Err(e) => println!("添加失败：{}", e),
+                            }
+
+                            // 查找联系人
+                            if let Some(contact) = phone_book.find_contact("张三") {
+                                println!("找到联系人：{:?}", contact);
+                            }
+
+                            // 删除联系人
+                            match phone_book.remove_contact("张三") {
+                                Ok(()) => println!("删除成功"),
+                                Err(e) => println!("删除失败：{}", e),
+                            }
+
+                            // 尝试查找已删除的联系人
+                            if phone_book.find_contact("张三").is_none() {
+                                println!("联系人已被删除");
+                            }
+                        }
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-section">
+                <h3 class="section-title">实战应用题</h3>
+                
+                <div class="exercise">
+                    <div class="question">1. 实现一个文本分析器，统计文本中的单词频率，并提供排序和查询功能。处理文件读取的错误情况。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        use std::collections::HashMap;
+                        use std::fs::File;
+                        use std::io::{self, BufRead, BufReader};
+                        use std::path::Path;
+
+                        struct TextAnalyzer {
+                            word_frequencies: HashMap<String, usize>,
+                        }
+
+                        impl TextAnalyzer {
+                            fn new() -> TextAnalyzer {
+                                TextAnalyzer {
+                                    word_frequencies: HashMap::new(),
+                                }
+                            }
+
+                            fn analyze_file<P: AsRef<Path>>(&mut self, path: P) -> io::Result<()> {
+                                let file = File::open(path)?;
+                                let reader = BufReader::new(file);
+
+                                for line in reader.lines() {
+                                    let line = line?;
+                                    self.analyze_text(&line);
+                                }
+
+                                Ok(())
+                            }
+
+                            fn analyze_text(&mut self, text: &str) {
+                                for word in text
+                                    .split_whitespace()
+                                    .map(|w| w.trim_matches(|c: char| !c.is_alphanumeric()))
+                                    .filter(|w| !w.is_empty())
+                                    .map(|w| w.to_lowercase())
+                                {
+                                    *self.word_frequencies.entry(word).or_insert(0) += 1;
+                                }
+                            }
+
+                            fn get_frequency(&self, word: &str) -> usize {
+                                self.word_frequencies
+                                    .get(&word.to_lowercase())
+                                    .copied()
+                                    .unwrap_or(0)
+                            }
+
+                            fn get_top_words(&self, n: usize) -> Vec<(String, usize)> {
+                                let mut words: Vec<_> = self.word_frequencies
+                                    .iter()
+                                    .map(|(k, v)| (k.clone(), *v))
+                                    .collect();
+                                
+                                words.sort_by(|a, b| b.1.cmp(&a.1));
+                                words.truncate(n);
+                                words
+                            }
+                        }
+
+                        fn main() -> io::Result<()> {
+                            let mut analyzer = TextAnalyzer::new();
+
+                            // 分析文件
+                            match analyzer.analyze_file("sample.txt") {
+                                Ok(()) => println!("文件分析完成"),
+                                Err(e) => println!("分析文件时出错：{}", e),
+                            }
+
+                            // 获取词频
+                            let word = "rust";
+                            println!("'{}' 出现的次数：{}", word, analyzer.get_frequency(word));
+
+                            // 获取出现最多的10个词
+                            println!("\n出现最多的10个词：");
+                            for (word, count) in analyzer.get_top_words(10) {
+                                println!("{}: {}", word, count);
+                            }
+
+                            Ok(())
+                        }
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise">
+                    <div class="question">2. 开发一个简单的购物车系统，使用合适的集合类型存储商品信息，实现添加、删除、修改数量等功能，并正确处理各种错误情况。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        use std::collections::HashMap;
+
+                        #[derive(Debug, Clone)]
+                        struct Product {
+                            name: String,
+                            price: f64,
+                            stock: u32,
+                        }
+
+                        #[derive(Debug)]
+                        struct CartItem {
+                            product: Product,
+                            quantity: u32,
+                        }
+
+                        #[derive(Debug)]
+                        struct ShoppingCart {
+                            items: HashMap<String, CartItem>,
+                            total: f64,
+                        }
+
+                        impl ShoppingCart {
+                            fn new() -> ShoppingCart {
+                                ShoppingCart {
+                                    items: HashMap::new(),
+                                    total: 0.0,
+                                }
+                            }
+
+                            fn add_item(&mut self, product: Product, quantity: u32) -> Result<(), String> {
+                                if quantity == 0 {
+                                    return Err("数量必须大于0".to_string());
+                                }
+
+                                if quantity > product.stock {
+                                    return Err("库存不足".to_string());
+                                }
+
+                                let total_price = product.price * quantity as f64;
+                                
+                                match self.items.get_mut(&product.name) {
+                                    Some(item) => {
+                                        let new_quantity = item.quantity + quantity;
+                                        if new_quantity > product.stock {
+                                            return Err("库存不足".to_string());
+                                        }
+                                        item.quantity = new_quantity;
+                                        self.total += total_price;
+                                    }
+                                    None => {
+                                        self.items.insert(product.name.clone(), CartItem {
+                                            product,
+                                            quantity,
+                                        });
+                                        self.total += total_price;
+                                    }
+                                }
+
+                                Ok(())
+                            }
+
+                            fn remove_item(&mut self, product_name: &str) -> Result<(), String> {
+                                if let Some(item) = self.items.remove(product_name) {
+                                    self.total -= item.product.price * item.quantity as f64;
+                                    Ok(())
+                                } else {
+                                    Err("商品不在购物车中".to_string())
+                                }
+                            }
+
+                            fn update_quantity(&mut self, product_name: &str, quantity: u32) 
+                                -> Result<(), String> 
+                            {
+                                if quantity == 0 {
+                                    return self.remove_item(product_name);
+                                }
+
+                                if let Some(item) = self.items.get_mut(product_name) {
+                                    if quantity > item.product.stock {
+                                        return Err("库存不足".to_string());
+                                    }
+
+                                    self.total -= item.product.price * item.quantity as f64;
+                                    item.quantity = quantity;
+                                    self.total += item.product.price * quantity as f64;
+                                    Ok(())
+                                } else {
+                                    Err("商品不在购物车中".to_string())
+                                }
+                            }
+
+                            fn get_total(&self) -> f64 {
+                                self.total
+                            }
+
+                            fn clear(&mut self) {
+                                self.items.clear();
+                                self.total = 0.0;
+                            }
+
+                            fn list_items(&self) {
+                                for item in self.items.values() {
+                                    println!(
+                                        "{}: {} x {:.2} = {:.2}",
+                                        item.product.name,
+                                        item.quantity,
+                                        item.product.price,
+                                        item.product.price * item.quantity as f64
+                                    );
+                                }
+                                println!("总计: {:.2}", self.total);
+                            }
+                        }
+
+                        fn main() {
+                            let mut cart = ShoppingCart::new();
+
+                            // 创建一些商品
+                            let products = vec![
+                                Product {
+                                    name: "苹果".to_string(),
+                                    price: 5.0,
+                                    stock: 100,
+                                },
+                                Product {
+                                    name: "香蕉".to_string(),
+                                    price: 3.5,
+                                    stock: 50,
+                                },
+                            ];
+
+                            // 添加商品到购物车
+                            match cart.add_item(products[0].clone(), 3) {
+                                Ok(()) => println!("添加苹果成功"),
+                                Err(e) => println!("添加失败：{}", e),
+                            }
+
+                            match cart.add_item(products[1].clone(), 2) {
+                                Ok(()) => println!("添加香蕉成功"),
+                                Err(e) => println!("添加失败：{}", e),
+                            }
+
+                            // 显示购物车内容
+                            println!("\n购物车内容：");
+                            cart.list_items();
+
+                            // 更新数量
+                            match cart.update_quantity("苹果", 5) {
+                                Ok(()) => println!("\n更新苹果数量成功"),
+                                Err(e) => println!("\n更新失败：{}", e),
+                            }
+
+                            // 显示更新后的购物车内容
+                            println!("\n更新后的购物车内容：");
+                            cart.list_items();
+
+                            // 移除商品
+                            match cart.remove_item("香蕉") {
+                                Ok(()) => println!("\n移除香蕉成功"),
+                                Err(e) => println!("\n移除失败：{}", e),
+                            }
+
+                            // 显示最终的购物车内容
+                            println!("\n最终的购物车内容：");
+                            cart.list_items();
+                        }
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chapter">
+            <h2 class="chapter-title">第6章：泛型与特征</h2>
+            
+            <div class="exercise-section">
+                <h3 class="section-title">基础概念题</h3>
+                
+                <div class="exercise">
+                    <div class="question">1. 解释泛型在Rust中的作用，以及为什么需要使用泛型？</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        泛型的作用和优势：
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        1. 代码复用：
+                           - 允许编写可以处理不同类型的通用代码
+                           - 减少重复代码，提高维护性
+                           - 在编译时进行类型检查
+
+                        2. 类型安全：
+                           - 编译器确保类型正确使用
+                           - 避免运行时类型错误
+                           - 零成本抽象，无运行时开销
+
+                        3. 灵活性：
+                           - 可以用于结构体、函数、方法、特征等
+                           - 支持多个类型参数
+                           - 可以通过特征约束限制类型
+
+                        示例：
+                        // 不使用泛型
+                        fn largest_i32(list: &[i32]) -> i32 { ... }
+                        fn largest_char(list: &[char]) -> char { ... }
+
+                        // 使用泛型
+                        fn largest<T: PartialOrd>(list: &[T]) -> T { ... }
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise">
+                    <div class="question">2. 特征（trait）和特征边界（trait bounds）的关系是什么？它们如何增强代码的表达能力？</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        特征和特征边界的关系：
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        1. 特征（trait）：
+                           - 定义类型的行为
+                           - 类似其他语言的接口
+                           - 可以默认实现
+                           - 支持抽象行为
+
+                        2. 特征边界（trait bounds）：
+                           - 限制泛型类型必须实现特定特征
+                           - 保证类型具有所需功能
+                           - 可以组合多个特征要求
+                           - 支持where子句语法
+
+                        增强表达能力：
+                        // 基本特征定义
+                        trait Display {
+                            fn display(&self) -> String;
+                        }
+
+                        // 使用特征边界
+                        fn print<T: Display>(item: T) {
+                            println!("{}", item.display());
+                        }
+
+                        // 多重特征边界
+                        fn process<T: Display + Clone>(item: T) { ... }
+
+                        // where子句语法
+                        fn complex_function<T, U>(t: T, u: U) -> i32
+                        where
+                            T: Display + Clone,
+                            U: Clone + Debug,
+                        { ... }
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-section">
+                <h3 class="section-title">代码编写题</h3>
+                
+                <div class="exercise">
+                    <div class="question">1. 实现一个泛型的Point<T>结构体，支持任意数值类型的坐标点，并实现计算两点之间距离的方法。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        use std::ops::{Add, Sub, Mul};
+                        use num_traits::Float;
+
+                        #[derive(Debug, Clone, Copy)]
+                        struct Point<T> {
+                            x: T,
+                            y: T,
+                        }
+
+                        impl<T> Point<T>
+                        where
+                            T: Float,
+                        {
+                            fn new(x: T, y: T) -> Self {
+                                Point { x, y }
+                            }
+
+                            fn distance(&self, other: &Point<T>) -> T {
+                                let dx = self.x - other.x;
+                                let dy = self.y - other.y;
+                                (dx * dx + dy * dy).sqrt()
+                            }
+
+                            fn origin() -> Self {
+                                Point { x: T::zero(), y: T::zero() }
+                            }
+                        }
+
+                        fn main() {
+                            // 使用f64类型的点
+                            let p1 = Point::new(1.0, 2.0);
+                            let p2 = Point::new(4.0, 6.0);
+                            println!("两点距离: {}", p1.distance(&p2));
+
+                            // 使用f32类型的点
+                            let p3: Point<f32> = Point::origin();
+                            let p4 = Point::new(3.0f32, 4.0f32);
+                            println!("到原点的距离: {}", p3.distance(&p4));
+                        }
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise">
+                    <div class="question">2. 创建一个通用的Container特征，实现可以存储和获取任意类型数据的容器类型。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        use std::collections::HashMap;
+
+                        // 定义容器特征
+                        trait Container<T> {
+                            fn add(&mut self, item: T);
+                            fn remove(&mut self) -> Option<T>;
+                            fn is_empty(&self) -> bool;
+                            fn size(&self) -> usize;
+                        }
+
+                        // 实现栈容器
+                        #[derive(Debug)]
+                        struct Stack<T> {
+                            items: Vec<T>,
+                        }
+
+                        impl<T> Stack<T> {
+                            fn new() -> Self {
+                                Stack { items: Vec::new() }
+                            }
+                        }
+
+                        impl<T> Container<T> for Stack<T> {
+                            fn add(&mut self, item: T) {
+                                self.items.push(item);
+                            }
+
+                            fn remove(&mut self) -> Option<T> {
+                                self.items.pop()
+                            }
+
+                            fn is_empty(&self) -> bool {
+                                self.items.is_empty()
+                            }
+
+                            fn size(&self) -> usize {
+                                self.items.len()
+                            }
+                        }
+
+                        // 实现队列容器
+                        #[derive(Debug)]
+                        struct Queue<T> {
+                            items: Vec<T>,
+                        }
+
+                        impl<T> Queue<T> {
+                            fn new() -> Self {
+                                Queue { items: Vec::new() }
+                            }
+                        }
+
+                        impl<T> Container<T> for Queue<T> {
+                            fn add(&mut self, item: T) {
+                                self.items.push(item);
+                            }
+
+                            fn remove(&mut self) -> Option<T> {
+                                if !self.items.is_empty() {
+                                    Some(self.items.remove(0))
+                                } else {
+                                    None
+                                }
+                            }
+
+                            fn is_empty(&self) -> bool {
+                                self.items.is_empty()
+                            }
+
+                            fn size(&self) -> usize {
+                                self.items.len()
+                            }
+                        }
+
+                        fn main() {
+                            // 测试栈
+                            let mut stack = Stack::new();
+                            stack.add(1);
+                            stack.add(2);
+                            stack.add(3);
+                            println!("栈大小: {}", stack.size());
+                            while let Some(item) = stack.remove() {
+                                println!("弹出: {}", item);
+                            }
+
+                            // 测试队列
+                            let mut queue = Queue::new();
+                            queue.add("first");
+                            queue.add("second");
+                            queue.add("third");
+                            println!("队列大小: {}", queue.size());
+                            while let Some(item) = queue.remove() {
+                                println!("移除: {}", item);
+                            }
+                        }
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-section">
+                <h3 class="section-title">实战应用题</h3>
+                
+                <div class="exercise">
+                    <div class="question">1. 实现一个泛型的事件处理系统，支持注册、触发和管理不同类型的事件处理器。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        use std::collections::HashMap;
+                        use std::any::{Any, TypeId};
+                        use std::sync::{Arc, Mutex};
+
+                        // 事件处理器特征
+                        trait EventHandler: Send + Sync {
+                            fn handle(&self, event: &dyn Any);
+                            fn as_any(&self) -> &dyn Any;
+                        }
+
+                        // 事件管理器
+                        #[derive(Default)]
+                        struct EventManager {
+                            handlers: HashMap<TypeId, Vec<Box<dyn EventHandler>>>,
+                        }
+
+                        impl EventManager {
+                            fn new() -> Self {
+                                EventManager {
+                                    handlers: HashMap::new(),
+                                }
+                            }
+
+                            fn register<E: 'static + Send + Sync>(&mut self, handler: Box<dyn EventHandler>) {
+                                let type_id = TypeId::of::<E>();
+                                self.handlers
+                                    .entry(type_id)
+                                    .or_insert_with(Vec::new)
+                                    .push(handler);
+                            }
+
+                            fn emit<E: 'static + Send + Sync>(&self, event: &E) {
+                                if let Some(handlers) = self.handlers.get(&TypeId::of::<E>()) {
+                                    for handler in handlers {
+                                        handler.handle(event);
+                                    }
+                                }
+                            }
+                        }
+
+                        // 示例事件
+                        #[derive(Debug)]
+                        struct UserLoginEvent {
+                            username: String,
+                            timestamp: i64,
+                        }
+
+                        #[derive(Debug)]
+                        struct UserLogoutEvent {
+                            username: String,
+                            timestamp: i64,
+                        }
+
+                        // 示例事件处理器
+                        struct LoggingHandler;
+
+                        impl EventHandler for LoggingHandler {
+                            fn handle(&self, event: &dyn Any) {
+                                if let Some(login) = event.downcast_ref::<UserLoginEvent>() {
+                                    println!("用户登录: {:?}", login);
+                                } else if let Some(logout) = event.downcast_ref::<UserLogoutEvent>() {
+                                    println!("用户登出: {:?}", logout);
+                                }
+                            }
+
+                            fn as_any(&self) -> &dyn Any {
+                                self
+                            }
+                        }
+
+                        struct MetricsHandler;
+
+                        impl EventHandler for MetricsHandler {
+                            fn handle(&self, event: &dyn Any) {
+                                if event.downcast_ref::<UserLoginEvent>().is_some() {
+                                    println!("记录登录指标");
+                                } else if event.downcast_ref::<UserLogoutEvent>().is_some() {
+                                    println!("记录登出指标");
+                                }
+                            }
+
+                            fn as_any(&self) -> &dyn Any {
+                                self
+                            }
+                        }
+
+                        fn main() {
+                            let mut manager = EventManager::new();
+
+                            // 注册事件处理器
+                            manager.register::<UserLoginEvent>(Box::new(LoggingHandler));
+                            manager.register::<UserLoginEvent>(Box::new(MetricsHandler));
+                            manager.register::<UserLogoutEvent>(Box::new(LoggingHandler));
+                            manager.register::<UserLogoutEvent>(Box::new(MetricsHandler));
+
+                            // 触发事件
+                            let login = UserLoginEvent {
+                                username: "alice".to_string(),
+                                timestamp: 1234567890,
+                            };
+                            manager.emit(&login);
+
+                            let logout = UserLogoutEvent {
+                                username: "bob".to_string(),
+                                timestamp: 1234567899,
+                            };
+                            manager.emit(&logout);
+                        }
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise">
+                    <div class="question">2. 开发一个泛型的数据验证框架，支持为不同类型定义验证规则，并能够组合多个验证规则。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        use std::collections::HashMap;
+                        use std::fmt::Debug;
+
+                        // 验证结果
+                        #[derive(Debug, Clone)]
+                        struct ValidationError {
+                            field: String,
+                            message: String,
+                        }
+
+                        // 验证规则特征
+                        trait ValidationRule<T> {
+                            fn validate(&self, value: &T) -> Option<ValidationError>;
+                        }
+
+                        // 验证器
+                        struct Validator<T> {
+                            rules: Vec<Box<dyn ValidationRule<T>>>,
+                            field_name: String,
+                        }
+
+                        impl<T> Validator<T> {
+                            fn new(field_name: &str) -> Self {
+                                Validator {
+                                    rules: Vec::new(),
+                                    field_name: field_name.to_string(),
+                                }
+                            }
+
+                            fn add_rule(&mut self, rule: Box<dyn ValidationRule<T>>) {
+                                self.rules.push(rule);
+                            }
+
+                            fn validate(&self, value: &T) -> Vec<ValidationError> {
+                                self.rules
+                                    .iter()
+                                    .filter_map(|rule| rule.validate(value))
+                                    .collect()
+                            }
+                        }
+
+                        // 字符串长度规则
+                        struct StringLengthRule {
+                            min: usize,
+                            max: usize,
+                        }
+
+                        impl ValidationRule<String> for StringLengthRule {
+                            fn validate(&self, value: &String) -> Option<ValidationError> {
+                                let length = value.len();
+                                if length < self.min || length > self.max {
+                                    Some(ValidationError {
+                                        field: "string".to_string(),
+                                        message: format!(
+                                            "长度必须在{}到{}之间，当前长度：{}", 
+                                            self.min, self.max, length
+                                        ),
+                                    })
+                                } else {
+                                    None
+                                }
+                            }
+                        }
+
+                        // 数值范围规则
+                        struct NumberRangeRule<T> {
+                            min: T,
+                            max: T,
+                        }
+
+                        impl<T: PartialOrd + Debug> ValidationRule<T> for NumberRangeRule<T> {
+                            fn validate(&self, value: &T) -> Option<ValidationError> {
+                                if *value < self.min || *value > self.max {
+                                    Some(ValidationError {
+                                        field: "number".to_string(),
+                                        message: format!(
+                                            "值必须在{:?}到{:?}之间，当前值：{:?}", 
+                                            self.min, self.max, value
+                                        ),
+                                    })
+                                } else {
+                                    None
+                                }
+                            }
+                        }
+
+                        // 自定义验证规则
+                        struct CustomRule<T, F>
+                        where
+                            F: Fn(&T) -> Option<ValidationError>,
+                        {
+                            validate_fn: F,
+                        }
+
+                        impl<T, F> ValidationRule<T> for CustomRule<T, F>
+                        where
+                            F: Fn(&T) -> Option<ValidationError>,
+                        {
+                            fn validate(&self, value: &T) -> Option<ValidationError> {
+                                (self.validate_fn)(value)
+                            }
+                        }
+
+                        fn main() {
+                            // 验证字符串
+                            let mut string_validator = Validator::new("username");
+                            string_validator.add_rule(Box::new(StringLengthRule {
+                                min: 3,
+                                max: 20,
+                            }));
+                            string_validator.add_rule(Box::new(CustomRule {
+                                validate_fn: |s: &String| {
+                                    if !s.chars().all(|c| c.is_alphanumeric()) {
+                                        Some(ValidationError {
+                                            field: "username".to_string(),
+                                            message: "只能包含字母和数字".to_string(),
+                                        })
+                                    } else {
+                                        None
+                                    }
+                                },
+                            }));
+
+                            // 验证数字
+                            let mut number_validator = Validator::new("age");
+                            number_validator.add_rule(Box::new(NumberRangeRule {
+                                min: 0,
+                                max: 150,
+                            }));
+
+                            // 测试验证
+                            let username = String::from("user@123");
+                            let age = 200;
+
+                            println!("验证用户名：");
+                            for error in string_validator.validate(&username) {
+                                println!("错误：{}", error.message);
+                            }
+
+                            println!("\n验证年龄：");
+                            for error in number_validator.validate(&age) {
+                                println!("错误：{}", error.message);
+                            }
+                        }
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chapter">
+            <h2 class="chapter-title">第7章：并发编程</h2>
+            
+            <div class="exercise-section">
+                <h3 class="section-title">基础概念题</h3>
+                
+                <div class="exercise">
+                    <div class="question">1. 解释Rust中线程安全的实现机制，以及Send和Sync trait的作用。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        Rust的线程安全机制：
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        1. Send trait：
+                           - 表示类型可以安全地在线程间转移所有权
+                           - 大多数类型都实现了Send
+                           - 例外：Rc<T>, RefCell<T>等
+
+                        2. Sync trait：
+                           - 表示类型可以安全地在多个线程间共享引用
+                           - &T是Sync，则T可以在多线程间共享
+                           - 例外：内部可变性类型
+
+                        3. 所有权和借用检查：
+                           - 编译时防止数据竞争
+                           - 确保共享状态的安全访问
+                           - 强制实施"要么多个不可变引用，要么一个可变引用"
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise">
+                    <div class="question">2. 比较消息传递和共享状态两种并发模型的优缺点。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        并发模型比较：
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        1. 消息传递：
+                           优点：
+                           - 避免直接共享内存
+                           - 更容易理解和维护
+                           - 符合"不要通过共享内存来通信，而要通过通信来共享内存"的理念
+                           缺点：
+                           - 可能有性能开销
+                           - 消息序列化的开销
+                           - 可能需要更多内存
+
+                        2. 共享状态：
+                           优点：
+                           - 理论上更高的性能
+                           - 更少的内存使用
+                           - 适合某些特定场景
+                           缺点：
+                           - 更容易出错
+                           - 死锁风险
+                           - 代码复杂度高
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-section">
+                <h3 class="section-title">代码编写题</h3>
+                
+                <div class="exercise">
+                    <div class="question">1. 实现一个多线程计数器，使用互斥锁(Mutex)保护共享状态。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        use std::sync::{Arc, Mutex};
+                        use std::thread;
+
+                        fn main() {
+                            let counter = Arc::new(Mutex::new(0));
+                            let mut handles = vec![];
+
+                            for _ in 0..10 {
+                                let counter = Arc::clone(&counter);
+                                let handle = thread::spawn(move || {
+                                    let mut num = counter.lock().unwrap();
+                                    *num += 1;
+                                });
+                                handles.push(handle);
+                            }
+
+                            for handle in handles {
+                                handle.join().unwrap();
+                            }
+
+                            println!("计数结果: {}", *counter.lock().unwrap());
+                        }
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise">
+                    <div class="question">2. 使用通道(channel)实现生产者-消费者模式。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        use std::sync::mpsc;
+                        use std::thread;
+                        use std::time::Duration;
+
+                        fn main() {
+                            let (tx, rx) = mpsc::channel();
+
+                            // 生产者线程
+                            let producer = thread::spawn(move || {
+                                for i in 1..=5 {
+                                    tx.send(i).unwrap();
+                                    println!("生产: {}", i);
+                                    thread::sleep(Duration::from_millis(100));
+                                }
+                            });
+
+                            // 消费者线程
+                            let consumer = thread::spawn(move || {
+                                for received in rx {
+                                    println!("消费: {}", received);
+                                    thread::sleep(Duration::from_millis(200));
+                                }
+                            });
+
+                            producer.join().unwrap();
+                            consumer.join().unwrap();
+                        }
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-section">
+                <h3 class="section-title">实战应用题</h3>
+                
+                <div class="exercise">
+                    <div class="question">1. 实现一个并发的网络爬虫，可以同时爬取多个网页并提取信息。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        use reqwest;
+                        use std::sync::{Arc, Mutex};
+                        use std::thread;
+                        use url::Url;
+
+                        #[derive(Debug)]
+                        struct WebPage {
+                            url: String,
+                            content: String,
+                        }
+
+                        struct Crawler {
+                            visited: Arc<Mutex<Vec<String>>>,
+                            results: Arc<Mutex<Vec<WebPage>>>,
+                        }
+
+                        impl Crawler {
+                            fn new() -> Self {
+                                Crawler {
+                                    visited: Arc::new(Mutex::new(Vec::new())),
+                                    results: Arc::new(Mutex::new(Vec::new())),
+                                }
+                            }
+
+                            fn crawl(&self, urls: Vec<String>, num_threads: usize) {
+                                let mut handles = vec![];
+                                let urls = Arc::new(Mutex::new(urls));
+
+                                for _ in 0..num_threads {
+                                    let urls = Arc::clone(&urls);
+                                    let visited = Arc::clone(&self.visited);
+                                    let results = Arc::clone(&self.results);
+
+                                    let handle = thread::spawn(move || {
+                                        loop {
+                                            let url = {
+                                                let mut urls = urls.lock().unwrap();
+                                                if urls.is_empty() {
+                                                    break;
+                                                }
+                                                urls.remove(0)
+                                            };
+
+                                            if !visited.lock().unwrap().contains(&url) {
+                                                match Self::fetch_url(&url) {
+                                                    Ok(content) => {
+                                                        visited.lock().unwrap().push(url.clone());
+                                                        results.lock().unwrap().push(WebPage {
+                                                            url,
+                                                            content,
+                                                        });
+                                                    }
+                                                    Err(e) => eprintln!("Error crawling {}: {}", url, e),
+                                                }
+                                            }
+                                        }
+                                    });
+                                    handles.push(handle);
+                                }
+
+                                for handle in handles {
+                                    handle.join().unwrap();
+                                }
+                            }
+
+                            fn fetch_url(url: &str) -> Result<String, Box<dyn std::error::Error>> {
+                                let response = reqwest::blocking::get(url)?;
+                                let content = response.text()?;
+                                Ok(content)
+                            }
+
+                            fn get_results(&self) -> Vec<WebPage> {
+                                self.results.lock().unwrap().clone()
+                            }
+                        }
+
+                        fn main() {
+                            let crawler = Crawler::new();
+                            let urls = vec![
+                                "https://www.rust-lang.org".to_string(),
+                                "https://doc.rust-lang.org".to_string(),
+                                "https://crates.io".to_string(),
+                            ];
+
+                            crawler.crawl(urls, 3);
+
+                            for page in crawler.get_results() {
+                                println!("已爬取 {}, 内容长度: {}", page.url, page.content.len());
+                            }
+                        }
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise">
+                    <div class="question">2. 开发一个并发任务调度器，支持任务优先级和依赖关系。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        use std::collections::{HashMap, HashSet};
+                        use std::sync::{Arc, Mutex};
+                        use std::thread;
+                        use std::time::Duration;
+
+                        #[derive(Debug, Clone, Eq, PartialEq, Hash)]
+                        struct Task {
+                            id: String,
+                            priority: u32,
+                            dependencies: Vec<String>,
+                            duration: Duration,
+                        }
+
+                        struct Scheduler {
+                            tasks: Arc<Mutex<HashMap<String, Task>>>,
+                            completed: Arc<Mutex<HashSet<String>>>,
+                            running: Arc<Mutex<HashSet<String>>>,
+                        }
+
+                        impl Scheduler {
+                            fn new() -> Self {
+                                Scheduler {
+                                    tasks: Arc::new(Mutex::new(HashMap::new())),
+                                    completed: Arc::new(Mutex::new(HashSet::new())),
+                                    running: Arc::new(Mutex::new(HashSet::new())),
+                                }
+                            }
+
+                            fn add_task(&self, task: Task) {
+                                self.tasks.lock().unwrap().insert(task.id.clone(), task);
+                            }
+
+                            fn can_run(&self, task: &Task) -> bool {
+                                let completed = self.completed.lock().unwrap();
+                                task.dependencies.iter().all(|dep| completed.contains(dep))
+                            }
+
+                            fn get_next_task(&self) -> Option<Task> {
+                                let tasks = self.tasks.lock().unwrap();
+                                let completed = self.completed.lock().unwrap();
+                                let running = self.running.lock().unwrap();
+
+                                tasks
+                                    .values()
+                                    .filter(|task| !completed.contains(&task.id))
+                                    .filter(|task| !running.contains(&task.id))
+                                    .filter(|task| self.can_run(task))
+                                    .max_by_key(|task| task.priority)
+                                    .cloned()
+                            }
+
+                            fn run(&self, num_threads: usize) {
+                                let mut handles = vec![];
+
+                                for _ in 0..num_threads {
+                                    let tasks = Arc::clone(&self.tasks);
+                                    let completed = Arc::clone(&self.completed);
+                                    let running = Arc::clone(&self.running);
+                                    let scheduler = Arc::new(self.clone());
+
+                                    let handle = thread::spawn(move || {
+                                        loop {
+                                            if let Some(task) = scheduler.get_next_task() {
+                                                {
+                                                    let mut running = running.lock().unwrap();
+                                                    running.insert(task.id.clone());
+                                                }
+
+                                                println!("开始执行任务: {}", task.id);
+                                                thread::sleep(task.duration);
+                                                println!("完成任务: {}", task.id);
+
+                                                {
+                                                    let mut completed = completed.lock().unwrap();
+                                                    completed.insert(task.id.clone());
+                                                }
+                                                {
+                                                    let mut running = running.lock().unwrap();
+                                                    running.remove(&task.id);
+                                                }
+                                            } else if completed.lock().unwrap().len() == tasks.lock().unwrap().len() {
+                                                break;
+                                            } else {
+                                                thread::sleep(Duration::from_millis(100));
+                                            }
+                                        }
+                                    });
+                                    handles.push(handle);
+                                }
+
+                                for handle in handles {
+                                    handle.join().unwrap();
+                                }
+                            }
+                        }
+
+                        impl Clone for Scheduler {
+                            fn clone(&self) -> Self {
+                                Scheduler {
+                                    tasks: Arc::clone(&self.tasks),
+                                    completed: Arc::clone(&self.completed),
+                                    running: Arc::clone(&self.running),
+                                }
+                            }
+                        }
+
+                        fn main() {
+                            let scheduler = Scheduler::new();
+
+                            // 添加任务
+                            scheduler.add_task(Task {
+                                id: "task1".to_string(),
+                                priority: 1,
+                                dependencies: vec![],
+                                duration: Duration::from_secs(2),
+                            });
+
+                            scheduler.add_task(Task {
+                                id: "task2".to_string(),
+                                priority: 2,
+                                dependencies: vec!["task1".to_string()],
+                                duration: Duration::from_secs(1),
+                            });
+
+                            scheduler.add_task(Task {
+                                id: "task3".to_string(),
+                                priority: 3,
+                                dependencies: vec!["task1".to_string()],
+                                duration: Duration::from_secs(3),
+                            });
+
+                            // 运行调度器
+                            scheduler.run(2);
+                            println!("所有任务已完成");
+                        }
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chapter">
+            <h2 class="chapter-title">第8章：智能指针</h2>
+            
+            <div class="exercise-section">
+                <h3 class="section-title">基础概念题</h3>
+                
+                <div class="exercise">
+                    <div class="question">1. 解释Rust中各种智能指针的作用和使用场景。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        Rust智能指针类型：
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        1. Box<T>：
+                           - 在堆上分配值
+                           - 适用于编译时大小未知的类型
+                           - 转移所有权到堆上
+                           - 适用场景：递归类型、大对象分配
+
+                        2. Rc<T>：
+                           - 引用计数智能指针
+                           - 允许多重所有权
+                           - 仅用于单线程场景
+                           - 适用场景：数据需要在多处共享
+
+                        3. RefCell<T>：
+                           - 提供内部可变性
+                           - 运行时借用检查
+                           - 绕过编译时借用规则
+                           - 适用场景：需要可变性但编译器无法验证的情况
+
+                        4. Arc<T>：
+                           - 原子引用计数
+                           - 线程安全版本的Rc<T>
+                           - 可在线程间共享
+                           - 适用场景：多线程数据共享
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise">
+                    <div class="question">2. 什么是内部可变性？解释RefCell<T>的工作原理。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        内部可变性原理：
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        1. 概念：
+                           - 允许在外部不可变引用的情况下修改内部数据
+                           - 将借用规则的检查从编译时推迟到运行时
+                           - 保持Rust内存安全的基础上提供灵活性
+
+                        2. RefCell<T>工作原理：
+                           - 使用运行时借用检查
+                           - 维护借用计数
+                           - borrow()返回不可变引用
+                           - borrow_mut()返回可变引用
+                           - 违反借用规则时panic
+
+                        3. 使用场景：
+                           - 当编译器无法理解复杂的所有权模式
+                           - mock对象在测试中
+                           - 在不可变结构中修改特定字段
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-section">
+                <h3 class="section-title">代码编写题</h3>
+                
+                <div class="exercise">
+                    <div class="question">1. 实现一个使用Box<T>的二叉树结构。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        #[derive(Debug)]
+                        enum BinaryTree<T> {
+                            Empty,
+                            NonEmpty(Box<TreeNode<T>>),
+                        }
+
+                        #[derive(Debug)]
+                        struct TreeNode<T> {
+                            value: T,
+                            left: BinaryTree<T>,
+                            right: BinaryTree<T>,
+                        }
+
+                        impl<T: Ord> BinaryTree<T> {
+                            fn new() -> Self {
+                                BinaryTree::Empty
+                            }
+
+                            fn insert(&mut self, value: T) {
+                                match self {
+                                    BinaryTree::Empty => {
+                                        *self = BinaryTree::NonEmpty(Box::new(TreeNode {
+                                            value,
+                                            left: BinaryTree::Empty,
+                                            right: BinaryTree::Empty,
+                                        }));
+                                    }
+                                    BinaryTree::NonEmpty(node) => {
+                                        if value < node.value {
+                                            node.left.insert(value);
+                                        } else {
+                                            node.right.insert(value);
+                                        }
+                                    }
+                                }
+                            }
+
+                            fn contains(&self, value: &T) -> bool {
+                                match self {
+                                    BinaryTree::Empty => false,
+                                    BinaryTree::NonEmpty(node) => {
+                                        if &node.value == value {
+                                            true
+                                        } else if value < &node.value {
+                                            node.left.contains(value)
+                                        } else {
+                                            node.right.contains(value)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        fn main() {
+                            let mut tree = BinaryTree::new();
+                            tree.insert(5);
+                            tree.insert(3);
+                            tree.insert(7);
+                            tree.insert(1);
+                            tree.insert(9);
+
+                            println!("树结构：{:?}", tree);
+                            println!("包含3：{}", tree.contains(&3));
+                            println!("包含6：{}", tree.contains(&6));
+                        }
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise">
+                    <div class="question">2. 使用Rc<T>和RefCell<T>实现一个简单的图结构。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        use std::rc::Rc;
+                        use std::cell::RefCell;
+                        use std::collections::HashMap;
+
+                        #[derive(Debug)]
+                        struct Node {
+                            id: usize,
+                            edges: RefCell<Vec<Rc<Node>>>,
+                        }
+
+                        impl Node {
+                            fn new(id: usize) -> Rc<Node> {
+                                Rc::new(Node {
+                                    id,
+                                    edges: RefCell::new(Vec::new()),
+                                })
+                            }
+
+                            fn add_edge(&self, node: Rc<Node>) {
+                                self.edges.borrow_mut().push(node);
+                            }
+                        }
+
+                        struct Graph {
+                            nodes: HashMap<usize, Rc<Node>>,
+                        }
+
+                        impl Graph {
+                            fn new() -> Self {
+                                Graph {
+                                    nodes: HashMap::new(),
+                                }
+                            }
+
+                            fn add_node(&mut self, id: usize) {
+                                let node = Node::new(id);
+                                self.nodes.insert(id, node);
+                            }
+
+                            fn add_edge(&mut self, from: usize, to: usize) -> Result<(), String> {
+                                let from_node = self.nodes.get(&from)
+                                    .ok_or_else(|| format!("Node {} not found", from))?;
+                                let to_node = self.nodes.get(&to)
+                                    .ok_or_else(|| format!("Node {} not found", to))?;
+                                
+                                from_node.add_edge(Rc::clone(to_node));
+                                Ok(())
+                            }
+
+                            fn get_node(&self, id: usize) -> Option<&Rc<Node>> {
+                                self.nodes.get(&id)
+                            }
+                        }
+
+                        fn main() {
+                            let mut graph = Graph::new();
+                            
+                            // 添加节点
+                            graph.add_node(1);
+                            graph.add_node(2);
+                            graph.add_node(3);
+                            
+                            // 添加边
+                            graph.add_edge(1, 2).unwrap();
+                            graph.add_edge(2, 3).unwrap();
+                            graph.add_edge(3, 1).unwrap();
+                            
+                            // 访问节点
+                            if let Some(node) = graph.get_node(1) {
+                                println!("节点1的边：{:?}", node.edges.borrow());
+                            }
+                        }
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-section">
+                <h3 class="section-title">实战应用题</h3>
+                
+                <div class="exercise">
+                    <div class="question">1. 实现一个使用智能指针的LRU（最近最少使用）缓存。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        use std::collections::HashMap;
+                        use std::rc::Rc;
+                        use std::cell::RefCell;
+
+                        struct LRUCache<K, V> {
+                            capacity: usize,
+                            cache: HashMap<K, Rc<RefCell<Node<K, V>>>>,
+                            head: Option<Rc<RefCell<Node<K, V>>>>,
+                            tail: Option<Rc<RefCell<Node<K, V>>>>,
+                        }
+
+                        struct Node<K, V> {
+                            key: K,
+                            value: V,
+                            prev: Option<Rc<RefCell<Node<K, V>>>>,
+                            next: Option<Rc<RefCell<Node<K, V>>>>,
+                        }
+
+                        impl<K, V> Node<K, V> {
+                            fn new(key: K, value: V) -> Self {
+                                Node {
+                                    key,
+                                    value,
+                                    prev: None,
+                                    next: None,
+                                }
+                            }
+                        }
+
+                        impl<K: std::cmp::Eq + std::hash::Hash + Clone, V> LRUCache<K, V> {
+                            fn new(capacity: usize) -> Self {
+                                LRUCache {
+                                    capacity,
+                                    cache: HashMap::new(),
+                                    head: None,
+                                    tail: None,
+                                }
+                            }
+
+                            fn get(&mut self, key: &K) -> Option<&V> {
+                                if let Some(node) = self.cache.get(key) {
+                                    // 将节点移到头部
+                                    self.move_to_front(Rc::clone(node));
+                                    Some(&node.borrow().value)
+                                } else {
+                                    None
+                                }
+                            }
+
+                            fn put(&mut self, key: K, value: V) {
+                                if let Some(node) = self.cache.get(&key) {
+                                    // 更新现有节点
+                                    node.borrow_mut().value = value;
+                                    self.move_to_front(Rc::clone(node));
+                                } else {
+                                    // 创建新节点
+                                    let new_node = Rc::new(RefCell::new(Node::new(key.clone(), value)));
+                                    
+                                    if self.cache.len() >= self.capacity {
+                                        // 移除最后一个节点
+                                        if let Some(last) = self.tail.take() {
+                                            let prev = last.borrow().prev.clone();
+                                            if let Some(prev) = prev {
+                                                prev.borrow_mut().next = None;
+                                                self.tail = Some(prev);
+                                            }
+                                            self.cache.remove(&last.borrow().key);
+                                        }
+                                    }
+
+                                    // 添加新节点到头部
+                                    match self.head.take() {
+                                        Some(old_head) => {
+                                            old_head.borrow_mut().prev = Some(Rc::clone(&new_node));
+                                            new_node.borrow_mut().next = Some(old_head);
+                                            self.head = Some(Rc::clone(&new_node));
+                                        }
+                                        None => {
+                                            self.head = Some(Rc::clone(&new_node));
+                                            self.tail = Some(Rc::clone(&new_node));
+                                        }
+                                    }
+
+                                    self.cache.insert(key, new_node);
+                                }
+                            }
+
+                            fn move_to_front(&mut self, node: Rc<RefCell<Node<K, V>>>) {
+                                let prev = node.borrow().prev.clone();
+                                let next = node.borrow().next.clone();
+
+                                // 处理前后节点的连接
+                                if let Some(prev) = prev {
+                                    prev.borrow_mut().next = next.clone();
+                                }
+                                if let Some(next) = next {
+                                    next.borrow_mut().prev = prev;
+                                }
+
+                                // 如果是尾节点，更新尾指针
+                                if self.tail.as_ref().map(|t| Rc::ptr_eq(&t, &node)).unwrap_or(false) {
+                                    self.tail = node.borrow().prev.clone();
+                                }
+
+                                // 将节点移到头部
+                                if !self.head.as_ref().map(|h| Rc::ptr_eq(&h, &node)).unwrap_or(false) {
+                                    if let Some(old_head) = self.head.take() {
+                                        old_head.borrow_mut().prev = Some(Rc::clone(&node));
+                                        node.borrow_mut().next = Some(old_head);
+                                        node.borrow_mut().prev = None;
+                                    }
+                                    self.head = Some(node);
+                                }
+                            }
+                        }
+
+                        fn main() {
+                            let mut cache = LRUCache::new(2);
+                            
+                            cache.put(1, "one");
+                            cache.put(2, "two");
+                            println!("get 1: {:?}", cache.get(&1));  // 输出 "one"
+                            
+                            cache.put(3, "three");  // 移除 2
+                            println!("get 2: {:?}", cache.get(&2));  // 输出 None
+                            println!("get 3: {:?}", cache.get(&3));  // 输出 "three"
+                        }
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise">
+                    <div class="question">2. 使用Rc<T>和RefCell<T>实现一个简单的观察者模式。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        use std::rc::Rc;
+                        use std::cell::RefCell;
+
+                        trait Observer {
+                            fn update(&self, message: &str);
+                        }
+
+                        struct Subject {
+                            observers: RefCell<Vec<Rc<dyn Observer>>>,
+                            state: RefCell<String>,
+                        }
+
+                        impl Subject {
+                            fn new() -> Self {
+                                Subject {
+                                    observers: RefCell::new(Vec::new()),
+                                    state: RefCell::new(String::new()),
+                                }
+                            }
+
+                            fn attach(&self, observer: Rc<dyn Observer>) {
+                                self.observers.borrow_mut().push(observer);
+                            }
+
+                            fn set_state(&self, state: String) {
+                                *self.state.borrow_mut() = state;
+                                self.notify();
+                            }
+
+                            fn notify(&self) {
+                                let state = self.state.borrow();
+                                for observer in self.observers.borrow().iter() {
+                                    observer.update(&state);
+                                }
+                            }
+                        }
+
+                        struct ConcreteObserver {
+                            name: String,
+                        }
+
+                        impl ConcreteObserver {
+                            fn new(name: String) -> Self {
+                                ConcreteObserver { name }
+                            }
+                        }
+
+                        impl Observer for ConcreteObserver {
+                            fn update(&self, message: &str) {
+                                println!("观察者 {} 收到消息: {}", self.name, message);
+                            }
+                        }
+
+                        fn main() {
+                            let subject = Subject::new();
+
+                            let observer1 = Rc::new(ConcreteObserver::new("Observer 1".to_string()));
+                            let observer2 = Rc::new(ConcreteObserver::new("Observer 2".to_string()));
+
+                            subject.attach(Rc::clone(&observer1));
+                            subject.attach(Rc::clone(&observer2));
+
+                            subject.set_state("Hello, Observers!".to_string());
+                            subject.set_state("State Changed!".to_string());
+                        }
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chapter">
+            <h2 class="chapter-title">第9章：高级特性</h2>
+            
+            <div class="exercise-section">
+                <h3 class="section-title">基础概念题</h3>
+                
+                <div class="exercise">
+                    <div class="question">1. 什么是unsafe Rust？解释使用unsafe的场景和注意事项。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        unsafe Rust的重要概念：
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        1. 使用场景：
+                           - 解引用裸指针
+                           - 调用不安全函数
+                           - 访问/修改可变静态变量
+                           - 实现不安全trait
+                           - 访问联合体字段
+
+                        2. 注意事项：
+                           - 尽量减少unsafe代码块的大小
+                           - 提供安全的抽象层
+                           - 详细文档说明unsafe的原因
+                           - 确保不违反Rust的安全保证
+
+                        3. 最佳实践：
+                           - 将unsafe代码封装在安全接口中
+                           - 仔细验证unsafe代码的正确性
+                           - 明确记录所有不变量
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise">
+                    <div class="question">2. 解释高级trait特性，包括关联类型、默认类型参数、完全限定语法等概念。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        高级trait特性：
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        1. 关联类型：
+                           - 在trait中定义占位符类型
+                           - 简化泛型参数
+                           trait Container {
+                               type Item;
+                               fn get(&self) -> Option<&Self::Item>;
+                           }
+
+                        2. 默认类型参数：
+                           - 为泛型类型提供默认类型
+                           - 减少类型注释
+                           trait Default<T = Self> {
+                               fn default() -> T;
+                           }
+
+                        3. 完全限定语法：
+                           - 处理同名方法的歧义
+                           - 精确指定调用哪个trait的方法
+                           <Type as Trait>::function(args);
+
+                        4. 父trait：
+                           - trait之间的继承关系
+                           - 组合多个trait的功能
+                           trait Animal: Breathe + Move {
+                               // ...
+                           }
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-section">
+                <h3 class="section-title">代码编写题</h3>
+                
+                <div class="exercise">
+                    <div class="question">1. 实现一个安全的封装，包装unsafe的内存操作，用于创建一个固定大小的环形缓冲区。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        use std::mem::MaybeUninit;
+
+                        pub struct RingBuffer<T> {
+                            buffer: Box<[MaybeUninit<T>]>,
+                            read_pos: usize,
+                            write_pos: usize,
+                            len: usize,
+                        }
+
+                        impl<T> RingBuffer<T> {
+                            pub fn new(capacity: usize) -> Self {
+                                let mut buffer = Vec::with_capacity(capacity);
+                                // 安全：MaybeUninit不需要初始化
+                                unsafe {
+                                    buffer.set_len(capacity);
+                                }
+                                RingBuffer {
+                                    buffer: buffer.into_boxed_slice(),
+                                    read_pos: 0,
+                                    write_pos: 0,
+                                    len: 0,
+                                }
+                            }
+
+                            pub fn push(&mut self, value: T) -> Result<(), T> {
+                                if self.len == self.buffer.len() {
+                                    return Err(value);
+                                }
+
+                                // 安全：我们确保写入位置是有效的
+                                unsafe {
+                                    self.buffer[self.write_pos].as_mut_ptr().write(value);
+                                }
+
+                                self.write_pos = (self.write_pos + 1) % self.buffer.len();
+                                self.len += 1;
+                                Ok(())
+                            }
+
+                            pub fn pop(&mut self) -> Option<T> {
+                                if self.len == 0 {
+                                    return None;
+                                }
+
+                                // 安全：我们确保读取位置包含有效值
+                                let value = unsafe {
+                                    self.buffer[self.read_pos].as_ptr().read()
+                                };
+
+                                self.read_pos = (self.read_pos + 1) % self.buffer.len();
+                                self.len -= 1;
+                                Some(value)
+                            }
+
+                            pub fn len(&self) -> usize {
+                                self.len
+                            }
+
+                            pub fn is_empty(&self) -> bool {
+                                self.len == 0
+                            }
+
+                            pub fn capacity(&self) -> usize {
+                                self.buffer.len()
+                            }
+                        }
+
+                        impl<T> Drop for RingBuffer<T> {
+                            fn drop(&mut self) {
+                                while self.pop().is_some() {}
+                            }
+                        }
+
+                        fn main() {
+                            let mut buffer = RingBuffer::<i32>::new(3);
+                            
+                            assert!(buffer.push(1).is_ok());
+                            assert!(buffer.push(2).is_ok());
+                            assert!(buffer.push(3).is_ok());
+                            assert!(buffer.push(4).is_err());
+
+                            assert_eq!(buffer.pop(), Some(1));
+                            assert!(buffer.push(4).is_ok());
+                            
+                            assert_eq!(buffer.pop(), Some(2));
+                            assert_eq!(buffer.pop(), Some(3));
+                            assert_eq!(buffer.pop(), Some(4));
+                            assert_eq!(buffer.pop(), None);
+                        }
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise">
+                    <div class="question">2. 使用高级trait特性实现一个通用的数据序列化框架。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        use std::collections::HashMap;
+                        use std::fmt::Debug;
+
+                        // 序列化trait
+                        trait Serialize {
+                            fn serialize(&self) -> String;
+                        }
+
+                        // 反序列化trait
+                        trait Deserialize: Sized {
+                            fn deserialize(s: &str) -> Result<Self, String>;
+                        }
+
+                        // 序列化格式trait
+                        trait SerializeFormat {
+                            type Error;
+                            fn to_string<T: Serialize>(value: &T) -> Result<String, Self::Error>;
+                            fn from_string<T: Deserialize>(s: &str) -> Result<T, Self::Error>;
+                        }
+
+                        // JSON格式实现
+                        struct JsonFormat;
+
+                        impl SerializeFormat for JsonFormat {
+                            type Error = String;
+
+                            fn to_string<T: Serialize>(value: &T) -> Result<String, Self::Error> {
+                                Ok(value.serialize())
+                            }
+
+                            fn from_string<T: Deserialize>(s: &str) -> Result<T, Self::Error> {
+                                T::deserialize(s)
+                            }
+                        }
+
+                        // 为基本类型实现序列化
+                        impl Serialize for i32 {
+                            fn serialize(&self) -> String {
+                                self.to_string()
+                            }
+                        }
+
+                        impl Deserialize for i32 {
+                            fn deserialize(s: &str) -> Result<Self, String> {
+                                s.parse().map_err(|e| e.to_string())
+                            }
+                        }
+
+                        impl Serialize for String {
+                            fn serialize(&self) -> String {
+                                format!("\"{}\"", self)
+                            }
+                        }
+
+                        impl Deserialize for String {
+                            fn deserialize(s: &str) -> Result<Self, String> {
+                                Ok(s.trim_matches('"').to_string())
+                            }
+                        }
+
+                        // 为Vec实现序列化
+                        impl<T: Serialize> Serialize for Vec<T> {
+                            fn serialize(&self) -> String {
+                                let items: Vec<String> = self.iter()
+                                    .map(|item| item.serialize())
+                                    .collect();
+                                format!("[{}]", items.join(","))
+                            }
+                        }
+
+                        // 为HashMap实现序列化
+                        impl<K: Serialize + Debug, V: Serialize> Serialize for HashMap<K, V> {
+                            fn serialize(&self) -> String {
+                                let items: Vec<String> = self.iter()
+                                    .map(|(k, v)| format!("{}:{}", k.serialize(), v.serialize()))
+                                    .collect();
+                                format!("{{{}}}", items.join(","))
+                            }
+                        }
+
+                        // 序列化器
+                        struct Serializer<F: SerializeFormat> {
+                            format: std::marker::PhantomData<F>,
+                        }
+
+                        impl<F: SerializeFormat> Serializer<F> {
+                            fn new() -> Self {
+                                Serializer {
+                                    format: std::marker::PhantomData,
+                                }
+                            }
+
+                            fn serialize<T: Serialize>(&self, value: &T) -> Result<String, F::Error> {
+                                F::to_string(value)
+                            }
+
+                            fn deserialize<T: Deserialize>(&self, s: &str) -> Result<T, F::Error> {
+                                F::from_string(s)
+                            }
+                        }
+
+                        fn main() {
+                            let serializer = Serializer::<JsonFormat>::new();
+
+                            // 序列化基本类型
+                            let num = 42;
+                            let serialized = serializer.serialize(&num).unwrap();
+                            println!("序列化数字: {}", serialized);
+                            let deserialized: i32 = serializer.deserialize(&serialized).unwrap();
+                            println!("反序列化数字: {}", deserialized);
+
+                            // 序列化字符串
+                            let text = String::from("Hello");
+                            let serialized = serializer.serialize(&text).unwrap();
+                            println!("序列化字符串: {}", serialized);
+                            let deserialized: String = serializer.deserialize(&serialized).unwrap();
+                            println!("反序列化字符串: {}", deserialized);
+
+                            // 序列化Vec
+                            let vec = vec![1, 2, 3];
+                            let serialized = serializer.serialize(&vec).unwrap();
+                            println!("序列化数组: {}", serialized);
+
+                            // 序列化HashMap
+                            let mut map = HashMap::new();
+                            map.insert(String::from("key"), 123);
+                            let serialized = serializer.serialize(&map).unwrap();
+                            println!("序列化Map: {}", serialized);
+                        }
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-section">
+                <h3 class="section-title">实战应用题</h3>
+                
+                <div class="exercise">
+                    <div class="question">1. 实现一个简单的内存池，使用unsafe代码管理固定大小的内存块分配。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        use std::alloc::{alloc, dealloc, Layout};
+                        use std::ptr::NonNull;
+                        use std::marker::PhantomData;
+                        use std::mem;
+
+                        struct MemoryBlock {
+                            next: Option<NonNull<MemoryBlock>>,
+                        }
+
+                        struct MemoryPool<T> {
+                            head: Option<NonNull<MemoryBlock>>,
+                            layout: Layout,
+                            capacity: usize,
+                            _marker: PhantomData<T>,
+                        }
+
+                        impl<T> MemoryPool<T> {
+                            pub fn new(capacity: usize) -> Self {
+                                let layout = Layout::new::<T>();
+                                let block_size = mem::size_of::<MemoryBlock>()
+                                    .max(layout.size());
+                                let block_align = mem::align_of::<MemoryBlock>()
+                                    .max(layout.align());
+                                let layout = Layout::from_size_align(block_size, block_align)
+                                    .unwrap();
+
+                                let mut pool = MemoryPool {
+                                    head: None,
+                                    layout,
+                                    capacity,
+                                    _marker: PhantomData,
+                                };
+
+                                // 预分配内存块
+                                unsafe {
+                                    pool.allocate_blocks();
+                                }
+
+                                pool
+                            }
+
+                            unsafe fn allocate_blocks(&mut self) {
+                                for _ in 0..self.capacity {
+                                    let block = NonNull::new(alloc(self.layout) as *mut MemoryBlock)
+                                        .expect("内存分配失败");
+                                    (*block.as_ptr()).next = self.head;
+                                    self.head = Some(block);
+                                }
+                            }
+
+                            pub fn allocate(&mut self) -> Option<NonNull<T>> {
+                                self.head.map(|block| unsafe {
+                                    self.head = (*block.as_ptr()).next;
+                                    NonNull::new(block.as_ptr() as *mut T).unwrap()
+                                })
+                            }
+
+                            pub fn deallocate(&mut self, ptr: NonNull<T>) {
+                                unsafe {
+                                    let block = NonNull::new(ptr.as_ptr() as *mut MemoryBlock).unwrap();
+                                    (*block.as_ptr()).next = self.head;
+                                    self.head = Some(block);
+                                }
+                            }
+                        }
+
+                        impl<T> Drop for MemoryPool<T> {
+                            fn drop(&mut self) {
+                                unsafe {
+                                    let mut current = self.head;
+                                    while let Some(block) = current {
+                                        let next = (*block.as_ptr()).next;
+                                        dealloc(block.as_ptr() as *mut u8, self.layout);
+                                        current = next;
+                                    }
+                                }
+                            }
+                        }
+
+                        // 使用示例
+                        #[derive(Debug)]
+                        struct MyStruct {
+                            data: i32,
+                        }
+
+                        fn main() {
+                            let mut pool = MemoryPool::<MyStruct>::new(5);
+                            
+                            // 分配对象
+                            let mut allocated = Vec::new();
+                            for i in 0..3 {
+                                if let Some(ptr) = pool.allocate() {
+                                    unsafe {
+                                        ptr.as_ptr().write(MyStruct { data: i });
+                                        allocated.push(ptr);
+                                    }
+                                }
+                            }
+
+                            // 使用对象
+                            for ptr in &allocated {
+                                unsafe {
+                                    println!("值: {:?}", ptr.as_ref());
+                                }
+                            }
+
+                            // 释放对象
+                            for ptr in allocated {
+                                unsafe {
+                                    ptr.as_ptr().drop_in_place();
+                                }
+                                pool.deallocate(ptr);
+                            }
+                        }
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise">
+                    <div class="question">2. 实现一个高级抽象的异步任务调度器，使用trait和关联类型处理不同类型的任务。</div>
+                    <button class="toggle-answer">显示答案</button>
+                    <div class="answer">
+                        <div class="code-block">
+                            <pre><code class="rust">
+                        use std::collections::VecDeque;
+                        use std::future::Future;
+                        use std::pin::Pin;
+                        use std::task::{Context, Poll};
+                        use std::time::{Duration, Instant};
+
+                        // 任务特征
+                        trait Task {
+                            type Output;
+                            fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output>;
+                        }
+
+                        // 异步任务包装器
+                        struct AsyncTask<T: Task> {
+                            inner: Pin<Box<T>>,
+                            created_at: Instant,
+                            priority: u8,
+                        }
+
+                        impl<T: Task> AsyncTask<T> {
+                            fn new(task: T, priority: u8) -> Self {
+                                AsyncTask {
+                                    inner: Box::pin(task),
+                                    created_at: Instant::now(),
+                                    priority,
+                                }
+                            }
+                        }
+
+                        // 调度器
+                        struct Scheduler {
+                            tasks: VecDeque<Box<dyn Task<Output = ()>>>,
+                            timer_tasks: Vec<(Instant, Box<dyn Task<Output = ()>>)>,
+                        }
+
+                        impl Scheduler {
+                            fn new() -> Self {
+                                Scheduler {
+                                    tasks: VecDeque::new(),
+                                    timer_tasks: Vec::new(),
+                                }
+                            }
+
+                            fn spawn<T>(&mut self, task: T)
+                            where
+                                T: Task<Output = ()> + 'static,
+                            {
+                                self.tasks.push_back(Box::new(task));
+                            }
+
+                            fn spawn_after<T>(&mut self, task: T, delay: Duration)
+                            where
+                                T: Task<Output = ()> + 'static,
+                            {
+                                let execute_at = Instant::now() + delay;
+                                self.timer_tasks.push((execute_at, Box::new(task)));
+                            }
+
+                            fn run(&mut self) {
+                                let mut context = Context::from_waker(futures::task::noop_waker_ref());
+
+                                loop {
+                                    // 处理定时任务
+                                    let now = Instant::now();
+                                    let ready_tasks: Vec<_> = self
+                                        .timer_tasks
+                                        .drain_filter(|(time, _)| *time <= now)
+                                        .collect();
+
+                                    for (_, task) in ready_tasks {
+                                        self.tasks.push_back(task);
+                                    }
+
+                                    if self.tasks.is_empty() && self.timer_tasks.is_empty() {
+                                        break;
+                                    }
+
+                                    // 执行普通任务
+                                    if let Some(mut task) = self.tasks.pop_front() {
+                                        match Pin::new(&mut task).poll(&mut context) {
+                                            Poll::Ready(()) => {}
+                                            Poll::Pending => {
+                                                self.tasks.push_back(task);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        // 示例任务
+                        struct PrintTask {
+                            message: String,
+                            printed: bool,
+                        }
+
+                        impl Task for PrintTask {
+                            type Output = ();
+
+                            fn poll(mut self: Pin<&mut Self>, _: &mut Context<'_>) -> Poll<Self::Output> {
+                                if !self.printed {
+                                    println!("{}", self.message);
+                                    self.printed = true;
+                                    Poll::Ready(())
+                                } else {
+                                    Poll::Pending
+                                }
+                            }
+                        }
+
+                        struct DelayTask {
+                            delay_until: Instant,
+                            completed: bool,
+                        }
+
+                        impl Task for DelayTask {
+                            type Output = ();
+
+                            fn poll(mut self: Pin<&mut Self>, _: &mut Context<'_>) -> Poll<Self::Output> {
+                                if !self.completed && Instant::now() >= self.delay_until {
+                                    self.completed = true;
+                                    Poll::Ready(())
+                                } else {
+                                    Poll::Pending
+                                }
+                            }
+                        }
+
+                        fn main() {
+                            let mut scheduler = Scheduler::new();
+
+                            // 添加即时任务
+                            scheduler.spawn(PrintTask {
+                                message: "Task 1".to_string(),
+                                printed: false,
+                            });
+
+                            // 添加延迟任务
+                            scheduler.spawn_after(
+                                PrintTask {
+                                    message: "Delayed Task".to_string(),
+                                    printed: false,
+                                },
+                                Duration::from_secs(1),
+                            );
+
+                            // 运行调度器
+                            scheduler.run();
+                        }
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleButtons = document.querySelectorAll('.toggle-answer');
+            
+            toggleButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const answer = this.nextElementSibling;
+                    const isHidden = answer.style.display === 'none' || answer.style.display === '';
+                    
+                    answer.style.display = isHidden ? 'block' : 'none';
+                    this.textContent = isHidden ? '隐藏答案' : '显示答案';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

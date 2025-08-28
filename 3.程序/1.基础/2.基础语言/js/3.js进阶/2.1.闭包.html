@@ -1,0 +1,35 @@
+<!-- 
+    闭包
+    条件（闭包=内层函数+外层函数变量）：
+    1.函数嵌套函数
+    2.内部函数访问外函数声明的变量
+
+    闭包作用
+    1.外函数可以把内函数返回值，此时在外函数的外部就可以访问此函数的局部变量
+
+    问题
+    闭包会导致内存泄漏
+ -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        //以下就是闭包，外部可以访问到局部变量
+        let fun = function funOuter(){
+            let a =1
+           function functionInner(){
+                console.log(a)
+            }
+
+            return functionInner
+        }
+
+        fun()
+    </script>
+</body>
+</html>

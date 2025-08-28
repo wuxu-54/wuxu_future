@@ -1,0 +1,52 @@
+<!-- 
+    防抖：防止多次触发，只执行最后一次
+
+    实现
+    1.lodash > debounce()  ,通过此函数实现，实现原理：设定延迟时间，才调用函数。短时间频繁触发
+    2.手写防抖函数
+ -->
+ <!DOCTYPE html>
+ <html lang="zh-CN">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>防抖</title>
+    <script src="./lodash.js"></script>
+    <style>
+        .box{
+            width: 200px;
+            height: 200px;
+            background-color: gray;
+        }
+    </style>
+ </head>
+ 
+ <body>
+    <div class="box"></div>
+    <script>
+        //需求，鼠标滑动，ui显示+1
+
+        const div = document.querySelector(".box")
+        let i = 0
+        function moveMuouse(){
+            div.innerHTML = i++
+        }
+        // div.addEventListener('mousemove',moveMuouse)//这样写会频繁触发，那如果增加防抖可以避免此类情况
+
+        // div.addEventListener('mousemove',_.debounce(moveMuouse,500)) //debounce :参数1 是触发的函数，参数2是延迟时间单位ms
+
+
+        //手写防抖函数，使用定时器
+
+        function mDebounce(fun,time){
+            let timeout
+            return function(){ //因为带参函数会被立刻执行，所以最终要返回一个不带参函数
+               if (timeout) clearTimeout(timeout)
+                timeout =  setTimeout(fun,200)
+            }
+        }
+
+        div.addEventListener('mousemove',mDebounce(moveMuouse,500))
+    </script>
+ </body>
+ </html>

@@ -1,0 +1,53 @@
+<!-- 
+    注意！选择器很重要，css中根据【选择器】匹配到标签或元素进行样式处理。
+
+
+    选择器类型（下面【K】 可以是 任何标签、类名称、id）：
+
+    * 通配选择器：* {}   设置全局默认标签样式
+    * 元素选择器: 标签名{}                    例如：div{}       div标签的元素
+    * 类选择器: 类名{}                       例如：.class{}     class名的元素
+    * id选择器: id名{}                       例如：#name{}     id是name的元素
+    * 并集选择器: K,K{}                      例如：p,.class{}   p或class名的元素
+    * 交集选择器: KK{}                       例如：p.class{}     p并且class名的元素 p#name{} p并且是id是name的元素
+    * 子代选择器: K>K{}                      例如：p>.class{}   p儿子的class名的元素
+    * 后代选择器:K K{}                       例如 p .class{}    p后代元素 class名的元素
+    * 兄弟选择器: K~K{} K+K{}                     
+            例如：写法1：p~.class{} 所有p同级的class名的元素
+                写法2：p+div{} 与p紧紧相邻的下面的div元素，注意 是查找p后面相邻的兄弟div元素，间隔的不算
+
+    * 属性选择器: [标签内属性名+属性值]{}      
+            例如：写法1：[title]{} 具有title属性的元素 ;
+                写法2：[title="hello"]{} 具有title属性，且值为hello；
+                写法3：[title^="a"]{} 具有title属性 ，且值以a开头；
+                写法4：[title$="u"]{} 具有title属性 ，且值以u结尾；
+                写法5：[title*="k"]{} 具有title属性 ，且值包含k；
+
+   
+    * 伪类选择器: K:伪类api{}    伪类选择器表示dom中某个状态（比如：鼠标触摸、所在位置等等的特殊状态）的元素        
+            例如： p:first-child{} p标签元素,且是父元素中第一个
+                .class:nth-child(子标签位置n){} class类名元素,且是父元素中第n个
+
+
+    * 伪元素选择器: K::伪元素api{}     伪元素选择器一般用于表示 某个状态且不在dom中 的元素
+             例如：div::shadow{};  div标签元素且伪元素为::shadow的api 的元素
+ -->
+
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        .p:nth-child(){color: aliceblue;}
+        div::shadow{color: aliceblue;}
+    </style>
+ </head>
+ <body>
+    <div class="p">
+        <div class="c"></div>
+    </div>
+ </body>
+ </html>

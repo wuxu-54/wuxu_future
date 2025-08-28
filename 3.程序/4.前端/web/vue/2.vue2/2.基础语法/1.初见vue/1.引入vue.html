@@ -1,0 +1,45 @@
+<!-- 
+    vue其实就是自定义Dom属性，vue 设计受到 MVVM 模型启发
+    
+    vue:
+    1.new Vue实例，绑定到element上，关系一一对应。（一个vue通过类名等方式绑定多个元素，只有第一个元素生效;一个元素，被多个Vue绑定，也只有第一个Vue有效）
+    2.容器写法符合html规范，只是加入了vue语法
+    3.容器中的代码称为【vue模版】
+    4.{{}} 自动读取Vue中的数据，可以写表达式语句，不可以写无返回值语句
+
+    这里说下理解：Attribute中可以直接写vue中data对象的prop，内容中使用则需要{{}}包裹
+
+    表达式：有返回值的代码语句 如：三元表达式
+    代码：执行语句 如：for、if
+ -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hello vue</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">{{message}}</div>
+    <!-- <div class="t2">{{Date.now()}}</div> -->
+    <div class="t3">{{1==="1"?"1111":"222"}}</div>
+
+    <script>
+        var app = new Vue({
+            el:'#app',// vue绑定到element上，也就是为此元素服务
+            data:{
+                message:"123"
+            }
+        })
+
+        new Vue({
+            el:'#app',// vue绑定到element上，也就是为此元素服务
+            data:{
+                message:"1234"
+            }
+        })
+    </script>
+</body>
+
+</html>

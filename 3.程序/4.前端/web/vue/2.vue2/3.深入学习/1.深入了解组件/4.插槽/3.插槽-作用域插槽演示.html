@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <title>作用域插槽</title>
+</head>
+
+<body>
+     <!-- 本案例，为了清晰说明 作用域插槽要解决的问题 -->
+   
+      <div id="t">
+        <demo>
+            <!-- 
+                使用作用域插槽
+                将插槽对象命名为 slotProps
+            -->
+            <template v-slot:default="slotProps">
+                {{slotProps.user1.newData}}
+            </template>
+        </demo>
+
+
+        <!-- 上面是独占默认插槽，其可以简写： -->
+        <demo v-slot="slotProps">
+            {{slotProps.user1.newData}}
+        </demo>
+      </div>
+      <script>
+      Vue.component('demo',{
+        data:function(){
+           return{ 
+            user:{
+            newData:"333",
+            oldData:"111"
+          }
+          
+        }},
+        template:
+        `
+        <div>
+            // 将数据user绑定到 user1 属性上，这个属性又叫做 【插槽prop】
+            <slot v-bind:user1="user">{{user.oldData}}</slot>
+        </div>
+        `
+      })
+      
+      new Vue({
+        el:"#t",
+      })
+
+      </script>
+</body>
+
+</html>

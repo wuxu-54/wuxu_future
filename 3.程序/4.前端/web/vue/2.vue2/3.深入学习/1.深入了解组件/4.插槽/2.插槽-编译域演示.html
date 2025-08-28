@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <title>组件-插槽</title>
+</head>
+
+<body>
+  <div id="test">
+    <!-- 正常：因为属于父组件作用域，可以获取父组件的数值即Vue对象中的data数据 -->
+    <ttt :url1='parentData'>parentData:{{parentData}}</ttt>
+
+    <!-- 报错: 属于父组件作用域，无法获取组件内部即子组件作用域中的data数据 -->
+    <ttt url1="1">childData:{{childData}}</ttt>
+  </div>
+  <script>
+    Vue.component('ttt', {
+      props: ['url1'],
+      data:function(){
+        return {
+          childData:'222'
+        }
+      },
+      template:
+        `<div>
+       ppp= {{url1}},
+       parent={{parentData}} ,//这里报错，因为此处属于子组件作用域，无法直接使用父组件作用域中的数据
+       <slot></slot>
+    </div>
+    `
+    })
+
+    new Vue({
+      el: "#test", //组件元素绑定
+      data:{
+        parentData:'111'
+      }
+    })
+
+  </script>
+
+</body>
+
+</html>

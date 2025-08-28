@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3d-透视点位置</title>
+
+   <style>
+    .outer{
+        width: 200px;
+        height: 200px;
+        border: 1px solid black;
+        margin: 100px auto;
+        position: relative;
+        /* 开启3D空间 */
+        transform-style: preserve-3d;
+        /* 设置景深*/
+        perspective: 200px;
+
+        /* 设置透视点的位置 :观察者位置 ；参数1 增大相当于人往右移动，参数2 增大相当于人蹲下*/
+        perspective-origin:50px 2px;
+    }
+    .inner{
+        width: 200px;
+        height: 200px;
+        background-color: aqua;
+        transform:rotateX(20deg)  ;
+    }
+
+    
+   </style>
+   </head>
+<body>
+    <div class="outer">
+        <div class="inner">你好啊</div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>案例-随机点名</title>
+</head>
+
+<body>
+    <!-- 从一组人名中，随机挨个点名。这里挨个就表示，点过一次不再点 -->
+
+    <button id="btn" onclick="nameT()">点名</button>
+
+    <script>
+
+        document.getElementById('btn').onclick = nameT()
+
+        let arr = ['赵云', '黄忠', '关羽', '周瑜', '王五', '赵六', '刘备', '马超', '诸葛亮', '曹操']
+
+        function nameT() {
+            let name = popArr(arr);
+            if (name == null) {
+                console.log(`点名已完成了~`)
+            } else {
+                console.log(`点到的名字是：${name}`)
+            }
+        }
+
+
+        //记录点击过的名字
+        function popArr(arr) {
+            if (arr.length == 0) {
+                return null
+            } else if (arr.length == 1) {
+                return arr.pop();
+            } else {
+                let randomIndex = Math.floor(Math.random() * arr.length)
+                console.log(`随机名是：${randomIndex}`)
+                //取出arr中的数据
+                return arr.splice(randomIndex, 1)
+            }
+        }
+    </script>
+</body>
+
+</html>

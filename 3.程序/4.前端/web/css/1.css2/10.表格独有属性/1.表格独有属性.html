@@ -1,0 +1,91 @@
+<!-- 
+    【html4/5.表格】 学习了表格，但是css设置其样式在本文学习。
+
+    本文学习表格特有的属性，其他元素不生效
+
+     1. 控制表格列宽  table-layout
+     2. 控制单元格之间的间距 border-spacing
+     3. 合并相邻单元格边框 border-collapse
+     4. 隐藏没有内容的单元格 empty-cells
+     5. 设置表格标题的位置（对caption元素） caption-side
+ -->
+
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>表格相关属性</title>
+
+    <style>
+        table{
+            border-color: green;
+            border-width: 1px;
+            border: solid;
+
+            /* 控制表格列宽 */
+            table-layout: fixed;
+            /* 控制单元格之间的间距 */
+            border-spacing: 2px;
+            /* 合并相邻单元格边框 */
+            /* border-collapse: collapse; */
+            /* 隐藏没有内容的单元格 */
+            empty-cells:hide;
+            /* 设置表格标题的位置 */
+            caption-side: bottom;
+        }
+        td,th{
+            border: 1px solid red;
+        }
+    </style>
+ </head>
+ <body>
+    <table>
+        <caption>学生信息</caption>
+
+        <thead >
+            <tr>
+
+                <th>姓名</th>
+                <th>年龄</th>
+                <th>性别</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>张三</td>
+                <td>14</td>
+                <td>男</td>
+            </tr>
+            <tr>
+              
+                <td>李四</td>
+                <td>13</td>
+                <td>女</td>
+            </tr>
+            <tr>
+    
+                <td>王五</td>
+                <td>18</td>
+                <td>男</td>
+            </tr>
+        </tbody>
+
+
+        <tfoot>
+
+                <tr>
+                    <td>赵六</td>
+                    <td>20</td>
+                    <td>男</td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>共4人</td>
+                </tr>
+        </tfoot>
+    </table>
+ </body>
+ </html>

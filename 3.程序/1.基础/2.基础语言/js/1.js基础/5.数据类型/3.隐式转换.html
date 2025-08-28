@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>隐式转换</title>
+</head>
+<body>
+
+    <script>
+        console.log('wuxu'+1)//输出 wuxu1，这里自动把1 转换为字符串类型
+        console.log(1+'2')//输出12，加法特殊！！！，会自动把1 转换变为 字符串类型, 任何类型与字符串相加都是字符串
+        console.log(4-'2')//输出2，减法，自动把后面的数据转换为数字类型，再计算。
+
+        console.log(+'2')//输出2，转换为数字型，单用+ 号 可以转换为数字型
+    </script>
+    
+</body>
+</html>

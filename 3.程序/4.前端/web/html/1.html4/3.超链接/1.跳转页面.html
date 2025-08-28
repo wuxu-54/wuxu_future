@@ -1,0 +1,51 @@
+<!-- 
+
+标签名a，双标签，行内元素，但可以包裹除自身外的任何元素
+
+1、“_blank”的意思：
+
+浏览器总在一个新打开、未命名的窗口中载入目标文档。
+
+2、“_parent”的意思：
+
+这个目标使得文档载入父窗口或者包含来超链接引用的框架的框架集。如果这个引用是在窗口或者在顶级框架中，那么它与目标 _self 等效。
+
+3、“_self”的意思：
+
+这个目标的值对所有没指定目标的 <a> 标签是默认目标，它使得目标文档载入并显示在相同的框架或者窗口中作为源文档。这个目标是多余且不必要的，除非和文档标题 <base> 标签中的 target 属性一起使用。
+
+4、“_top”的意思：
+
+这个目标使得文档载入包含这个超链接的窗口，用 _top 目标将会清除所有被包含的框架并将文档载入整个浏览器窗口。
+
+ -->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>超链接-跳转页面</title>
+</head>
+<body>
+    <!-- 新的标签页打开此网站 -->
+    <a href="http://www.baidu.com/" target="_blank">新页签打开</a>
+    <!-- self是默认值 -->
+    <a href="http://www.baidu.com/" target="_self">当前页签打开</a>
+    <!-- iframe 使用，将目标载入父窗口，平时跟self等同-->
+    <a href="http://www.baidu.com/" target="_parent">当前页签打开后有记录</a>
+      <!-- 将目标载入当前窗口，但会清除其他的窗口，平时跟self等同-->
+    <a href="http://www.baidu.com/" target="_top">当前页签打开，</a>
+
+
+    <a href="../1.基础/1.结构.html">去内部页面</a>
+
+    <a href="../1.基础/1.结构.html">
+        <!-- a不能再嵌套a，不会生效 -->
+        <!-- <a href="../1.基础/1.结构.html">去内部页面</a> -->
+
+        <!-- 可以是a标签外其他任何类型元素 -->
+        <div>跳转</div>
+    </a>
+</body>
+</html>

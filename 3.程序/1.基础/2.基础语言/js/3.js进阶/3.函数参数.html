@@ -1,0 +1,38 @@
+<!-- 
+    1.动态参数
+        arguments 对象，伪数组
+    2.剩余参数
+        和java、c/c++的可变参数列表一样
+        
+        定义： function fun(...arg){} arg 是真数组。
+        符号’...‘ ，是展开运算符，常用来指代数组。当作为函数参数形参时，此时叫做剩余参数。
+ -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>函数参数</title>
+</head>
+<body>
+    <script>
+        //1.动态参数,arguments 对象，伪数组
+        function fun(){
+            console.log(arguments[1])//arguments 是个动态参数局部变量，函数内的
+        }
+
+        fun(1,2,3)//会打印 arguments对象，arguments中存有此形参数据
+
+        //2.剩余参数
+        function fun2(...arg){//是个真实数组
+            console.log(arg)
+        }
+        fun2(1,2,4,"3")
+
+        //补充 展开运算符
+        const arr = [1,3,4]
+        console.log(...arr)//这是展开运算符。不会修改数组。
+        console.log(Math.max(...arr))//常用来求数组最大或最小值 ，代码简洁
+    </script>
+</body>
+</html>

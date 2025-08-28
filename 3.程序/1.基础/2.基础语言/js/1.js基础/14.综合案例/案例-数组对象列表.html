@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数组对象列表</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="box_main">
+        <div class="box_head">
+            <span>精品推荐</span>
+            <span>查看全部</span>
+        </div>
+        <div class="box_container">
+            <ul class="clearFloat">
+                <!-- <li>
+                    <div class="item">
+                        <img src="./assets/img/image.png" alt="#">
+                        <div class="item_tips">
+                            <p>wuxu HTML 学习手册项目实战案例练习</p>
+                            <span>高级</span>·<span>1125</span>人在学习
+                        </div>
+                    </div>
+                </li> -->
+
+
+                <script>
+                    let data = [
+                        {
+                            src: './assets/img/image.png',
+                            title: ' wuxu HTML 学习手册项目实战案例练习',
+                            num: 123
+                        },
+                        {
+                            src: './assets/img/image.png',
+                            title: ' wuxu HTML 学习手册项目实战案例练习',
+                            num: 13
+                        },
+                        {
+                            src: './assets/img/image.png',
+                            title: ' wuxu HTML 学习手册项目实战案例练习',
+                            num: 1221
+                        },
+                        {
+                            src: './assets/img/image.png',
+                            title: ' wuxu HTML 学习手册项目实战案例练习',
+                            num: 534
+                        },
+                        {
+                            src: './assets/img/image.png',
+                            title: ' wuxu HTML 学习手册项目实战案例练习',
+                            num: 12
+                        },
+                        {
+                            src: './assets/img/image.png',
+                            title: ' wuxu HTML 学习手册项目实战案例练习',
+                            num: 1
+                        },
+
+                        {
+                            src: './assets/img/image.png',
+                            title: ' wuxu HTML 学习手册项目实战案例练习',
+                            num: 1
+                        },
+
+                        {
+                            src: './assets/img/image.png',
+                            title: ' wuxu HTML 学习手册项目实战案例练习',
+                            num: 1
+                        },
+
+                        {
+                            src: './assets/img/image.png',
+                            title: ' wuxu HTML 学习手册项目实战案例练习',
+                            num: 1
+                        },
+
+                        {
+                            src: './assets/img/image.png',
+                            title: ' wuxu HTML 学习手册项目实战案例练习',
+                            num: 1
+                        },
+
+                        {
+                            src: './assets/img/image.png',
+                            title: ' wuxu HTML 学习手册项目实战案例练习',
+                            num: 1
+                        },
+
+                    ]
+
+                    for (let i = 0; i < data.length; i++) {
+                        let obj = data[i]
+                        document.write(`
+                        <li>
+                    <div class="item">
+                        <img src="${obj.src}" alt="#">
+                        <div class="item_tips">
+                            <p>${obj.title}</p>
+                            <span>高级</span>·<span>${obj.num}</span>人在学习
+                        </div>
+                    </div>
+                </li>
+                    `)
+                    }
+
+                </script>
+            </ul>
+        </div>
+    </div>
+</body>
+
+</html>

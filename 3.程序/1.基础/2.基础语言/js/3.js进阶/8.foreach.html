@@ -1,0 +1,29 @@
+<!-- 
+    循环api
+    forEach 遍历数组
+ -->
+ 
+ <!DOCTYPE html>
+ <html lang="zh-CN">
+ 
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>循环遍历forEach</title>
+ </head>
+ 
+ <body>
+     <script>
+        const arr = [1,2,3]
+        arr.forEach(function(item,index){//index 可以省略
+            console.log(item+","+index)
+        })
+
+        //箭头函数
+        arr.forEach((item,index)=>{
+            console.log("箭头："+item+","+index)
+        })
+     </script>
+ </body>
+ 
+ </html>

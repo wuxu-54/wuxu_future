@@ -1,0 +1,6 @@
+1.移动端对css3兼容性很好 
+2.移动端推荐使用：normalize.css
+3.移动端元素清除默认的一些pc样式
+ -webkit-tap-highlight-color：transport  清除高亮
+ -webkit-appearance:none  ios需要增加此属性才能给按钮或输入框增加自定义样式
+ img,appearance{ -webkit-touch-callout:none; }  禁止长按页面时弹出菜单

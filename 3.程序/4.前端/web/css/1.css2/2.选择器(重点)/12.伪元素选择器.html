@@ -1,0 +1,32 @@
+<!-- 
+    前面介绍了，伪元素选择器是由伪类选择器细分来的。
+    与伪类选择器的不同点是，伪元素选择器选择的是符合某种条件（不是状态）的非dom树中的元素（换句话说，操作非元素）。
+
+    定义：::条件{}
+
+    ::after
+    ::before
+    ::first-letter
+    ::first-line
+    ::selection
+    ::placeholder
+ -->
+
+ <!DOCTYPE html>
+ <html lang="zh-CN">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>伪元素</title>
+    <style>
+        div::first-letter{
+            color: red;
+            font-size: 20px;
+        }
+    </style>
+ </head>
+
+ <body>
+    <div>Lasdfsadfsdfaaaaafwerweqrewrfasfdsfwerqwrewqrsfasw</div>
+ </body>
+ </html>

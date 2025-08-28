@@ -1,0 +1,44 @@
+<!-- 
+    UI状态伪类
+    根据UI的状态设置对应ui，比如 selected、enabled、disabled
+ -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UI状态伪类</title>
+
+    <style>
+        /* input:checked{
+            width: 100px;
+            height: 100px;
+        } */
+        :checked{
+            width: 100px;
+            height: 100px;
+        }
+        /* 被禁用的input元素 */
+        input:disabled{
+            background-color: aqua;
+        }
+
+        /* 可用的input元素，input默认是input */
+        input:enabled{
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+
+    <div>
+        <input type="checkbox">
+        <input type="radio" name="xx">
+        <input type="radio" name="xx">
+        <input type="checkbox">
+        <input type="text" disabled>
+        <input type="text">
+    </div>
+    
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!-- 
+    对象原型 __proto__   俩下划线
+    实例对象创建就会有一个对象原型，指向构造函数的原型对象。
+
+    原型对象是在构造函数中，那么对象是怎么调用到的？ 使用的是对象原型，对象里有一个变量，可以访问构造函数中原型对象prototype的属性和方法。具体什么架构需要详细研究，初学知道就行
+ -->
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>对象原型</title>
+ </head>
+ <body>
+    <script>
+        //创建构造函数
+        function C(i){}
+
+        //创建对象
+        const obj = new C(1)
+
+        C.prototype.name = "name1"
+        C.prototype.fun = function(){
+            console.log("fun")
+        }
+
+        console.log( obj.name)//对象，本质是对象的 对象原型 参数调用构造函数的 原型对象成员
+        obj.fun()//调用原型对象的方法
+       
+        console.log(obj.constructor.i)
+
+        console.log(obj.__proto__)
+        console.log( obj.__proto__ === C.prototype)//true ,说明是一个
+       
+    </script>
+ </body>
+ </html>

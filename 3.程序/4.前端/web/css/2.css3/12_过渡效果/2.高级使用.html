@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>过渡-高级使用</title>
+</head>
+
+<!-- 过渡属性：transition-property 只有 值是[数]的 属性才可以过渡 -->
+<style>
+    .outer{
+        margin: 0 auto;
+        font-size: 0;
+        width: 1300px;
+        height: 900px;
+        border: 1px solid black;
+    }
+
+    .outer:hover .box{
+        width: 1300px;
+    }
+    .box{
+        width: 200px;
+        height: 100px;
+        font-size: 15px;
+        background-color: orange;
+        transition-property:all;
+        transition-duration:5s;
+
+        /* transition-delay: 2s; */
+    }
+
+    .box1{background-color: aliceblue;
+    transition-timing-function: ease;
+    }
+    .box2{
+    background-color: rgb(240, 211, 244);
+    transition-timing-function: linear;
+}
+    .box3{
+        background-color: rgb(200, 255, 245);
+        transition-timing-function: ease-in;
+    }
+    .box4{
+        background-color: red;
+    
+        transition-timing-function: ease-out;
+    }
+    .box5{background-color: gray;
+        transition-timing-function: ease-in-out;
+    }
+    .box6{background-color: green;
+        transition-timing-function: step-start;
+    }
+    .box7{
+        background-color: greenyellow;
+        transition-timing-function: step-end;
+    }
+    .box8{
+        background-color: yellow;
+        transition-timing-function:steps(20);
+    }
+    .box9{
+        background-color: blueviolet;
+        transition-timing-function:cubic-bezier(.88, 1.03, .78, 1.24);
+    }
+</style>
+
+<body>
+    <div class="outer">
+        <div class="box box1">ease 慢 快 慢</div>
+        <div class="box box2">linear 线性匀速</div>
+        <div class="box box3">ease-in 慢 快</div>
+        <div class="box box4">ease-out快 慢</div>
+        <div class="box box5">ease-in-out 慢 快 慢</div>
+        <div class="box box6">step-start 不考虑过渡时间，直接到终点</div>
+        <div class="box box7">step-end 一开始不执行，过渡时间到直接到终点</div>
+        <div class="box box8">steps(20) 过渡时间内，按20份过渡</div>
+        <div class="box box9">cubic-bezier 贝塞尔曲线</div>
+    </div>
+
+</body>
+</html>

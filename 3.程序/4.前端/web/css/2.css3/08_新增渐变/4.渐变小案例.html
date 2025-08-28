@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>渐变案例</title>
+    <style>
+    
+        .box1{
+            width: 600px;
+            height: 800px;
+            border: 1px solid black;
+            margin: 0 auto;
+            padding: 10px;
+            background-image: repeating-linear-gradient(transparent 0px,transparent 29px,green 30px);
+            background-clip: content-box;
+        }
+        .box2{
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background-image: radial-gradient(at 80px 80px,white,#333);
+        }
+    </style>
+</head>
+<body>
+    <div class="box box1">重复线性渐变-记事本</div>
+    <div class="box box2"></div>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>柱形图</title>
+
+    <style>
+        .box {
+            width: 500px;
+            margin: 0 auto;
+            margin-top: 100px;
+            border-left: 1px solid black;
+            border-bottom: 1px solid black;
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: row;
+            /* align-content: end;  //这个只适用于多行，单行是没有效果的。 */
+            align-items: end;
+            justify-content: flex-start;
+        }
+
+        .box>div {
+            margin-left: 10px;
+            display: flex;
+            background-color: pink;
+            justify-content: space-between;
+            flex-direction: column;
+
+        }
+
+        .box div span {
+            text-align: center;
+            margin-top: -30px;
+        }
+
+        .box div h4 {
+            margin-bottom: -30px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <script>
+
+
+
+        document.write(`<div class="box">`)
+
+
+        inputNum("一")
+        inputNum("二")
+        inputNum("三")
+        inputNum("四")
+
+
+        document.write(`</div>`)
+
+
+
+        function inputNum(jidu) {
+            let num = prompt(`请输入第${jidu}季度数量`)
+
+            document.write(
+                `<div style="height:${num}px;">
+           <span>${num}</span>
+           <h4>第${jidu}季度</h4>
+        </div>`)
+        }
+    </script>
+
+</body>
+
+</html>

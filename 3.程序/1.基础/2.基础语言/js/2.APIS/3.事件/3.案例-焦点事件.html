@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>焦点事件案例</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    .box{
+        position: relative;
+        margin: 0 auto;
+        width: 200px;
+        margin-top: 50px;
+    }
+    .box input{
+        width: 200px;
+        height: 30px;
+        position: absolute;
+        padding: 5px;
+        font-size: 15px;
+        color: gray;
+        /* 去除默认轮廓样式 */
+        outline: none;
+    }
+    .box .result-list{
+        display: none;
+        width: 198px;
+        margin-top: 30px;
+        position: absolute;
+        border: 1px solid gold;
+        border-top: 0;
+        list-style:none;
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    .result-list a{
+        margin: 0;
+        color: gray;
+        text-decoration: none;
+        font-size: 15px;
+        color: gray;
+        padding: 5px;
+    }
+
+    .oth1{
+        border: 1px solid gold;
+    }
+</style>
+<body>
+    <div class="box">
+        <input type="search" placeholder="小米笔记本"" >
+        <ul class="result-list">
+            <li><a href="#">全部商品</a></li>
+            <li><a href="#">小米11</a></li>
+            <li><a href="#">华为Mate60</a></li>
+            <li><a href="#">荣耀P60</a></li>
+            <li><a href="#">vivo</a></li>
+            <li><a href="#">oppo</a></li>
+        </ul>
+    </div>
+
+    <script>
+       let input =  document.querySelector('[type=search]')
+       let list =  document.querySelector('.box .result-list')
+       input.addEventListener('focus',function(){
+            console.log('获得焦点')
+            list.style.display ='block'
+            input.classList.add('oth1')
+       })
+       input.addEventListener('blur',function(){
+        console.log('失去焦点')
+        list.style.display ='none'
+        input.classList.remove('oth1')
+    })
+    </script>
+</body>
+</html>

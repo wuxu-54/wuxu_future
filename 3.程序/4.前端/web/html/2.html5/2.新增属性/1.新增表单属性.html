@@ -1,0 +1,22 @@
+<!-- 
+    新增表单属性
+    1.placeholder  - 输入框提示文本，文本输入类表单控件
+    2.required - 提交表单时，输入框必须输入内容，非按钮表单控件
+    3.autofocus - 自动获取焦点，适用于所有表单
+    4.autocomplete - 自动完成，可以设置on、off，适用于文字输入类表单控件（密码输入框和多行输入框除外），例子: 浏览器运行情况下，输入过的文案，通过打开此设置，可以提示历史输入的缓存数据。
+    5.pattern - 正则表达式，使用文本输入类表单控件（空输入框及多行输入框不可用）
+ --> 
+ <!DOCTYPE html>
+ <html lang="zh-CN">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新增表单属性</title>
+ </head>
+ <body>
+    <form action="#">
+        <input type="text" placeholder="请输入密码" required autofocus autocomplete="on" pattern="^[abc]+$">
+        <input type="submit" value="登录" >
+    </form>
+ </body>
+ </html>

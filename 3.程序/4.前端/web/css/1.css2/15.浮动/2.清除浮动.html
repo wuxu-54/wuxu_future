@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- 
+    浮动影响：
+    1、父元素高度塌陷
+    2、浮动元素后面元素不受影响
+
+    clear:both
+    解决浮动产生的影响方案：
+    1.浮动元素的父元素设置浮动，会有其他影响
+    2.浮动元素的父元素设置overflow:hidden
+    3.所有浮动元素的最后增加块级元素，设置clear:both
+    4.浮动元素的父元素设置伪元素，通过伪元素清除浮动，原理同3 最后的元素必须是浮动元素 这个只能解决问题1
+
+    注意，开发时一个容器要么是全部浮动，要么就全都不浮动，否则会出现布局混乱问题。
+ -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>清除浮动</title>
+    <style>
+        .outer{
+            width: 1040px;
+            border: 1px solid black;
+        }
+        .box {
+            width: 200px;
+            height: 200px;
+            border: 1px solid black;
+            background-color: skyblue;
+        }
+
+        .box1, .box2, .box3{
+            float: left;
+        }
+
+        .box5{
+            float: left;
+        }
+        .clearfix::after{
+            clear: both;
+        }
+
+    </style>
+</head>
+
+<body>
+   <div class="outer clearfix ">
+        <div class="box box1 ">1</div>
+        <div class="box box2 ">2</div>
+        <div class="box box3">3</div>
+        <div class="box box4">4</div>
+        <div class="box box5">5</div>
+   </div>
+</body>
+
+</html>

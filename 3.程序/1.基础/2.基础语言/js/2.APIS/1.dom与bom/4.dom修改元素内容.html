@@ -1,0 +1,31 @@
+<!-- 
+    .innerText : 只识别文本，不解析标签。例如：当内容有标签时，浏览器并不会识别，转成对应样式
+    .innerHtml : 识别文本，能解析标签。
+ -->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>修改元素内容</title>
+</head>
+<body>
+    <div class="box">我是文字</div>
+    <script>
+        //1.获取元素
+        const elementDiv = document.querySelector('div') 
+        //2.查询元素内容 .innerText
+        console.log(elementDiv.innerText)
+        //3.修改内容
+        elementDiv.innerText = '哈哈哈哈'
+        console.log(elementDiv.innerText)
+
+
+        //4.修改内容，并增加标签处理
+        elementDiv.innerHTML = '<strong>哈哈哈哈</strong>'
+        console.log(elementDiv.innerHTML)
+
+    </script>
+</body>
+</html>

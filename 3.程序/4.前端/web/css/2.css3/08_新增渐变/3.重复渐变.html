@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>重复渐变</title>
+
+    <!-- 重复渐变：没用发生渐变的区域，重新开始渐变；和背景图repeat一样 -->
+
+    <style>
+        .box{
+            width: 200px;
+            height: 200px;
+            border: 1px solid black;
+            float: left;
+            margin-right: 10px;
+        }
+        .box1{
+            background-image: repeating-linear-gradient(red 10px,yellow 100px,green 50px);
+        }
+        .box2{
+            background-image: repeating-radial-gradient(red 50px,green 100px,yellow 150px);
+        }
+    </style>
+</head>
+<body>
+    <div class="box box1">重复线性渐变</div>
+    <div class="box box2">重复圆形渐变</div>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>正则表达式</title>
+</head>
+<body>
+    <script>
+        var str = "123dasdad"
+        var n = str.search("das")//检索，并返回起始位置
+        console.log(n)
+
+        str.replace("23","ttt")//替换23，为ttt，返回新字符串
+
+        console.log(str.replace("23","ttt"))
+        console.log(str.replace(/3D/i,"ttt"))//通过正则查找,i是忽略大小写，替换为ttt
+
+        //使用RegExp对象。/内容/ 表示一个正则
+        var patt =/e/;
+        console.log(patt.test("The best things in life are free!"))//字符串中含有 "e"，所以该实例输出为：true
+
+        console.log(patt.exec("The best things in life are free!"))//返回RegExpExecArray，包含匹配到的字符，其所在位置
+    </script>
+</body>
+</html>

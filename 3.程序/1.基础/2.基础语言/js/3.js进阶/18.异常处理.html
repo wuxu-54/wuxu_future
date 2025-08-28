@@ -1,0 +1,37 @@
+<!-- 
+    异常处理（和java一样）
+
+    throw 抛出 会中断程序执行
+    try/catch 捕获处理，程序继续执行
+    debugger 断点调试，处理问题
+ -->
+ <!DOCTYPE html>
+ <html lang="zh-CN">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>异常处理</title>
+ </head>
+ <body>
+    <script>
+        // 1.抛出
+        function fun(i){
+            if(!i){
+                throw("i 不能为空")
+            }
+        }
+        fun(1)
+        //2.try
+        try {
+            fun()
+        } catch (error) {
+            console.log(error.message)//捕获并打印出异常
+        }finally{
+            console.log("最终一定会执行")
+        }
+        //3.debugger 
+        debugger
+        fun()
+    </script>
+ </body>
+ </html>

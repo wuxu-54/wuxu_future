@@ -1,0 +1,48 @@
+<!-- 
+    绑定事件
+    将事件与函数绑定，当事件触发时调用绑定的函数
+
+    语法：
+    元素对象.addEventListener('事件类型',函数)  
+    
+    补充：
+    1.旧写法：元素对象.onclick=函数  注意，新写法会覆盖旧写法，且旧写法会有覆盖问题。
+     像Android中都是setOnclickListener与旧写法相同，得单独写代码做分发。
+
+    2.事件的函数，传入非匿名函数时，注意
+        1.不能写括号，如果写了括号，相当于被调用，会立刻执行（匿名函数只是声明，所以不会立刻执行）
+        2.此类函数必须返回一个函数名，这样才能被绑定到事件上。否则只是相当于方法调用，但无法被绑定到事件上。
+ -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>事件监听-绑定事件</title>
+
+    <style>
+        div:-moz-suppressed{
+            background-color: blanchedalmond;
+        }
+    </style>
+</head>
+
+<!-- 可以直接绑定，也可以在js中设定事件，下面的示例就是通过js设置点击事件 -->
+<div onclick="t()">点击我</div>
+
+<div>点击我</div>
+<body>
+    <script>
+        let divElementCollection = document.getElementsByTagName('div')
+        let divElement = divElementCollection[0]
+        // divElement.addEventListener('click',function(){//此函数也叫回调函数，顾名思义，被通知干嘛的
+        //     alert('点击了')
+        // })
+
+        function t(){
+            console.log("t")
+        }
+        divElement.addEventListener('click',t())//这里 t() 相当于函数调用,且不会被绑定到事件上，点击无法触发回调，这个就是上面注意项 2
+    </script>
+</body>
+</html>

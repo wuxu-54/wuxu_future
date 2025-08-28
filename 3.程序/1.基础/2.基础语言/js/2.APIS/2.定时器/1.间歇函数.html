@@ -1,0 +1,31 @@
+<!-- 
+    间歇函数
+    setInterval(函数,间隔时间单位ms) 间歇循环执行
+ -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>间歇函数</title>
+</head>
+<body>
+    <script>
+        //注意，传递的函数，要不用匿名函数，要不直接写函数名
+
+        //写法1 匿名函数
+       setInterval(function(){},1000)
+
+       function fun(){}
+       //写法2 有名函数，直接传名，不要加()
+       setInterval(fun,1000)
+
+       //写法3 有名函数 了解就行，根本不用
+       setInterval('fun()',1000)
+
+       //取消定时器
+      let interval = setInterval(fun,1000)
+      clearInterval(interval)
+    </script>
+</body>
+</html>

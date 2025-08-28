@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>表格-跨行跨列</title>
+</head>
+<body>
+
+<!--
+    th、td标签属性： 
+    colspan 跨列，rowspan 跨行 
+-->
+    
+    <table border="1" width="1000">
+        <caption>表格-跨行跨列</caption>
+        <thead>
+            <tr>
+                <th>11</th>
+
+                <!-- colspan="2" 跨两列 -->
+                <th colspan="2">12</th>
+                <th>13</th>
+                <th>14</th>
+                <th>15</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <!-- rowspan="3" 跨3行 -->
+                <td rowspan="3">21</td>
+                <td>22</td>
+                <td>23</td>
+                <td>24</td>
+                <td>25</td>
+            </tr>
+            <tr>
+                <td>31</td>
+                <td>32</td>
+                <td>33</td>
+                <td>34</td>
+                <td>35</td>
+            </tr>
+            <tr>
+                <td>41</td>
+                <td>42</td>
+                <td>43</td>
+                <td>44</td>
+                <td>45</td>
+            </tr>
+            <tr>
+                <td>51</td>
+                <td>52</td>
+                <td>53</td>
+                <td>54</td>
+                <td>55</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

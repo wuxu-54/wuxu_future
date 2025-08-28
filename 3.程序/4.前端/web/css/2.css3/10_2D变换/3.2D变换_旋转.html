@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2d-位移</title>
+</head>
+   <style>
+    .outer{
+        width: 200px;
+        height: 200px;
+        border: 1px solid black;
+        margin: 100px auto;
+        position: relative;
+    }
+    .inner{
+        width: 200px;
+        height: 200px;
+        background-color: aqua;
+
+        /*deg 角度  绕z轴旋转*/
+        /* transform: rotateZ(30deg); */
+        /*复合，一个值默认是2d，即绕z轴旋转*/
+        transform: rotate(30deg);
+    }
+
+   </style>
+<body>
+    <div class="outer">
+        <div class="inner"></div>
+    </div>
+</body>
+</html>

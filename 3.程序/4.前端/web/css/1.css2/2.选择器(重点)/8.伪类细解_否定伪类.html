@@ -1,0 +1,42 @@
+<!-- 
+    否定伪类：排除某个条件的元素
+
+    div>p:not(这里可以是任何选择器) 
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>否定伪类</title>
+
+    <style>
+        /*选中的div的子类p元素，除 类名等于fail 的*/
+        /* div>p:not(.fail){
+            color: red;
+        } */
+
+        /* 选中的div的子类p元素，除 title以"这是个t"为开头的 */
+        /* div>p:not([title^="这是个t"]){
+            color: red;
+        } */
+
+        /* 选中的div的子类p元素，除 第一个 */
+        div>p:not(:first-child){
+            color: red;
+        }
+    </style>
+
+</head>
+<body>
+    <div>
+        <p>1</p>
+        <p>2</p>
+        <p>3</p>
+        <p>4</p>
+        <p class="fail">5</p>
+        <p class="success" title="这是个title">6</p>
+    </div>
+</body>
+</html>

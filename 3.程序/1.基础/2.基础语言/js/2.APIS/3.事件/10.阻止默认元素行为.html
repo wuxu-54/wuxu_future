@@ -1,0 +1,25 @@
+<!-- 
+    某些情况下，我们需要阻止元素默认行为的发生，如 链接跳转、表单提交或表单域跳转
+
+    语法：事件对象.preventDefault()  
+ -->
+
+ <!DOCTYPE html>
+ <html lang="zh-CN">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>阻止默认元素行为</title>
+ </head>
+ <body>
+    <form action="http://www.baidu.com">
+        <input type="submit">
+    </form>
+    <script>
+        const submit = document.querySelector('form')
+        submit.addEventListener('click',function(e){
+            e.preventDefault()
+        })
+    </script>
+ </body>
+ </html>

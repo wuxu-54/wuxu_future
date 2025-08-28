@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+ <html lang="zh-CN">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>hello vue</title>
+     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+ </head>
+ <body>
+    <!-- 1. [v-once] 只会插值一次 -->
+    <p v-once id="once">{{msg}}</p>
+
+    <!-- 2.[v-html]
+    <span v-html="<h1>Hello World</h1>"></span>  通过v-html 会输出真正的html语句
+     -->
+    <p id="vHtml">Using v-html directive: <span v-html="rawHtml"></span></p>
+
+     <script>
+        let onceVue = new Vue({
+            el:'p',
+            data:{
+                msg:1
+            }
+        })
+
+        let vHtml = new Vue({
+            el:'#vHtml',
+            data:{
+                rawHtml:'<h1>Message</h1>'
+            }
+        })
+     </script>
+ </body>
+ 
+ </html>

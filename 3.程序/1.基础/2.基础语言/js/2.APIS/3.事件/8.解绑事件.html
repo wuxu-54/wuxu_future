@@ -1,0 +1,35 @@
+<!-- 
+    添加：addEventListener(fun)
+    解绑：removeEventListener(fun)
+    匿名函数无法被解绑，因为其没有变量
+ -->
+ <!DOCTYPE html>
+ <html lang="zh-CN">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>事件解绑</title>
+    <style>
+        div{
+            width: 200px;
+            height: 200px;
+            background-color: aquamarine;
+        }
+      
+    </style>
+ </head>
+ <body>
+    <div ></div>
+
+    <script>
+       let div =  document.querySelector('div')
+       function fun(){
+        console.log('回调')
+       }
+       //添加事件
+       div.addEventListener('click',fun)
+       //解绑
+       div.removeEventListener('click',fun)
+    </script>
+ </body>
+ </html>

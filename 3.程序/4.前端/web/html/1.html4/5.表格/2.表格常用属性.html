@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>表格常用属性</title>
+</head>
+<body>
+
+    <!-- web写ui都是通过css的，本节只是作为了解，避免以后工作遇到不清楚 -->
+
+    <!--
+         border 表格宽1。注意 ： 如果值>1,内部单元格仍然是1px
+         width 单元格宽，宽度也受内容宽影响，不是固定的。
+         height 表格总高，受内容高影响，height如果设置的小于单元格内容总高，那么表格高就是单元格的总高
+
+         cellspacing 单元格间距
+
+         合并边框：需要使用css中的table样式设置
+
+    -->
+    <table border="1" width="1100px" height="500" cellspacing="10">
+
+
+        <!-- caption 标签没有属性，如果调整样式可以使用css -->
+        <caption>学生信息</caption>
+
+        <!-- 
+        (thead tbody tfoot th tr):
+            align :水平对齐方式 left center right
+                
+            valign : 垂直对齐方式 top middle bottom
+        -->
+        <thead align="center">
+            <tr>
+
+                <th>姓名</th>
+                <th>年龄</th>
+                <th>性别</th>
+            </tr>
+        </thead>
+
+
+
+        <!--tbody的 height 受到table高度影响，如果整体高度达不到table高度，那么tbody单元格高会拉伸-->
+        <tbody>
+            <tr>
+                <td>张三</td>
+                <td>14</td>
+                <td>男</td>
+            </tr>
+            <tr>
+              
+                <td>李四</td>
+                <td>13</td>
+                <td>女</td>
+            </tr>
+            <tr>
+    
+                <td>王五</td>
+                <td>18</td>
+                <td>男</td>
+            </tr>
+        </tbody>
+
+
+        <tfoot>
+
+                <tr>
+                    <td>赵六</td>
+                    <td>20</td>
+                    <td>男</td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>共4人</td>
+                </tr>
+        </tfoot>
+    </table>
+    
+</body>
+</html>

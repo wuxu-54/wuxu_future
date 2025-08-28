@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <button onclick="test(150)">点击</button>
+
+    <script>
+
+        //递归
+        function test(num){
+            if(num>0){
+                console.log("curr num is "+num)
+                test(num-1)
+            }
+        }
+
+        ;(function (){console.log("立即执行函数")})();//立即执行函数或作为值赋给变量，都要加分号，一般在立即执行函数前加分号，防止代码压缩出现分号丢失导致的问题
+    </script>
+</body>
+</html>

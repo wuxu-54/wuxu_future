@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3d-多重变换</title>
+</head>
+   <style>
+    .outer{
+        width: 200px;
+        height: 200px;
+        border: 2px solid black;
+        margin: 100px auto;
+        position: relative;
+        transform-style: preserve-3d;
+        perspective: 500px;
+        perspective-origin: 102px 102px;
+    
+    }
+    .inner{
+        width: 200px;
+        height: 200px;
+        background-color: aqua;
+        transform-origin: left;
+        transform: translateZ(-150px) rotateY(45deg) ;
+
+        /*旋转后，背部的文字不可见。类似书翻页无法看到背部文字*/
+        backface-visibility: hidden;
+    }
+
+   </style>
+<body>
+    <div class="outer">
+        <div class="inner">您好啊</div>
+    </div>
+</body>
+</html>

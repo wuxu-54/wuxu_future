@@ -1,0 +1,66 @@
+<!-- 
+
+    事件流
+    js中事件是依次传递的。
+
+    捕获阶段：从父到子 从根元素向目标元素依次触发同种事件
+    冒泡阶段：从子到父 触发元素会向上依次触发父元素同种事件
+    
+    L0 
+        传递on注册事件，只有冒泡没有捕获
+        
+        捕获：使用null覆盖事件，即解绑
+
+    L2事件 
+        DOM.addEventListener(事件类型，事件处理函数，是否使用捕获机制布尔值）
+        捕获机制：此事件回调，true：捕获阶段触发  false：冒泡阶段触发，默认是false
+
+        捕获：
+        1. 拿到事件对象 function(e) 回调函数第一个默认是事件对象
+        2. 事件对象.stopPropagation()
+ -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>事件流-捕获</title>
+
+    <style>
+        .parent{
+            width: 200px;
+            height: 200px;
+            background-color: aquamarine;
+        }
+        .child{
+            width: 100px;
+            height: 100px;
+            background-color: yellow;
+        }
+    </style>
+</head>
+<body>
+    <div class="parent">
+        <div class="child">
+        </div>
+    </div>
+    <script>
+        let parent = document.querySelector('.parent')
+        parent.addEventListener('click',function(e){
+            console.log("parent - 捕获阶段触发")
+            e.stopPropagation()//事件对象，终止事件流传递
+        },true)
+        parent.addEventListener('click',function(){
+            console.log("parent - 冒泡阶段触发")
+        },false)
+        let child = document.querySelector('.child')
+        child.addEventListener('click',function(){
+            console.log("child - 捕获阶段触发")
+        },true)
+        child.addEventListener('click',function(){
+            console.log("child - 冒泡阶段触发")
+        },false)
+    </script>
+    
+</body>
+</html>

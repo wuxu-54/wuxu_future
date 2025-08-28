@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>动画-复合属性使用</title>
+</head>
+<style>
+    .outer{
+       width: 1000px;
+       height: 100px;
+       left: 10px;
+       top: 10px;
+       position: relative;
+       border: 1px solid black;
+    }
+
+    .inner{
+        width: 100px;
+       height: 100px;
+       background-color: aquamarine;
+       animation: py_leftToRight 2s 0.5s linear alternate-reverse forwards ;
+    }
+
+
+    .outer:hover .inner{
+        /* 暂停 一般不用复合，会直接导致动画取消*/
+        animation: paused;
+    }
+
+
+    @keyframes py_leftToRight{
+        /*第一帧*/
+        from{
+            
+        }
+
+        /*最后一帧*/
+        to{
+            transform: translate(900px) rotate(360deg);
+            background-color: rebeccapurple;
+            border-radius: 50%;
+        }
+    }
+  
+</style>
+<body>
+<div class="outer">
+    <div class="inner">333</div>
+</div>
+</div>
+</body>
+</html>

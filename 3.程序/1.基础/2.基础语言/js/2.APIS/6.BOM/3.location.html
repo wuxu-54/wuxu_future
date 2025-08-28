@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>localion</title>
+</head>
+<body>
+
+
+    <!-- 
+       location： window中的对象
+     -->
+
+     <a href="https://www.baidu.com">支付成功,<span>5</span>秒后跳转百度页面</a>
+
+     <a href="#/one">1</a>
+     <a href="#/2">2</a>
+     <a href="#/3">3</a>
+
+     <script>
+        console.log(window.location)
+        
+        const a = document.querySelector('span')
+    
+
+        //href ,跳转html，一般用于定时器跳转
+        console.log(location.href)
+        let num = 5;
+        let time  = setInterval(function(){
+            num--;
+            a.innerText = num
+            if(num === 6){
+                //5秒跳转
+                clearInterval(time)
+                location.href = "https://www.baidu.com"
+            }
+        },1000)
+
+
+        //hash 可以获取当前页面 #/后 或？后的数据，同时按上面写法，页面不会刷新只会更新 #/ 后数据
+        //用法，可以用于局部数据的切换
+        console.log( location.hash)
+
+        location.reload(true)//刷新，true是强制刷新 和control + f5一样效果
+     </script>
+</body>
+</html>

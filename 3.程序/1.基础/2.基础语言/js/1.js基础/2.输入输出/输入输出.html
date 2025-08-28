@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>输入输出</title>
+</head>
+<body>
+  
+    <script>
+
+        //输入方式
+        prompt("请输入您的年龄")
+
+        //输出共有三种方式
+        //方式1：向body中写数据，用户可看到。如果有标签会按html解析出对应样式
+        document.write("方式1 无标签")
+        document.write("<h1>方式1 带有标签</h1>")
+
+        //方式2：alert 展示，用户可看到。
+        alert("方式2")
+
+        //方式3，控制台输出日志， 程序开发使用，打印到控制台
+        console.log("方式3")
+
+        /*
+        总结：
+           1. 按HTML文档流，执行js代码
+           2.prompt、alert 优先于渲染提前执行 
+        */
+    </script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>超链接-锚点</title>
+</head>
+<body>
+    <!-- 
+        使用场景：点击tab 列表划到对应位置 
+
+        方式1：a标签，使用name属性，标记了一个锚点，通过 a标签的超链接 #锚点名，跳转到对应锚点的位置
+        方式2：标签设置id，a标签#id，就可跳转。 推荐使用这个方式，更精准
+    -->
+
+    <a href="#img1">跳转到锚点1</a>
+    <a href="#img2">跳转到锚点2</a>
+    <a href="#img3">跳转到锚点3</a>
+    <a href="2.跳转文件.html#img4">跳转到其他页面的锚点</a>
+
+    <br>
+
+    <a name="img1"></a>
+    <p>这是图片1</p>
+    <img src="image.png" alt="#">
+    
+
+    <p id="img2">这是图片2</p>
+    <img src="image2.png" alt="#">
+    
+    <a name="img3"></a>
+    <p>这是图片3</p>
+    <img src="image3.png" alt="#">
+
+
+    <br>
+
+    <a href="#">回到顶部</a>
+    <a href="">刷新页面</a>
+
+    <br>
+    <!-- 可执行js代码 -->
+    <a href="javascript:alert(666);">点击弹窗</a>
+</body>
+</html>

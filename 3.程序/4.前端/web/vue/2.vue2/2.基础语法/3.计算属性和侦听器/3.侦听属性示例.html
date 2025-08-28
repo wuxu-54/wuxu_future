@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-Cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+
+    <title>Document</title>
+
+</head>
+<body>
+    <div class="watch-demo">
+        <p>提出问题<input v-model="question"></p>
+        <p>答案： {{answer}}</p>
+    </div>
+
+<script>
+    new Vue({
+        el:".watch-demo",
+        data:{
+            question:"",
+            answer:""
+        },
+        methods:{
+            getAnswer:function(){
+                this.answer = "思考中。。。"
+                let vm = this
+                axios.get('https://yesno.wtf/api').then(
+                    function(response){
+                        vm.answer = _.capitalize(response.data.answer)
+                    }
+                ).catch(function(error){
+                    vm.answer ="error:"+error
+                })
+            }
+        },
+        watch:{
+            question:function(newQuestion,oldQuestion){
+                this.answer = "解析问题，等待云端响应"
+                this.doAnswer()
+            }
+        },
+        created:function(){
+           this.doAnswer = _.debounce(this.getAnswer,500)
+        },
+    })
+</script>
+</body>
+</html>

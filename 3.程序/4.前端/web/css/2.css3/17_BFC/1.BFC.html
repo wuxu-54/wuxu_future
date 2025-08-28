@@ -1,0 +1,26 @@
+<!--
+BFC，为 Block Formatting Context 的缩写，中文翻译为 块格式上下文。
+
+BFC 是 Web 页面 CSS 渲染的一个机制，是块级盒子布局中产生的区域。
+
+你可以将一个 BFC 可以理解为一个容器，里面的元素不会影响到容器外的布局。
+
+
+参考：https://www.bilibili.com/video/BV1p84y1P7Z5?p=199&vd_source=3509947f569e04aa5c144447e22d0ceb
+解释：BFC是一个特性，默认是关闭，当元素满足某些条件，激发BFC，称为元素创建了BFC
+BFC开启作用：
+    1.解决子元素margin塌陷问题
+    2.自己不会被其他浮动元素覆盖
+    3.其子元素浮动，其自身高度也不会塌陷
+如何开启BFC：
+1.html 根元素
+2.浮动元素
+3.绝对定位、固定定位元素
+4.行内块元素
+5.表格单元格：table、thead、tbody、tfoot、th、td、tr、caption
+6.overflow 不为visible的元素
+7.伸缩项目
+8.多列容器
+9.column-span 为all的元素(即使该元素没有包裹在多列容器中)
+10.display的值，设置为flow-root
+-->

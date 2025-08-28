@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>动画-基本使用</title>
+</head>
+<style>
+    .outer{
+       width: 1000px;
+       height: 100px;
+       border: 1 solid black;
+    }
+
+    .inner{
+        width: 100px;
+       height: 100px;
+       background-color: aquamarine;
+
+       animation-duration: 2s;
+       animation-name: py_leftToRight2;
+       animation-delay: 2s;
+    }
+
+    /*方式1：动画关键帧*/
+    @keyframes py_leftToRight{
+        /*第一帧*/
+        from{
+            
+        }
+
+        /*最后一帧*/
+        to{
+            transform: translate(900px);
+            background-color: rebeccapurple;
+        }
+    }
+   /*方式2：动画关键帧 位置*/
+    @keyframes py_leftToRight2{
+        /*第一帧*/
+        0%{
+            
+        }
+
+        /*最后一帧*/
+        100%{
+            transform: translate(900px);
+            background-color: rebeccapurple;
+        }
+    }
+</style>
+<body>
+<div class="outer">
+    <div class="inner">
+</div>
+</div>
+</body>
+</html>

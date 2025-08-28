@@ -1,0 +1,72 @@
+<!-- 
+
+    获取dom对象
+    1.查找获取dom对象
+        方式1，使用CSS选择器方式获取dom元素
+        document.querySelector('css选择器声明方式')//返回匹配到的第一个元素，一个HTMLElement对象
+        document.querySelectorAll('css选择器声明方式')//返回匹配到的全部元素，一个NodeList类似数组的对象，用法与数组差不多。
+        
+        方式2，使用API获取
+        document.getElementById('mId')//返回匹配到的元素，一个HTMLElement对象
+        document.getElementsByClassName('box') //返回的是HTMLCollection，也是类似数组的对象，用法与数组差不多。参考： https://www.runoob.com/js/js-htmldom-collections.html
+        document.getElementsByTagName('div') //返回的是HTMLCollection
+
+ 
+ 
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>获取dom对象</title>
+
+    <style>
+        .box2{
+            color: beige;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">123</div>
+    <div class="box2">234</div>
+    <div class="box">4324</div>
+    <ul id="mId">
+        <li>dsf</li>
+        <li>dsf</li>
+        <li>dsf</li>
+    </ul>
+    <script>
+        /*方式1：css选择器方式获取*/
+
+        //通过标签 获取第一个div标签元素
+       const box = document.querySelector('div')
+       console.log(box)
+
+        //通过类名 获取第一个div标签元素
+       const box2 = document.querySelector('.box2')
+       console.log(box2)
+
+       const li =  document.querySelector('ul li:first-child')
+       console.log(li)
+
+       //这里返回的是个NodeList对象，其类似数组，内部持有多个HTMLElement对象
+       const boxArray = document.querySelectorAll('div')
+       console.log(boxArray)  
+
+       boxArray[1].style.color = 'red'
+
+       /*方式2：api获取*/
+        //根据id获取
+        const ul = document.getElementById('mId')
+        console.log(ul)  
+        //根据类名获取 ,返回的是HTMLCollection，也是类似一个数组
+        const boxClass = document.getElementsByClassName('box')
+        console.log(boxClass)  
+        //根据标签名获取,返回的是HTMLCollection
+        const boxTag = document.getElementsByTagName('div')
+        console.log(boxTag)  
+    </script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>猜数字游戏</title>
+</head>
+
+<body>
+    <!-- 规则：随机生成 1-10 整数数字，准确猜出数字 -->
+    <script>
+        /*
+        1.随机生成数字
+        2.输入数字
+        3.判断值，给出提示
+        */
+
+        let number = Math.floor(Math.random() * 11)
+        console.log("random ：" + number)
+       /* 
+       //方式1
+       function guss(input) {
+            if (input == number) {
+                document.write(`<br><div>恭喜您猜中了！</div>`)
+            } else {
+                document.write(`<br><div>${input > number ? "您猜大了" : "您猜小了"}</div>`)
+            }
+        }
+        */
+
+          //方式2
+        while(true){
+            let input = +prompt("请输入您猜的数字") //+表示转为int类型
+            if (input == number) {
+                alert(`恭喜您猜中了~`)
+                break
+            } else {
+                alert(`${input > number ? "您猜大了" : "您猜小了"}`)
+            }
+        }
+    </script>
+</body>
+
+</html>

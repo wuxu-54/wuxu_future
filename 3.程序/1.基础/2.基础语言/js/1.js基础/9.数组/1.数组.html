@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数组</title>
+</head>
+<body>
+    <script>
+        let arr = [1,2,3]
+        console.log("查："+arr[2])
+        console.log("-----------------------")
+       
+        arr.unshift(4)
+        console.log("增 unshift："+arr)
+        arr.push(5)
+        console.log("增 push："+arr)
+        console.log("-----------------------")
+        arr.splice(4)
+        console.log("删 splice1："+arr)
+        console.log("-----------------------")
+        arr.splice(1,1)
+        console.log("删 splice2："+arr)
+        console.log("-----------------------")
+        arr.pop()
+        console.log("删 pop："+arr)
+        console.log("-----------------------")
+        arr.shift()
+        console.log("删 shift："+arr)
+    </script>
+</body>
+</html>

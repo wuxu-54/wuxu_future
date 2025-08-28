@@ -1,0 +1,32 @@
+<!-- 
+    克隆也就是复制节点
+    dom对象.cloneNode(boolean)  true:深克隆，复制元素及全部子元素，false（默认）:浅克隆，只复制当前元素
+
+    删除节点：
+    父dom对象.removeChild(子dom对象)
+ -->
+
+ <!DOCTYPE html>
+ <html lang="zh-CN">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>克隆和删除节点</title>
+ </head>
+ <ul id="11">
+    <li>1</li>
+    <li>2</li>
+    <li>3</li>
+ </ul>
+ <body>
+    <script>
+        //克隆
+        const ul = document.querySelector('ul')
+        const newUl = ul.cloneNode(true)//深克隆
+        document.body.append(newUl)
+
+        //删除
+        // document.body.removeChild(ul)
+    </script>
+ </body>
+ </html>

@@ -1,0 +1,21 @@
+<!-- 
+    环境对象：this
+
+    java 、c等语言中this指代当前作用域，js特殊，粗略的讲，它是谁调用，this就是指谁，后面还可以动态修改this指向
+    例如：function fun(){this}  这里this指的是window对象，因为js function是被window调用的
+ -->
+ <!DOCTYPE html>
+ <html lang="zh-CN">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>环境对象</title>
+ </head>
+ <body>
+    <script>
+        function fun(){}
+        window.fun()//这里window可以省略不写，默认是window对象调用
+       
+    </script>
+ </body>
+ </html>

@@ -1,0 +1,38 @@
+<!-- 
+
+ -->
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>原型继承</title>
+ </head>
+ <body>
+    <script>
+        //创建构造函数
+        function C(i){}
+
+        //创建对象
+        const obj = new C(1)
+
+        //想要多个对象，抽取出相同逻辑，可以通过原型继承（所谓原型继承就是将prototype指定为同一个的对象）
+        function Person(){
+            this.i =1
+        }
+
+        //继承
+        function Woman(){
+            this.k = 2
+        }
+        Woman.prototype = new Person()
+        Woman.prototype.constructor = Woman //原型对象会持有一个构造函数，这里在绑定新原型对象后，将构造函数绑定上
+
+        const woman = new Woman
+        console.log(woman.i)//执行继承的方法
+
+        console.log(woman instanceof Person)//true,Person在woman对象的原型链中
+
+    </script>
+ </body>
+ </html>

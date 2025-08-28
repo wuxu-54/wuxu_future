@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>径向渐变</title>
+
+    <style>
+        .box{
+            width: 300px;
+            height: 200px;
+            border: 1px solid black;
+            float: left;
+            margin-right: 10px;
+        }
+        .box1{
+                background-image: radial-gradient(red,green,yellow);
+        }
+        .box2{
+            background-image: radial-gradient(at right top,red,green,yellow);
+        }
+        .box3{
+            background-image: radial-gradient(at 100px 20px,red,green,yellow);
+        }
+        .box4{
+            background-image: radial-gradient(circle,red,green,yellow);
+        }
+
+        .box5{
+            background-image: radial-gradient(100px 100px,red,green,yellow);
+        }
+
+        .box6{
+            background-image: radial-gradient(red 50px,green 100px,yellow 150px);
+        }
+
+        .box7{
+            background-image: radial-gradient(100px 80px at 150px 100px,red 50px,green 80px,yellow 150px);
+        }
+    </style>
+</head>
+<body>
+    <div class="box box1">默认(中心点，类似android中的shape radial)</div>
+    <div class="box box2">通过关键词设置圆心位置</div>
+    <div class="box box3">通过坐标设置圆心位置</div>
+    <div class="box box4">通过关键字设置形状</div>
+    <div class="box box5">设置圆的x，y半径 确定正圆</div>
+    <div class="box box6">颜色变化：纯红色,渐变绿色，渐变黄色，纯黄色</div>
+    <div class="box box7">颜色变化：纯红色,渐变绿色，渐变黄色，纯黄色</div>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!-- 
+
+    dom可以操作元素的各种属性：
+
+    *常用属性：
+        元素常用属性如：src、href 等
+
+    *样式属性：
+        css样式如 宽、高、颜色等等，通过js修改
+        方式1：style属性
+        方式2：类名操作css 例如：css设定一个类名样式， js获取一个对象后设置className值，就会绑定样式(注意，这里是替换值，所以样式会替换原有class的)
+        方式3（推荐）：classList操作css，Html5新增
+
+        方式1适用于少量样式，其他两个适用于大量样式 推荐方式3
+    
+    *表单元素属性：
+        表单中的添加有效果、移除无效果，一律使用布尔值表示，如 disabled、checked、selected
+
+
+    *如何自定义属性：html5中推出
+    1. html中：data-自定义属性（标签属性一律【data-】开头）
+    2. js中：以dataset对象方式获取 box.dataset.id
+
+ -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dom操作元素属性及自定义属性</title>
+
+    <style>
+        div{
+            width: 200px;
+            height: 200px;
+            background-color: pink;
+        }
+
+        .box{
+            background-color: aquamarine;
+        }
+
+        .box2{
+            border: 1px solid red;
+        }
+    </style>
+</head>
+<body>
+
+    <img src="image.png" alt="">
+
+    <div>样式属性等待操作</div>
+
+    <span>方式3 classList</span>
+
+    <form action="">
+        <input type="text" name="旧值" >
+    </form>
+
+
+    <!-- 自定义属性 -->
+    <div class="custom" data-my="my"></div>
+
+    <script>
+        //*** 修改常见属性 
+        let imgElement = document.querySelector('img')//取元素
+        imgElement.src = 'image2.png'
+
+        //*** 修改样式属性
+        let divElement = document.querySelector('div')//取元素
+        //方式1 通过style属性修改
+        divElement.style.width="400px"
+        divElement.style.backgroundColor='blue'//属性对象是小驼峰命名
+        divElement.style.border='2px solid lightpink'//多个属性，按正常样式写
+
+        //方式2 通过类名绑定样式，原有的class名会被替换。 
+        //但是通过代码对比发现，方式1 优先级高于 方式2 ，解释：因为这里是绑定样式，但方式1 是修改属性，展示顺序按样式基础学习的顺序：内联>内部>外部
+        divElement.className = 'box box2'
+        //方式3 通过classList 优先推荐 h5新增属性  add增加 remove移除 toggle切换
+        let spanElement = document.querySelector('span')//取元素
+        spanElement.classList.add('box')
+        spanElement.classList.add('box2')
+        spanElement.classList.remove('box2')
+        spanElement.classList.toggle('box2')//切换，有就删掉，没有就加上 相当于add与remove
+
+        
+        //*** 修改表单元素属性
+        const inputEelement = document.querySelector('input')//取元素
+        console.log(inputEelement.innerHTML)//获取不到表单内容
+        console.log(inputEelement.checked)
+        console.log(inputEelement.disabled)
+        console.log(inputEelement.type)
+        console.log(inputEelement.name)
+        console.log(inputEelement.value)//value 获取值
+        inputEelement.value = '设置新值-value' 
+        inputEelement.name = '设置新值-name'//name只有第一次会显示到input中，其他都是靠value
+        console.log(inputEelement.name)
+        console.log(inputEelement.value)
+
+
+        //*** 自定义属性
+       let custom = document.querySelector('.custom')
+       console.log("自定义属性的值："+custom.dataset.my)
+    </script>
+</body>
+</html>

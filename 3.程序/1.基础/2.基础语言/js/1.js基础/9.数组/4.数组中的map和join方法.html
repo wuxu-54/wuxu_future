@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数组</title>
+</head>
+<body>
+    <script>
+        let arr = [1,2,3]
+        //map 遍历数组，并返回新数组
+       const newArr = arr.map(function(element,index){
+            console.log(element)//数组元素
+            console.log(index)//索引
+            return element+index //设置新数组的元素
+        })
+
+        //join 把数组转换为字符串
+    
+        //啥也不写，元素以逗号分隔
+        console.log(newArr.join())
+        //可以设定分隔符，''表示没有分隔符
+        console.log(newArr.join('|'))
+    </script>
+</body>
+</html>

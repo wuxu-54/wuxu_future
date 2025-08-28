@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2d-变换原点</title>
+</head>
+   <style>
+    .outer{
+        width: 200px;
+        height: 200px;
+        border: 1px solid black;
+        margin: 100px auto;
+        position: relative;
+    }
+    .inner{
+        width: 200px;
+        height: 200px;
+        background-color: aqua;
+
+        /*左边，中间 为变换原点*/
+        /* transform-origin: left; */
+
+          /*（x=50，y 为中间点）变换原点*/
+        /* transform-origin: 50px; */
+
+         /*（x=宽25%，y=高25%）变换原点*/
+        transform-origin: 25% 25%;
+        transform: rotate(20deg);
+    }
+
+    
+   </style>
+<body>
+    <div class="outer">
+        <div class="inner"></div>
+    </div>
+
+</body>
+</html>

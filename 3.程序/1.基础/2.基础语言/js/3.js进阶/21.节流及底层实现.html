@@ -1,0 +1,59 @@
+<!-- 
+    节流：拉长触发频次
+
+    与防抖区别:
+    防抖是n秒触发多次，会只执行最后一次，先取消再执行。
+    节流是n秒内触发多次，只会执行一次，先执行再取消后来者。
+    
+    节流与防抖，实现不同，目的都是为了防止频繁触发。
+
+    实现
+    1.lodash > throttle()  ,通过此函数实现，实现原理：判断执行状态，时间段内只执行一次
+ -->
+ <!DOCTYPE html>
+ <html lang="zh-CN">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>节流</title>
+    <script src="./lodash.js"></script>
+    <style>
+        .box{
+            width: 200px;
+            height: 200px;
+            background-color: gray;
+        }
+    </style>
+ </head>
+ 
+ <body>
+    <div class="box"></div>
+    <script>
+        //需求，鼠标滑动，ui显示+1
+
+        const div = document.querySelector(".box")
+        let i = 0
+        function moveMuouse(){
+            div.innerHTML = i++
+        }
+
+        //throttle
+        // div.addEventListener('mousemove',_.throttle(moveMuouse,500))//500毫秒内只执行一次
+
+        // //手写节流函数，使用定时器
+        // function mDebounce(fun,time){
+        //     let state = 0
+        //     return function(){ 
+        //       let date = new Date()
+        //       const currTime = date.getTime()
+        //       if(state + time > currTime){ //没超过time间隔，无法触发
+        //         return
+        //       }
+        //       state = currTime
+        //       fun()
+        //     }
+        // }
+        div.addEventListener('mousemove',mDebounce(moveMuouse,500))
+    </script>
+ </body>
+ </html>

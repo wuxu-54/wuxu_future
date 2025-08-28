@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>内置对象</title>
+</head>
+<body>
+
+    <!-- javascript 提供的对象，方便开发者使用。  -->
+
+
+    <script>
+        // 左闭右开，取 [0-1) 中间的随机数包括小数
+        console.log(Math.random())
+
+        document.write(`
+            <div>${Math.max(1,2,3,91,3,55)}</div>
+        `)
+
+        //0-10之间整数, Math.floor 向下取整
+        console.log(Math.floor(Math.random()*11))
+
+        //随机获取数组中的数据
+        let arr = ['red','green','blue']
+        let random = Math.floor(Math.random() * arr.length)//Math.floor 取整
+        console.log(arr[random])
+
+    </script>
+
+</body>
+</html>

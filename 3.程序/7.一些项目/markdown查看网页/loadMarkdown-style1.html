@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Load Markdown File</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/showdown@2.1.0/dist/showdown.min.js"></script>
+    <style>
+         :root {
+            --primary: #6C5CE7;  /* 梦幻紫 */
+            --secondary: #00B894; /* 清新绿 */
+            --accent: #FF7675;   /* 活力红 */
+            --bg: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        /* 基础样式 */
+        body {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        /* Markdown 内容样式 */
+        #markdown-container {
+            line-height: 1.6;
+        }
+
+        #markdown-container h1 {
+            font-size: 2em;
+            border-bottom: 1px solid #eee;
+        }
+
+        #markdown-container pre {
+            background: #f8f8f8;
+            padding: 15px;
+        }
+
+      
+        /* Mermaid 图表优化 */
+        .mermaid {
+            background: white;
+            padding: 20px;
+            margin: 2em 0;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .mermaid .node rect {
+            fill: #fff !important;
+            stroke: var(--primary) !important;
+            stroke-width: 2px !important;
+            rx: 8px !important;
+        }
+
+        .mermaid .edgePath path {
+            stroke: var(--secondary) !important;
+            stroke-width: 2px !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="markdown-container"></div>
+    <script>
+        // '/3.程序/3.后端/docker/2.基础知识/6.3.2.容器-编排工具-dockerSwarm介绍.md'
+        mermaid.initialize({
+            startOnLoad: false,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: { curve: 'basis' }
+        });
+
+        // 转换
+        const mermaidConvert = {
+            type: 'lang',
+            filter: function(text) {
+                //将mermaid更换为div
+                return text.replace(
+                    /```mermaid\s*?([\s\S]*?)```/g,
+                    (match, code) => `<div class="mermaid">${code}</div>`
+                );
+            }
+        };
+
+        async function renderMarkdown(mdPath) {
+            try {
+                const response = await fetch(mdPath);
+                const mdContent = await response.text();
+
+                const convert = new showdown.Converter({
+                    extensions: [mermaidConvert],
+                    tables: true,
+                    tasklists: true
+                });
+                const htmlContent = convert.makeHtml(mdContent);
+                document.getElementById('markdown-container').innerHTML = htmlContent;
+
+                await mermaid.init(undefined, document.querySelectorAll('.mermaid'));
+
+            } catch (error) {
+                console.error('渲染失败:', error);
+                document.getElementById('markdown-container').innerHTML =
+                    `<div style="color: red">错误: ${error.message}</div>`;
+            }
+        }
+
+        renderMarkdown('/3.程序/3.后端/docker/2.基础知识/6.3.2.容器-编排工具-dockerSwarm介绍.md')
+    </script>
+</body>
+
+</html>

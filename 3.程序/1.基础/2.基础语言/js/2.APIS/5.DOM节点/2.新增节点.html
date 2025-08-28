@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新增节点</title>
+</head>
+<div style="height: 300px;width: 300px;background-color: aquamarine;" class="parent"></div>
+
+<body>
+    <script>
+        (function test1() {
+            const parent = document.querySelector('.parent')
+            //创建节点
+            const div = document.createElement('div')
+            div.style.width = '120px'
+            div.style.height = '120px'
+            div.style.backgroundColor = 'red'
+            //将新节点增加到dom的body元素下
+            // document.body.appendChild(div)
+            //将新节点尾部增加到某个元素下
+            parent.appendChild(div)
+        })();
+
+
+
+       (function test2() {
+            const parent = document.querySelector('.parent')
+            //appendChild 是追加节点，如果放置在某个位置，使用下面方式
+            const div2 = document.createElement('div')
+            div2.style.width = '120px'
+            div2.style.height = '120px'
+            div2.style.backgroundColor = 'yellow'
+            //在前面增加
+            parent.insertBefore(div2, parent.children[0])
+        })();
+
+        console.log(11)
+
+        /**
+         * insertAdjacentHTML
+         * 
+         *  beforebegin：在当前元素节点的前面。
+         *  afterbegin：在当前元素节点的里面，插在它的第一个子元素之前。
+         *  beforeend：在当前元素节点的里面，插在它的最后一个子元素之后。
+         *  afterend：在当前元素节点的后面。
+         */
+        parent.insertAdjacentHTML("afterend",'<div>111</div>')
+    </script>
+</body>
+
+</html>

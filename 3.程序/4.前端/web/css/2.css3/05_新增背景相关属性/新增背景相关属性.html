@@ -1,0 +1,28 @@
+<!-- 
+    背景相关属性
+    1.background-origin  - 设置背景图时，背景图左上角原点起始位置。
+        *padding-box 从padding位置开始
+        *boder-box 从boder区域开始
+        *content-box 从content区域开始显示背景图像
+
+    2.background-clip  - 设置背景图的向外裁剪区域,图片大小超过背景，会被裁剪。裁剪的区域如下值：
+        *border-box 裁剪包括border区域外多余的图片内容 （默认）
+        *padding-box 裁剪包括padding区域外多余的图片内容
+        *content-box 裁剪包括content区域外多余的图片内容
+        *text 背景只呈现在文字上。（使用text，需要加前缀 -webkit）
+
+    3.background-size  - 设置背景图尺寸 
+    定义：background-size:值 不允许负值
+        *300px 200px  指定大小
+        *100% 100% 百分比设定大小
+        *auto 图片真实大小
+        *contain 图片等比缩放，使宽或高等于容器宽或高，注意：只要宽或高有一个相等了就可以，所以可能造成容器部分区域没有背景图片
+        *conver 图片等比缩放，是图片完全填充满容器， 注意：图片可能显示不完整
+
+    4.复合属性
+        语法：background:color url repeat position / size origin clip
+        注意：
+            1.size必须在position后面，且/ 隔开
+            2.origin clip 如果相等 可以只写一个值表示俩属性， 如果不相等，写俩值，前面是origin 后面是clip
+            3.background可以写多个，对不同的图片进行设置，这样可以实现多个背景图组合的效果
+ -->

@@ -1,0 +1,44 @@
+<!-- 
+    新增多媒体标签
+    1.video - 视频标签
+        *src 资源地址
+        *controls  控制布局
+        *muted 默认视频静音播放
+        *autoplay 自动播放，必须提前设置muted才生效
+        *loop 循环播放
+        *preload 视频预加载，如果使用了auto，忽略此属性
+            none - 不预加载
+            metadata-仅预先获取元数据，如视频长度
+            auto - 预加载整个视频
+
+    2.audio - 音频标签， 标签属性与视频相同
+        *src 资源地址
+        *controls  控制布局
+        *muted 默认视频静音播放
+        *autoplay 自动播放，必须提前设置muted才生效
+        *loop 循环播放
+        *preload 视频预加载，如果使用了auto，忽略此属性
+            none - 不预加载
+            metadata-仅预先获取元数据，如视频长度
+            auto - 预加载整个视频
+ -->
+ <!DOCTYPE html>
+ <html lang="zh-CN">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新增多媒体标签</title>
+
+    <style>
+        video{
+            width: 600px;
+            height: 300px;
+            border: 2px solid black;
+        }
+    </style>
+ </head>
+ <body>
+    <video src="https://kzx.360kan.com/xxl-kzx-bj/9d0dd4201a238a5b1e8108e614ea7df6-720-1619963927.mp4?sign=121151e177ade2fab304d54e6c1f9bf7&time=1703563227" controls muted autoplay preload="auto">视频</video>
+    <audio src="https://kzx.360kan.com/xxl-kzx-bj/9d0dd4201a238a5b1e8108e614ea7df6-720-1619963927.mp4?sign=121151e177ade2fab304d54e6c1f9bf7&time=1703563227" controls muted autoplay preload="auto">音频</video>
+ </body>
+ </html>

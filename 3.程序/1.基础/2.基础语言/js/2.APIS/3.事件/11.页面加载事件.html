@@ -1,0 +1,41 @@
+<!-- 
+    旧代码script 写在header中，document无法获取对应元素，所以可以通过加载事件设置回调处理。
+
+    1. window 添加load事件，当页面渲染完成后回调
+    window.addEventListener('load',fun(){})
+    2. 给document添加DOMContentLoaded事件，HTML文档被完全解析后此事件触发，无需等待图片、样式表等资源加载完成。比1快
+
+    补充用法：
+    当需要网络或是本身加载慢的元素收到加载完成回调，可以用load事件。如 图片元素DOM.addEventListener('load',fun(){})
+ -->
+ <!DOCTYPE html>
+ <html lang="zh-CN">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>页面加载事件</title>
+    <script>
+
+      const div =  document.querySelector('div')//获取不到
+      window.addEventListener('load',function(){
+        const div2 =  document.querySelector('div')//可以获取到
+      })
+
+
+      document.addEventListener('DOMContenetLoaded',function(){})
+
+    </script>
+ </head>
+ <body>
+    <div>1111</div>
+    <img src="../1.dom与bom/image.png" alt="11">
+
+    <script>
+         const img =  document.querySelector('img')
+         //补充用法
+         img.addEventListener('load',function(){
+            //图片加载完可以收到此回调，并做相应逻辑
+         })
+    </script>
+ </body>
+ </html>

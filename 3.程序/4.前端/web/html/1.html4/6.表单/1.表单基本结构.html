@@ -1,0 +1,37 @@
+<!--
+
+什么是表单？
+
+1. form 标签包裹，用于提交输入数据，其会将input输入的数据提交给服务器或是携带数据打开新的网址
+2. form 中的 action属性是目标服务器
+
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>表单基本结构</title>
+</head>
+<body>
+
+<form action="https://www.baidu.com">
+    <!-- 输入的文本格式，name指数据key，跳转时，拼接到地址后面：https://www.baidu.com/?bd= -->
+    <input type="text" name="bd">
+    <!-- 表单中的按钮会自动作为提交按钮，点击后提交表单执行action -->
+    <button>去百度</button>
+</form>
+    
+<!-- target 属性与超链接 a 标签用法一致，跳转到新页面还是当前页面打开；
+    method 数据提交方式 get post，用啥与服务器接口有关系 -->
+<form action="https://search.jd.com/search" target="_self" method="get">
+
+    <input type="text" name="jd">
+    <button>去京东买东西</button>
+
+</form>
+
+
+</body>
+</html>

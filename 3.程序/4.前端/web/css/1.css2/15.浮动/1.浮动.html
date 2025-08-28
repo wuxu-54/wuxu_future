@@ -1,0 +1,67 @@
+<!-- 
+    最初浮动，就是为了实现文字环绕图片、文字环绕文字的效果。
+
+    浮动属性：float
+
+    设置浮动
+    1.脱落文档流，不受文档流的约束。
+    元素脱离常规流之后，将不再在常规流中占据空间，而是处于浮动状态（可以理解为漂浮在常规流的上方）。
+    脱离文档流的元素的定位基于正常的文档流，当一个元素脱离文档流后，依然在常规流中的其他元素将忽略该元素并填补其原先的空间
+
+ 
+    2.不论什么元素，浮动后可以设置宽高，如果没设置宽高由内容撑开。
+    3.触发BFC，避免普通文档流的问题。
+    4.不会像行内块一样，被当做文本处理，避免空白问题。
+    5.浮动后，只对后面元素有影响，不会影响前面，因为文档流是从上到下的。
+    6.浮动后，在普通文档流内，父元素不会计算其高，导致布局问题。
+ -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>浮动</title>
+    <style>
+        .content {
+            width: 300px;
+            height: 700px;
+            background-color: brown;
+            overflow: hidden;
+        }
+
+        .f1 {
+            width: 100px;
+            height: 100px;
+            background-color: gray;
+        }
+
+        .f2 {
+            width: 80px;
+            height: 80px;
+            float: left;
+            background-color: blue;
+        }
+
+        .f3 {
+            margin-left: 50px;
+            width: 100px;
+            height: 100px;
+            background-color: yellowgreen;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="content">
+        <div class="f1"></div>
+        <div class="f2">
+            <div>1</div>
+        </div>
+        <div class="f3">
+        </div>
+
+    </div>
+</body>
+
+</html>

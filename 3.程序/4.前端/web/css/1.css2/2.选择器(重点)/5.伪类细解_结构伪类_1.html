@@ -1,0 +1,81 @@
+<!-- 
+
+    *.结构伪类： 结构伪类就是根据元素结构，按对应位置确定哪些元素设置样式
+    例如：p:first-child{}  ：p元素是父级元素（父级元素可以是任意元素）下的第一个元素
+
+     div>p:first-child ： div子代p元素，且p元素是父级元素（父级元素可以是任意元素）下的第一个元素
+     div p:first-child ： div后代p元素，且p元素是父级元素（父级元素可以是任意元素）下的第一个元素
+   
+ -->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>伪类细解_动态伪类_1</title>
+
+   <!-- 结构伪类 -->
+   <style>
+      /* div子代p元素 且 p是父级元素第一个 --- 看结构1 */
+      /* div>p:first-child{
+            color:red;
+         } */
+
+
+      /* div子代p元素 且 p是父级元素第一个 --- 看结构2 */
+      /* div>p:first-child{
+            color:red;
+         } */
+
+
+      /* div后代p元素，且 p是父级元素第一个--- 看结构3 */
+      /* div p:first-child {
+         color: red;
+      } */
+
+       /* p是父级元素第一个--- 看结构3 */
+      p:first-child {
+         color: red;
+      }
+   </style>
+</head>
+
+<body>
+
+   <!-- 结构1 -->
+   <!-- <div>
+      <p>AAA</p>
+      <p>BBB</p>
+      <p>CCC</p>
+      <p>DDD</p>
+   </div> -->
+
+   <!-- 结构2 这里都没有亮，因为不符合css条件-->
+   <!-- <div>
+      <span>顶部</span>
+      <p>AAA</p>
+      <p>BBB</p>
+      <p>CCC</p>
+   </div> -->
+
+
+
+   <!-- 结构3 -->
+   <div>
+      <marquee>
+         <p>顶部</p>
+      </marquee>
+      <p>AAA</p>
+      <marquee>
+         <!-- 这里p是父级元素第一个 -->
+         <p>BBB</p>
+         <p>BBB2</p>
+      </marquee>
+      <p>CCC</p>
+   </div>
+
+</body>
+
+</html>
