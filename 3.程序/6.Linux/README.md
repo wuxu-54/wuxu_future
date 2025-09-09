@@ -3,6 +3,8 @@
 - [lunux命令](https://www.linuxcool.com/)
 - [菜鸟教程-shell](https://www.runoob.com/linux/linux-shell.html)
 
+>个人强烈建议看一遍《鸟哥的Linux私房菜》，内容基础扎实。
+
 ## 其他教程
 
 1. **博客园教程**：提供了全面的 Shell 脚本学习教程，涵盖从基础概念到实际应用的各个方面。你可以从这里开始学习 Shell 的基本概念、脚本的执行方式、变量、运算符、流程控制等。
