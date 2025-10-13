@@ -12,7 +12,7 @@
 
 let listTest = [4, 5, 6];
 
-for (let i in listTest) {//for..of  取得是键
+for (let i in listTest) {//for..in  取得是键
     console.log(i); // "0", "1", "2",
 }
 
