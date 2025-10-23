@@ -1,6 +1,6 @@
 # Figma
 
-- [学习网站](https://www.bilibili.com/video/BV19TDGYWEp7/?spm_id_from=333.337.search-card.all.click)
+- [学习](https://www.bilibili.com/video/BV19TDGYWEp7/?spm_id_from=333.337.search-card.all.click)
 
 ## 工具网站
 
@@ -10,7 +10,8 @@
 
 ## AI快速制作
 
-- Gemini Stitch UI设计
+- Gemini Stitch UI设计 (限制国内IP访问)
+- uxbot.cn
 
 ## 插件
 
