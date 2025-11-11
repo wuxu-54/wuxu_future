@@ -1,5 +1,7 @@
 # 鸿蒙
 
+- 官文：<https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/introduction-to-arkts>
+
 直接看官文即可，内容很多，可以快速看一遍然后直接上手做demo。
 
 学习侧重：Stage模型、ArkTS声明式开发范式
