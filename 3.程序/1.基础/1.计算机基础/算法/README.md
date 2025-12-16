@@ -4,5 +4,4 @@
 
 ## 动态规划
 
-- [动态规划视频-理论了解](https://www.bilibili.com/video/BV13Q4y197Wg/?spm_id_from=333.337.search-card.all.click&vd_source=3509947f569e04aa5c144447e22d0ceb)
-- [动态规划视频-推导学习-左神](https://www.bilibili.com/video/BV1Ww41167Ac/?spm_id_from=333.1007.top_right_bar_window_history.content.click&vd_source=3509947f569e04aa5c144447e22d0ceb)
+- [动态规划视频-代码随想录-理论了解](https://www.bilibili.com/video/BV13Q4y197Wg/?spm_id_from=333.337.search-card.all.click&vd_source=3509947f569e04aa5c144447e22d0ceb)
