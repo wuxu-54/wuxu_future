@@ -8,5 +8,6 @@
   "no-hard-tabs": false,
   "MD056": false,
   "MD040":false,
-  "MD052":false
+  "MD052":false,
+  "MD060":false
 }
