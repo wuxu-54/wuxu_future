@@ -1,0 +1,553 @@
+# Flowable 核心概念：流程实例（ProcessInstance）全解析 + 实战代码 + 避坑指南
+
+流程实例是Flowable工作流**业务运行的核心载体**，是**流程定义的动态、有状态的具体运行实例**——如果说流程定义是“建房的图纸”，那流程实例就是“按图纸盖出的具体房子”，每个流程实例对应**一个具体的业务请求**（如“张三2026年2月的请假申请”“订单号1001的采购流程”）。
+
+流程实例的全生命周期管理是Flowable**业务开发的核心工作**，所有操作均通过**RuntimeService**（之前已系统讲解，本次会深度实战）实现，同时联动IdentityService（设置启动人）、TaskService（处理任务）、HistoryService（实例结束后查历史）等核心服务。本文会延续之前的风格，从**概念区分→核心存储→实战操作→生命周期→避坑指南**逐步讲解，基于已有的Spring Boot+请假流程案例，代码可直接复用运行。
+
+## 一、什么是流程实例？（通俗解释+核心关联）
+
+### 1. 本质定义
+
+流程实例（ProcessInstance）是基于**已部署的流程定义**启动的**动态运行实例**，是流程定义的**一次具体业务落地**，包含了该业务的**运行状态、业务数据（流程变量）、关联的业务标识、启动/运行信息**等所有动态数据。
+
+**核心公式**：`流程实例 = 流程定义（静态规则） + 具体业务数据（动态变量） + 运行状态`
+
+举个例子：
+
+- 流程定义：`员工请假流程（leaveProcess:1）`（图纸）；
+- 流程实例1：`张三申请3天年假（实例ID：5001，业务键：leave_20260206_001）`（房子1）；
+- 流程实例2：`李四申请1天病假（实例ID：5002，业务键：leave_20260206_002）`（房子2）。
+
+### 2. 新手必分清：3个核心概念边界（流程定义/流程实例/执行流）
+
+很多新手会混淆**流程实例**和**执行流（Execution）**，这是Flowable的核心基础，必须彻底分清，三者的关系和区别如下：
+
+| 概念               | 性质       | 作用                     | 类比               | 核心存储表          | 管理Service       |
+|--------------------|------------|--------------------------|--------------------|---------------------|-------------------|
+| 流程定义（ProcessDefinition） | 静态无状态 | 业务流程的标准化规则模板 | 建房图纸           | ACT_RE_PROCDEF      | RepositoryService |
+| 流程实例（ProcessInstance） | 动态有状态 | 具体业务的运行载体，对应一个业务请求 | 具体的房子         | ACT_RU_PROCINST（运行）<br>ACT_HI_PROCINST（历史） | RuntimeService    |
+| 执行流（Execution） | 动态最小执行单元 | 流程实例的执行路径，是引擎调度的核心 | 房子的施工动线     | ACT_RU_EXECUTION（运行）<br>ACT_HI_ACTINST（历史） | RuntimeService    |
+
+**关键关联规则**：
+
+1. **1个流程定义可以启动N个流程实例**，实例之间相互独立，数据互不干扰；
+2. **1个流程实例对应至少1个执行流**（**根执行流**），根执行流的ID与流程实例ID**完全一致**；
+3. 当流程包含**并行网关、多实例任务、子流程**时，会生成**子执行流**，形成“根执行流+子执行流”的执行树，引擎通过调度执行流推进流程；
+4. 流程实例**结束/删除**后，运行时数据（ACT_RU_*）会被清理/标记，历史数据永久存储在ACT_HI_*表中。
+
+### 3. 流程实例核心存储表（运行时+历史，避坑必备）
+
+流程实例的所有数据分为**运行时数据**（未结束的实例，存储在ACT_RU_*）和**历史数据**（已结束/删除的实例，存储在ACT_HI_*），核心关联4张表，新手需理解表关系，无需手动操作：
+
+#### 运行时表（实例未结束时存在，核心2张）
+
+1. **ACT_RU_PROCINST**：**流程实例运行时核心表**，存储未结束实例的所有元数据（实例ID、业务键、流程定义Key/版本、启动人、启动时间、挂起状态等）；
+2. **ACT_RU_EXECUTION**：执行流运行时表，存储实例的执行流信息，**根执行流的PROCESS_INST_ID_字段与流程实例ID一致**，子执行流关联根执行流ID。
+
+#### 历史表（实例结束后永久存储，核心2张）
+
+1. **ACT_HI_PROCINST**：流程实例历史核心表，是ACT_RU_PROCINST的**快照备份**，存储所有实例（已结束/删除/挂起）的全量信息，包含结束时间、删除原因、持续时长等；
+2. **ACT_HI_ACTINST**：活动实例历史表，存储流程实例中每个节点（事件/任务/网关）的执行记录，是流程**执行轨迹追溯**的核心。
+
+**核心流转逻辑**：
+启动流程实例 → 引擎在ACT_RU_PROCINST生成实例记录，在ACT_RU_EXECUTION生成根执行流记录 → 流程运行（处理任务、流转节点），引擎更新执行流状态 → 流程结束（走到endEvent）/手动删除 → 引擎将运行时数据迁移/快照到历史表，**清理ACT_RU_PROCINST和ACT_RU_EXECUTION中对应的记录**。
+
+### 4. 流程实例核心属性（实战高频字段，熟记）
+
+流程实例的核心属性对应ACT_RU_PROCINST/ACT_HI_PROCINST的关键字段，是**查询、管理、关联业务**的核心，其中**业务键（businessKey）**是**流程引擎与业务系统联动的唯一桥梁**，实战中**必须必传且唯一**。
+
+| 属性名          | 对应表字段       | 含义&实战作用                                                                 |
+|-----------------|------------------|------------------------------------------------------------------------------|
+| **processInstanceId** | ID_/PROCESS_INST_ID_ | 流程实例唯一ID，引擎自动生成（如`5001`），是所有运行时操作的核心标识           |
+| **businessKey** | BUSINESS_KEY_     | **业务键**，手动指定的业务系统唯一标识（如请假单ID`leave_1001`、订单ID`order_2001`），**实战必传** |
+| **processDefinitionKey** | PROC_DEF_KEY_ | 关联的流程定义Key（如`leaveProcess`），用于追溯实例所属的业务流程类型           |
+| **processDefinitionVersion** | PROC_DEF_VERSION_ | 关联的流程定义版本（如`1`），用于确认实例基于哪个版本的流程定义启动             |
+| **startUserId** | START_USER_ID_    | 流程启动人ID，通过IdentityService.setAuthenticatedUserId设置，用于**按人追溯流程** |
+| **suspensionState** | SUSPENSION_STATE_ | 挂起状态：`1`=激活（运行中），`2`=挂起（暂停），挂起后实例无法继续执行         |
+| **startTime**   | START_TIME_       | 实例启动时间，引擎自动生成                                                   |
+| **endTime**     | END_TIME_         | 实例结束时间，仅历史表有，流程结束后引擎自动填充                             |
+| **deleteReason** | DELETE_REASON_    | 实例删除原因，仅手动删除/终止时填写（如`订单取消，流程终止`），历史表追溯用     |
+| **tenantId**    | TENANT_ID_        | 租户ID，多租户场景下的隔离标识，非多租户为`null`                              |
+
+## 二、流程实例核心实战操作（基于RuntimeService，全覆盖）
+
+流程实例的**启动、查询、挂起/激活、删除/终止、状态校验**等所有操作均通过**RuntimeService**实现（这是管理流程实例的**唯一核心Service**），实战环境完全基于之前的Spring Boot 2.7+Flowable 6.8.0+员工请假流程（leaveProcess），无需重新配置环境，直接编写测试类即可。
+
+### 实战前置准备
+
+1. 确保已部署**leaveProcess**流程定义（参考上一篇流程定义的部署代码）；
+2. 注入核心Service：`RuntimeService`（实例操作）、`IdentityService`（设置启动人），测试类基于Spring Boot Test。
+
+```java
+import org.flowable.engine.IdentityService;
+import org.flowable.engine.RuntimeService;
+import org.flowable.engine.runtime.ProcessInstance;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@SpringBootTest
+public class ProcessInstanceTest {
+    // 流程实例核心管理Service
+    @Autowired
+    private RuntimeService runtimeService;
+
+    // 设置流程启动人必备Service
+    @Autowired
+    private IdentityService identityService;
+}
+```
+
+### 操作1：启动流程实例（实战最高频，核心中的核心）
+
+启动流程实例是流程运行的**第一步**，RuntimeService提供了多种启动方式，**实战首选「按流程Key启动+指定业务键+传入流程变量+设置启动人」**，这种方式覆盖所有生产环境需求，同时引擎会自动使用**流程Key的最新激活版本**启动实例。
+
+#### 核心代码（生产环境标准写法，带详细注释）
+
+```java
+/**
+ * 启动流程实例：生产环境标准写法
+ * 核心：按流程Key启动+指定业务键+传入流程变量+设置启动人+finally清除启动人（避免线程污染）
+ */
+@Test
+public void startProcessInstance() {
+    // 1. 基础配置（实战中从业务系统获取）
+    String processKey = "leaveProcess"; // 流程定义Key（核心，优先用Key而非ID）
+    String businessKey = "leave_20260206_001"; // 业务键：请假单ID，唯一关联业务系统
+    String startUserId = "zhangsan"; // 流程启动人：张三（请假人）
+
+    // 2. 流程变量：传递业务数据，供流程节点使用（如动态分配任务处理人、网关条件判断）
+    Map<String, Object> variables = new HashMap<>();
+    variables.put("applicantId", "zhangsan"); // 请假人ID（供userTask的assignee使用）
+    variables.put("leaveDays", 3); // 请假天数
+    variables.put("managerId", "lisi"); // 经理ID（供审批任务动态分配处理人）
+
+    ProcessInstance processInstance = null;
+    try {
+        // 3. 设置流程启动人（必须在启动前调用，与HistoryService的startedBy查询联动）
+        identityService.setAuthenticatedUserId(startUserId);
+
+        // 4. 启动流程实例：实战首选方法（按Key+业务键+变量）
+        processInstance = runtimeService.startProcessInstanceByKey(
+                processKey, // 流程Key
+                businessKey, // 业务键（必传）
+                variables    // 流程变量
+        );
+    } finally {
+        // 5. 清除当前线程的启动人（核心避坑：避免线程池复用导致启动人串号）
+        identityService.clearAuthenticatedUserId();
+    }
+
+    // 6. 打印实例信息
+    if (processInstance != null) {
+        System.out.println("流程实例启动成功！");
+        System.out.println("实例ID：" + processInstance.getId());
+        System.out.println("业务键：" + processInstance.getBusinessKey());
+        System.out.println("流程定义Key：" + processInstance.getProcessDefinitionKey());
+        System.out.println("流程定义版本：" + processInstance.getProcessDefinitionVersion());
+        System.out.println("启动人：" + processInstance.getStartUserId());
+        System.out.println("是否激活：" + !processInstance.isSuspended());
+    }
+}
+```
+
+#### 其他常用启动方式（按需使用）
+
+```java
+/**
+ * 其他启动方式：按需使用
+ */
+@Test
+public void otherStartMethods() {
+    String processKey = "leaveProcess";
+    Map<String, Object> variables = new HashMap<>();
+    variables.put("applicantId", "zhangsan");
+
+    // 方式1：按流程Key启动，无业务键（不推荐，无法关联业务）
+    ProcessInstance pi1 = runtimeService.startProcessInstanceByKey(processKey, variables);
+
+    // 方式2：指定流程定义版本启动（实战极少用，仅需固定版本时使用）
+    ProcessInstance pi2 = runtimeService.startProcessInstanceByKeyAndVersion(processKey, 1, variables);
+
+    // 方式3：按流程定义ID启动（不推荐，ID包含版本，流程升级后需修改代码）
+    String processDefId = "leaveProcess:1:123456";
+    ProcessInstance pi3 = runtimeService.startProcessInstanceById(processDefId, businessKey, variables);
+}
+```
+
+#### 启动实例的核心注意点（实战必守）
+
+1. **业务键必传且唯一**：businessKey必须设置为**业务系统的唯一主键**（如请假单ID、订单ID），避免流程实例成为“孤立实例”，无法与业务数据关联；
+2. **启动人必须设置+finally清除**：通过IdentityService设置启动人，且必须在finally块中清除，避免线程池复用导致**启动人串号**（生产环境高频坑点）；
+3. **优先按流程Key启动**：避免按流程定义ID/版本启动，流程升级后无需修改代码，引擎自动使用最新激活版本；
+4. **流程变量传基础类型**：变量仅用String/Integer/Long/Date/Boolean，禁止传自定义对象（序列化风险），复杂数据序列化为JSON字符串；
+5. **事务控制**：启动实例的代码必须放在**Spring事务（@Transactional）**中，避免实例启动成功但变量/启动人未保存的脏数据。
+
+### 操作2：查询流程实例（实战高频，业务联动核心）
+
+流程实例查询是**业务系统与流程引擎联动的核心操作**（如根据请假单ID查流程状态、根据用户ID查其发起的所有流程），通过`ProcessInstanceQuery`查询器实现，支持多条件筛选、分页、排序，**实战中最常用的是按「业务键」查询**。
+
+#### 核心代码（覆盖生产环境所有高频查询场景）
+
+```java
+/**
+ * 查询流程实例：覆盖实战所有高频场景
+ * 核心：按业务键、流程Key、启动人、状态、时间范围查询，分页查询
+ */
+@Test
+public void queryProcessInstance() {
+    String businessKey = "leave_20260206_001";
+    String processKey = "leaveProcess";
+    String startUserId = "zhangsan";
+
+    // 场景1：按业务键精确查询（实战最常用！业务系统根据主键查流程）
+    ProcessInstance piByBusinessKey = runtimeService.createProcessInstanceQuery()
+            .businessKey(businessKey) // 按业务键筛选
+            .singleResult(); // 单条结果（业务键唯一）
+    if (piByBusinessKey != null) {
+        System.out.println("按业务键查询：实例ID=" + piByBusinessKey.getId() + "，状态=" + (piByBusinessKey.isSuspended() ? "挂起" : "激活"));
+    }
+
+    // 场景2：按流程Key查询所有激活的实例（如查所有运行中的请假流程）
+    List<ProcessInstance> piByProcessKey = runtimeService.createProcessInstanceQuery()
+            .processDefinitionKey(processKey)
+            .active() // 仅查激活的实例（未挂起、未结束）
+            .orderByStartTimeDesc() // 按启动时间倒序
+            .list();
+    System.out.println("leaveProcess激活的实例数：" + piByProcessKey.size());
+
+    // 场景3：按启动人查询（如查张三发起的所有流程）
+    List<ProcessInstance> piByStartUser = runtimeService.createProcessInstanceQuery()
+            .startedBy(startUserId)
+            .active()
+            .list();
+    System.out.println("张三发起的激活实例数：" + piByStartUser.size());
+
+    // 场景4：分页查询（大量实例时必用，避免内存溢出）
+    int pageNum = 1;
+    int pageSize = 10;
+    List<ProcessInstance> piPage = runtimeService.createProcessInstanceQuery()
+            .processDefinitionKey(processKey)
+            .active()
+            .listPage((pageNum - 1) * pageSize, pageSize); // 分页
+    System.out.println("第1页实例数：" + piPage.size());
+
+    // 场景5：按实例ID精确查询（运行时操作前置校验）
+    String instanceId = piByBusinessKey.getId();
+    ProcessInstance piById = runtimeService.createProcessInstanceQuery()
+            .processInstanceId(instanceId)
+            .singleResult();
+    System.out.println("按实例ID查询：流程定义版本=" + piById.getProcessDefinitionVersion());
+
+    // 场景6：查询实例总数
+    long totalActive = runtimeService.createProcessInstanceQuery().active().count();
+    System.out.println("引擎中所有激活的实例数：" + totalActive);
+}
+```
+
+#### 流程实例查询高频方法（熟记，链式调用）
+
+| 方法 | 作用 | 实战频率 |
+|------|------|----------|
+| `businessKey(String key)` | 按业务键精确查询 | ★★★★★ |
+| `processDefinitionKey(String key)` | 按流程Key筛选 | ★★★★★ |
+| `processInstanceId(String id)` | 按实例ID精确查询 | ★★★★★ |
+| `startedBy(String userId)` | 按启动人筛选 | ★★★★ |
+| `active()` | 筛选激活的实例（运行中） | ★★★★★ |
+| `suspended()` | 筛选挂起的实例 | ★★★ |
+| `orderByStartTimeDesc()` | 按启动时间倒序 | ★★★★★ |
+| `listPage(int first, int max)` | 分页查询 | ★★★★★ |
+| `singleResult()` | 返回单条结果（业务键/实例ID查询用） | ★★★★★ |
+
+### 操作3：挂起/激活流程实例（实战常用，业务暂停/恢复）
+
+流程实例的**挂起（Suspend）**是指暂停当前实例的所有执行动作，挂起后：
+
+- 无法处理该实例的任何用户任务（TaskService.complete会抛异常）；
+- 定时器/异步作业停止触发；
+- 网关、子流程等节点停止流转。
+**已挂起的实例可通过激活（Activate）恢复正常**，挂起/激活仅影响**当前实例**，与流程定义的挂起无关联（流程定义挂起是禁止启动新实例）。
+
+#### 核心代码（精准操作单个实例，实战首选）
+
+```java
+/**
+ * 挂起/激活流程实例：实战首选按实例ID操作，避免批量操作
+ */
+@Test
+public void suspendAndActivateProcessInstance() {
+    // 1. 根据业务键获取实例ID（实战中从业务系统获取）
+    String businessKey = "leave_20260206_001";
+    ProcessInstance pi = runtimeService.createProcessInstanceQuery()
+            .businessKey(businessKey)
+            .singleResult();
+    if (pi == null) {
+        System.out.println("流程实例不存在！");
+        return;
+    }
+    String instanceId = pi.getId();
+
+    // 2. 挂起流程实例（按实例ID，精准操作）
+    if (!pi.isSuspended()) {
+        runtimeService.suspendProcessInstanceById(instanceId);
+        System.out.println("流程实例" + instanceId + "已挂起！");
+        // 校验挂起状态
+        ProcessInstance suspendedPi = runtimeService.createProcessInstanceQuery()
+                .processInstanceId(instanceId)
+                .singleResult();
+        System.out.println("挂起后状态：" + (suspendedPi.isSuspended() ? "挂起" : "激活"));
+    }
+
+    // 3. 激活流程实例（按实例ID）
+    if (pi.isSuspended()) {
+        runtimeService.activateProcessInstanceById(instanceId);
+        System.out.println("流程实例" + instanceId + "已激活！");
+    }
+
+    // 4. 批量挂起（按流程Key，生产环境禁止随意使用，风险极高）
+    // runtimeService.suspendProcessInstancesByProcessDefinitionKey("leaveProcess");
+}
+```
+
+#### 核心方法
+
+```java
+// 按实例ID挂起/激活（实战首选，精准操作）
+void suspendProcessInstanceById(String processInstanceId);
+void activateProcessInstanceById(String processInstanceId);
+
+// 按流程Key批量挂起/激活（所有运行中的实例，生产环境严禁随意使用）
+void suspendProcessInstancesByProcessDefinitionKey(String processDefinitionKey);
+void activateProcessInstancesByProcessDefinitionKey(String processDefinitionKey);
+```
+
+### 操作4：删除/终止流程实例（实战常用，业务取消/异常终止）
+
+当业务需要取消（如订单取消、请假撤回）或流程实例运行异常时，需要**手动删除/终止**运行中的流程实例，RuntimeService提供的删除方法会：
+
+1. **清理该实例的所有运行时数据**（ACT_RU_PROCINST/ACT_RU_EXECUTION/ACT_RU_TASK等）；
+2. **将实例数据快照到历史表**（ACT_HI_PROCINST），并记录删除原因；
+3. **保留所有历史数据**（任务、变量、批注），便于审计追溯。
+
+#### 核心代码（生产环境标准写法，普通删除+填写原因）
+
+```java
+/**
+ * 删除/终止流程实例：生产环境标准写法
+ * 核心：使用普通删除（保留历史）+ 填写清晰的删除原因，禁止使用级联删除！
+ */
+@Test
+public void deleteProcessInstance() {
+    // 1. 根据业务键获取实例
+    String businessKey = "leave_20260206_001";
+    ProcessInstance pi = runtimeService.createProcessInstanceQuery()
+            .businessKey(businessKey)
+            .singleResult();
+    if (pi == null || pi.isEnded()) {
+        System.out.println("流程实例不存在或已结束！");
+        return;
+    }
+    String instanceId = pi.getId();
+
+    // 2. 普通删除（推荐，生产环境唯一使用方式）：保留历史数据，填写删除原因
+    String deleteReason = "张三撤回请假申请，流程终止";
+    runtimeService.deleteProcessInstance(instanceId, deleteReason);
+    System.out.println("流程实例" + instanceId + "已删除，原因：" + deleteReason);
+
+    // 3. 校验：运行时表中已无该实例，历史表中可查
+    ProcessInstance deletedPi = runtimeService.createProcessInstanceQuery()
+            .processInstanceId(instanceId)
+            .singleResult();
+    System.out.println("运行时表中是否存在：" + (deletedPi == null ? "不存在" : "存在"));
+
+    // 4. 级联删除（极度高危，仅测试环境清理数据用，生产环境严禁使用！）
+    // runtimeService.deleteProcessInstance(instanceId, deleteReason, true);
+}
+```
+
+#### 核心注意点（删除操作必守）
+
+1. **生产环境仅用普通删除**：级联删除会**删除该实例的所有历史数据**（ACT_HI_*），导致审计记录丢失，仅在清理测试数据时使用；
+2. **必须填写删除原因**：原因会存入ACT_HI_PROCINST的DELETE_REASON_字段，是**流程审计追溯的核心依据**，禁止空原因；
+3. **删除前做状态校验**：先判断实例是否存在、是否已结束，避免操作不存在的实例抛异常；
+4. **删除后运行时数据清理**：运行时表（ACT_RU_*）中该实例的所有数据会被清理，仅历史表保留快照。
+
+### 操作5：流程实例其他高频操作（实战辅助，状态校验/信息获取）
+
+#### 核心代码（覆盖状态判断、获取当前节点、获取变量等）
+
+```java
+/**
+ * 流程实例其他高频操作：实战辅助，状态校验、获取当前节点、获取变量
+ */
+@Test
+public void otherCommonOperations() {
+    String businessKey = "leave_20260206_001";
+    ProcessInstance pi = runtimeService.createProcessInstanceQuery()
+            .businessKey(businessKey)
+            .singleResult();
+    if (pi == null) {
+        System.out.println("流程实例不存在！");
+        return;
+    }
+    String instanceId = pi.getId();
+
+    // 1. 判断实例状态：是否挂起、是否已结束
+    boolean isSuspended = runtimeService.isProcessInstanceSuspended(instanceId);
+    boolean isExists = runtimeService.processInstanceExists(instanceId);
+    System.out.println("是否挂起：" + isSuspended + "，是否存在（运行中）：" + isExists);
+
+    // 2. 获取实例的当前活动节点ID（核心：知道流程走到哪个步骤了，如“经理审批”节点）
+    List<String> activeActivityIds = runtimeService.getActiveActivityIds(instanceId);
+    System.out.println("流程当前执行的节点ID：" + activeActivityIds); // 如[applyTask, approveTask]
+
+    // 3. 获取实例的全局流程变量（与业务系统联动获取数据）
+    Map<String, Object> variables = runtimeService.getVariables(instanceId);
+    System.out.println("流程变量：" + variables); // 如{applicantId=zhangsan, leaveDays=3}
+
+    // 4. 获取单个流程变量（指定类型，避免类型转换）
+    Integer leaveDays = runtimeService.getVariable(instanceId, "leaveDays", Integer.class);
+    System.out.println("请假天数：" + leaveDays);
+
+    // 5. 获取实例详情
+    ProcessInstance piDetail = runtimeService.getProcessInstance(instanceId);
+    System.out.println("实例详情：启动时间=" + piDetail.getStartTime() + "，流程定义ID=" + piDetail.getProcessDefinitionId());
+}
+```
+
+#### 实用方法总结
+
+- `isProcessInstanceSuspended(instanceId)`：判断实例是否挂起（操作前前置校验）；
+- `processInstanceExists(instanceId)`：判断实例是否在运行时存在（前置校验）；
+- `getActiveActivityIds(instanceId)`：获取当前执行的节点ID（流程监控核心，如展示“当前处于经理审批步骤”）；
+- `getVariables(instanceId)`：获取实例的所有全局变量（业务系统联动核心）；
+- `getProcessInstance(instanceId)`：获取实例完整详情。
+
+## 三、流程实例的完整生命周期（从启动到历史，全程梳理）
+
+流程实例的生命周期是**从启动到最终进入历史表**的完整过程，引擎自动调度大部分步骤，手动操作仅需介入**启动、挂起/激活、删除/终止**，全程联动Flowable各核心Service，清晰的生命周期认知能帮助你快速定位流程问题。
+
+### 标准生命周期（无手动干预，正常运行）
+
+`设置启动人+传入变量` → **RuntimeService启动实例**（生成运行时记录） → 引擎推进到第一个用户任务 → **TaskService处理任务**（认领、完成、添加批注） → 引擎根据BPMN规则流转节点（网关判断、自动任务执行） → 依次处理后续任务 → 走到**endEvent结束事件** → 引擎**自动清理运行时数据**，将快照迁移到**历史表** → 实例生命周期结束（可通过HistoryService查询）。
+
+### 含手动干预的生命周期（业务暂停/取消）
+
+`启动实例` → 流程运行中 → **RuntimeService挂起实例**（业务暂停，任务无法处理） → 业务恢复后**RuntimeService激活实例** → 继续处理任务 / **RuntimeService删除实例**（业务取消，终止流程） → 引擎清理运行时数据，快照到历史表（记录删除原因） → 生命周期结束。
+
+### 各阶段核心Service联动
+
+| 生命周期阶段       | 核心操作               | 负责Service       | 数据存储表       |
+|--------------------|------------------------|-------------------|------------------|
+| 实例启动           | 启动、设置变量、启动人 | RuntimeService+IdentityService | ACT_RU_PROCINST/ACT_RU_EXECUTION |
+| 任务处理           | 认领、完成、批注、转办 | TaskService       | ACT_RU_TASK/ACT_RU_VARIABLE |
+| 实例管控           | 挂起/激活、删除/终止   | RuntimeService    | ACT_RU_PROCINST（运行时）/ACT_HI_PROCINST（历史） |
+| 实例结束/删除      | 数据迁移、快照         | 引擎自动调度      | ACT_HI_*（历史表） |
+| 历史追溯           | 查询实例/任务/变量/轨迹 | HistoryService    | ACT_HI_*（历史表） |
+
+## 四、流程实例实战核心避坑点（生产环境高频，必守规则）
+
+结合大量企业实战经验，整理了流程实例相关的**10个高频坑点**，覆盖**启动、查询、管控、删除**全流程，严格遵守可避免90%的生产环境问题，其中**业务键、启动人、线程污染**是新手最容易踩的坑。
+
+### 1. 业务键未传/重复，导致流程与业务系统失联
+
+- **坑点**：启动实例时未设置businessKey，或设置重复的businessKey，导致流程实例无法与业务数据关联，成为“孤立实例”，无法通过业务主键查询流程状态；
+- **解决方案**：
+  1. **强制必传businessKey**，且必须为业务系统的**唯一主键**（如请假单ID、订单ID，建议加业务前缀，如`leave_1001`）；
+  2. 启动实例前**按businessKey做唯一性校验**，避免重复启动实例（如同一请假单启动多个流程实例）：
+
+     ```java
+     // 启动前校验：该业务键是否已有运行中的实例
+     long count = runtimeService.createProcessInstanceQuery()
+             .processDefinitionKey("leaveProcess")
+             .businessKey(businessKey)
+             .active()
+             .count();
+     if (count == 0) {
+         // 仅当无重复时才启动
+         runtimeService.startProcessInstanceByKey(processKey, businessKey, variables);
+     }
+     ```
+
+### 2. 启动人未清除，导致线程池复用串号
+
+- **坑点**：设置启动人后未在finally块中清除，线程池复用该线程时，后续启动的实例会继承上一个启动人，导致**启动人串号**（如李四启动的实例，启动人记录为张三）；
+- **解决方案**：**必须在try-finally块中操作启动人**，无论实例启动是否成功，finally中都要调用`identityService.clearAuthenticatedUserId()`。
+
+### 3. 混淆流程实例与流程定义的挂起/激活
+
+- **坑点**：想暂停某个运行中的实例，却误调用RepositoryService挂起了流程定义，导致**所有新实例无法启动**，已运行实例仍正常执行；
+- **解决方案**：明确二者的核心区别，按需求选择操作：
+  - 需**禁止启动新实例** → 用**RepositoryService**挂起**流程定义**；
+  - 需**暂停运行中的具体实例** → 用**RuntimeService**挂起**流程实例**；
+  - 严禁使用`byProcessDefinitionKey`批量挂起实例，避免误操作所有运行中的流程。
+
+### 4. 生产环境使用级联删除，导致历史数据丢失
+
+- **坑点**：误调用`deleteProcessInstance(instanceId, reason, true)`级联删除，导致该实例的所有历史数据（任务、批注、执行轨迹）被永久删除，无法审计追溯；
+- **解决方案**：
+  1. 生产环境**仅使用普通删除**（无第三个boolean参数），保留所有历史数据；
+  2. 级联删除**仅用于测试环境清理数据**，生产环境代码中直接删除级联删除的代码，避免误调用。
+
+### 5. 流程变量传递自定义对象，导致序列化失败
+
+- **坑点**：启动实例时传入自定义Java对象作为流程变量，引擎会通过Java序列化存储，当类结构修改（如新增字段）或跨服务部署时，会出现**反序列化失败**，导致流程无法运行；
+- **解决方案**：
+  1. 流程变量**仅使用基础类型**（String/Integer/Long/Date/Boolean）和简单集合（List/Map，元素为基础类型）；
+  2. 复杂业务数据**序列化为JSON字符串**（String类型）传入，读取后再反序列化为对象，避免序列化风险。
+
+### 6. 操作实例前未做状态校验，导致抛异常
+
+- **坑点**：直接对实例执行挂起/激活/删除/设置变量操作，未先校验实例是否存在、是否已结束、是否已挂起，导致操作不存在/已结束的实例抛`FlowableException`；
+- **解决方案**：**所有实例操作前必须做3层前置校验**：
+  1. `processInstanceExists(instanceId)`：实例是否在运行时存在；
+  2. `!isProcessInstanceSuspended(instanceId)`：实例是否为激活状态（挂起操作除外）；
+  3. `!pi.isEnded()`：实例是否未结束。
+
+### 7. 未加事务控制，导致脏数据
+
+- **坑点**：启动实例、设置变量、删除实例等操作未放在Spring事务中，若中间步骤出现异常（如数据库连接失败、变量转换错误），会导致**脏数据**（如实例启动成功但变量未保存、任务已完成但流程未推进）；
+- **解决方案**：所有流程实例的**写操作**（启动、设置变量、挂起/激活、删除）必须放在**@Transactional**注解的方法中，事务传播行为使用默认的`REQUIRED`。
+
+### 8. 批量操作流程实例，导致数据库压力陡增
+
+- **坑点**：使用`byProcessDefinitionKey`批量挂起/激活/删除实例，当该流程Key下有大量运行中的实例时，会执行大量数据库操作，导致**数据库压力陡增**，甚至引发性能问题；
+- **解决方案**：
+  1. **禁止随意使用批量操作**，优先按**实例ID精准操作**；
+  2. 若确需批量操作，需**分批执行**，并添加限流/降级措施，避免一次性操作大量实例。
+
+### 9. 多租户场景未指定tenantId，导致数据混淆
+
+- **坑点**：多租户系统中，启动/查询/操作实例时未指定tenantId，导致不同租户的流程实例相互混淆，数据泄露；
+- **解决方案**：多租户场景下，**所有实例操作必须指定tenantId**：
+
+  ```java
+  // 多租户启动实例
+  runtimeService.startProcessInstanceByKeyAndTenantId(processKey, businessKey, variables, "tenant1");
+  // 多租户查询实例
+  runtimeService.createProcessInstanceQuery()
+          .processDefinitionKey(processKey)
+          .tenantId("tenant1")
+          .list();
+  ```
+
+### 10. 直接操作执行流，导致实例状态混乱
+
+- **坑点**：新手误操作执行流（如手动触发子执行流、修改执行流状态），导致流程实例的执行树混乱，引擎无法正常调度，流程卡节点；
+- **解决方案**：**普通业务开发禁止直接操作执行流**，执行流是引擎的底层调度单元，仅在并行网关/子流程的高级调试中，由专业开发人员通过ExecutionQuery查询，不做手动修改。
+
+## 五、核心总结
+
+1. **流程实例是动态业务载体**：是流程定义的具体运行实例，对应一个具体业务请求，数据存储在运行时表（ACT_RU_*），结束/删除后永久存储在历史表（ACT_HI_*）；
+2. **RuntimeService是核心管理Service**：实例的启动、查询、挂起/激活、删除/终止等所有操作均通过RuntimeService实现，是业务开发中使用频率最高的Service之一；
+3. **业务键是联动核心**：businessKey必须必传且唯一，是流程引擎与业务系统的唯一桥梁，启动前必须做唯一性校验，避免重复实例；
+4. **启动人设置必守规则**：通过IdentityService设置，且必须在finally块中清除，避免线程池复用导致的启动人串号；
+5. **操作前必做状态校验**：实例是否存在、是否激活、是否已结束，是所有手动操作的前置条件，避免抛异常；
+6. **生产环境操作有禁区**：禁止级联删除、禁止批量操作实例、禁止传自定义对象为变量、禁止直接操作执行流；
+7. **生命周期联动各Service**：实例启动联动IdentityService，任务处理联动TaskService，历史追溯联动HistoryService，形成完整的Flowable业务开发体系。
+
+掌握流程实例后，你已经掌握了Flowable**业务开发的核心**，接下来的学习重点是**用户任务的处理（TaskService）**和**历史数据的追溯（HistoryService）**，这两部分是流程引擎与前端交互、业务审计的核心，后续会继续为你详细解析。
