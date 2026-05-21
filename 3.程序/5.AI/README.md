@@ -7,6 +7,7 @@
 - [认识大模型](https://www.bilibili.com/video/BV1uNk1YxEJQ?spm_id_from=333.788.player.switch&vd_source=3509947f569e04aa5c144447e22d0ceb&p=2)
 - [RAG讲解](https://www.bilibili.com/video/BV1tU5M6kEcn?spm_id_from=333.788.videopod.episodes&vd_source=3509947f569e04aa5c144447e22d0ceb)
 - [GitHub-RAG系统学习项目](https://github.com/datawhalechina/all-in-rag/tree/main)
+- [LangChain-入门](https://www.bilibili.com/video/BV178w1z7EHQ?spm_id_from=333.788.videopod.episodes&vd_source=3509947f569e04aa5c144447e22d0ceb)
 
 ## 学习进展
 
@@ -52,6 +53,7 @@ Agent
 - [ ] 构建RAG知识库
 - [ ] 函数调用练习
 - [ ] 构建MCP服务
+- [ ] LangChain实战
 - [ ] LangGraph实战
 - [ ] 构建SKILL
 - [ ] 构建个人Agent
