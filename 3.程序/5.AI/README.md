@@ -9,6 +9,10 @@
 - [GitHub-RAG系统学习项目](https://github.com/datawhalechina/all-in-rag/tree/main)
 - [LangChain-入门](https://www.bilibili.com/video/BV178w1z7EHQ?spm_id_from=333.788.videopod.episodes&vd_source=3509947f569e04aa5c144447e22d0ceb)
 
+## 工具
+
+- [scikit-learn大模型知识相关文档，（scikit-learn（简称 sklearn）是 Python 里最流行、最通用的机器学习库）](https://scikit-learn.org.cn/)
+
 ## 学习进展
 
 认识大模型
