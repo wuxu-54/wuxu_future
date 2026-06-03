@@ -8,12 +8,30 @@
 - [RAG讲解](https://www.bilibili.com/video/BV1tU5M6kEcn?spm_id_from=333.788.videopod.episodes&vd_source=3509947f569e04aa5c144447e22d0ceb)
 - [GitHub-RAG系统学习项目](https://github.com/datawhalechina/all-in-rag/tree/main)
 - [LangChain-入门](https://www.bilibili.com/video/BV178w1z7EHQ?spm_id_from=333.788.videopod.episodes&vd_source=3509947f569e04aa5c144447e22d0ceb)
+- [LangChain-菜鸟教程](https://www.runoob.com/langchain/langchain-tutorial.html)
 
 ## 工具
 
 - [scikit-learn大模型知识相关文档，（scikit-learn（简称 sklearn）是 Python 里最流行、最通用的机器学习库）](https://scikit-learn.org.cn/)
 
-## 学习进展
+## 目录结构
+
+大模型基础知识：
+
+- 1.认识AI
+- 2.大模型
+
+大模型应用知识：
+
+- 3.提示工程
+- 4.底层基座
+- 5.知识增强
+- 6.工具调用（也叫能力增强）
+- 7.框架
+- 8.生产部署
+- 9.安全合规
+
+## 学习路线
 
 认识大模型
 
