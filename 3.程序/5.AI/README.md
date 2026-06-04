@@ -2,6 +2,10 @@
 
 学习建议：先快速看一遍视频（截止目前-2026年，B站的学习视频都是为了卖课），知道大致内容，再看我用AI生成的章节内容。任何理论概念知道就行，重点还是实操。
 
+## AI主流协会
+
+- [Agentic AI Foundation](https://aaif.io/)]
+
 ## AI学习
 
 - [认识大模型](https://www.bilibili.com/video/BV1uNk1YxEJQ?spm_id_from=333.788.player.switch&vd_source=3509947f569e04aa5c144447e22d0ceb&p=2)
