@@ -17,6 +17,8 @@
 ## 工具
 
 - [scikit-learn大模型知识相关文档，（scikit-learn（简称 sklearn）是 Python 里最流行、最通用的机器学习库）](https://scikit-learn.org.cn/)
+- [HuggingFace - AI界的GITHUB，可下载各种大模型](https://huggingface.co/models)
+- [魔塔社区-国内的平台](https://modelscope.cn/)
 
 ## 目录结构
 
