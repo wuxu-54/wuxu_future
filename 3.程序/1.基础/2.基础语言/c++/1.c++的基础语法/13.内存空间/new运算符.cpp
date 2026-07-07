@@ -7,7 +7,7 @@
  * 
  * 补充: 
  * 在指定内存地址开辟空间如何写？
- * 答：  用 placement new 
+ * 答：  用 placement new . placement new 是 C++ 中一个非常特殊且强大的内存操作工具。它允许你在已经分配好的原始内存上构造对象，而不是在堆上重新分配内存。
  *      写法： new(指定内存地址) 数据类型()  
 */
 #include<iostream>
@@ -22,5 +22,5 @@ int main(){
     delete []arr;//释放数组时需要有[]
 
 
-    new(a) int(11); // placement new  指定内存地址创建
+    new(a) int(11); // placement new  指定内存地址创建. 解释：  1. 不分配内存 2. 直接在地址 a 上构造对象 3. 返回 a（类型已转换）
 }
